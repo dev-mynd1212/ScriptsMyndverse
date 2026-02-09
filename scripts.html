@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MyndVerse • Scripts Premium (Arquitetura & Imobiliário)</title>
+  <meta name="description" content="Catálogo premium de scripts de venda (Arquitetura & Imobiliário) com variações, follow-ups, objeções e respostas por cenário. Copiar e colar em 1 clique." />
+  <style>
+    :root{
+      --bg:#050408;
+      --panel: rgba(255,255,255,.05);
+      --panel2: rgba(255,255,255,.07);
+      --stroke: rgba(255,255,255,.12);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.70);
+      --dim: rgba(255,255,255,.55);
+      --gold:#D6B15E;
+      --gold2:#F5D98A;
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius: 18px;
+      --radius2: 24px;
+      --max: 1120px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(1200px 650px at 15% -10%, rgba(214,177,94,.18), transparent 55%),
+        radial-gradient(900px 550px at 90% 10%, rgba(214,177,94,.10), transparent 55%),
+        radial-gradient(900px 650px at 25% 95%, rgba(255,255,255,.06), transparent 60%),
+        linear-gradient(180deg, #040308 0%, #050408 35%, #06050b 100%);
+      overflow-x:hidden;
+    }
+
+    .grain{
+      position:fixed; inset:0;
+      pointer-events:none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.15'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+      opacity:.18;
+    }
+
+    header{
+      position:sticky; top:0; z-index:20;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(180deg, rgba(5,4,8,.82), rgba(5,4,8,.40));
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .nav{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 14px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      user-select:none;
+    }
+    .dot{
+      width:10px; height:10px; border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, var(--gold2), var(--gold));
+      box-shadow: 0 0 18px rgba(214,177,94,.45);
+    }
+    .chip{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:8px 12px;
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 999px;
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-size: 12.8px;
+      white-space:nowrap;
+    }
+    .chip b{color: var(--text)}
+    .nav-actions{
+      display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
+    }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-size: 13px;
+      cursor:pointer;
+      transition: .18s ease;
+      display:inline-flex; align-items:center; gap:10px;
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.18)}
+    .btn.primary{
+      border-color: rgba(214,177,94,.45);
+      background: radial-gradient(140px 70px at 20% 30%, rgba(245,217,138,.35), rgba(214,177,94,.10)),
+                linear-gradient(180deg, rgba(214,177,94,.16), rgba(255,255,255,.05));
+      box-shadow: 0 10px 26px rgba(0,0,0,.25), 0 0 18px rgba(214,177,94,.10);
+    }
+    .btn .icon{
+      width:18px; height:18px; border-radius:6px;
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.12);
+      display:grid; place-items:center;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    main{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 18px 18px 60px;
+    }
+
+    .hero{
+      border-radius: var(--radius2);
+      border: 1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(900px 500px at 20% 10%, rgba(214,177,94,.14), transparent 55%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      padding: 18px;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 14px;
+      align-items:stretch;
+    }
+    @media (max-width: 980px){
+      .hero-grid{grid-template-columns: 1fr;}
+    }
+
+    h1{
+      margin:0 0 10px;
+      font-size: clamp(22px, 3.3vw, 34px);
+      letter-spacing: -.4px;
+      line-height: 1.08;
+    }
+    .sub{
+      margin:0;
+      color: var(--muted);
+      line-height:1.6;
+      max-width: 78ch;
+      font-size: 14.4px;
+    }
+
+    .panel{
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      padding: 14px;
+    }
+    .panel h3{
+      margin:0 0 8px;
+      font-size: 13.8px;
+      letter-spacing:-.2px;
+      color: rgba(255,255,255,.88);
+    }
+    .hint{
+      margin:0;
+      color: var(--dim);
+      font-size: 12.9px;
+      line-height:1.5;
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 12px;
+    }
+
+    .tabs{
+      margin-top: 14px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .tab{
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: var(--muted);
+      padding: 9px 12px;
+      border-radius: 999px;
+      cursor:pointer;
+      transition:.18s ease;
+      font-size: 13px;
+      user-select:none;
+    }
+    .tab.active{
+      color: var(--text);
+      border-color: rgba(214,177,94,.35);
+      background: rgba(214,177,94,.10);
+      box-shadow: 0 0 0 5px rgba(214,177,94,.06);
+    }
+
+    .controls{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 10px;
+    }
+    @media (max-width: 980px){
+      .controls{grid-template-columns:1fr;}
+    }
+
+    .search, .select, .vars{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.20);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .field-label{
+      font-size: 12.4px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    input[type="text"], textarea, select{
+      width:100%;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      border-radius: 14px;
+      color: var(--text);
+      padding: 10px 11px;
+      outline:none;
+      font-size: 14px;
+    }
+    textarea{
+      min-height: 74px;
+      resize: vertical;
+      line-height:1.5;
+    }
+    select{cursor:pointer}
+    .vars-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    @media (max-width: 680px){
+      .vars-grid{grid-template-columns: 1fr;}
+    }
+    .kv{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .kv code{
+      font-family: var(--mono);
+      color: rgba(255,255,255,.85);
+      font-size: 12px;
+      padding: 7px 9px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.22);
+      white-space:nowrap;
+    }
+    .kv input{
+      font-size: 13.5px;
+    }
+
+    .grid{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns:1fr;}
+    }
+    .card{
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      padding: 14px;
+      position:relative;
+      overflow:hidden;
+      box-shadow: 0 14px 50px rgba(0,0,0,.35);
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border-radius: 999px;
+      padding: 7px 10px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-size: 12.3px;
+    }
+    .badge b{color: var(--text)}
+    .card h4{
+      margin: 10px 0 10px;
+      font-size: 14.4px;
+      letter-spacing:-.2px;
+    }
+    .text{
+      color: rgba(255,255,255,.88);
+      font-size: 14px;
+      line-height:1.58;
+      white-space: pre-wrap;
+      margin:0 0 12px;
+    }
+    .card-actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .mini{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size: 12.6px;
+      color: var(--dim);
+    }
+    .copy{
+      border: 1px solid rgba(214,177,94,.32);
+      background: rgba(214,177,94,.10);
+      color: rgba(255,255,255,.92);
+      padding: 9px 11px;
+      border-radius: 14px;
+      cursor:pointer;
+      transition:.18s ease;
+      display:inline-flex; align-items:center; gap:10px;
+      font-size: 13px;
+    }
+    .copy:hover{transform: translateY(-1px); background: rgba(214,177,94,.14)}
+    .copy .icon{
+      width:18px; height:18px; border-radius:6px;
+      background: rgba(0,0,0,.22);
+      border: 1px solid rgba(255,255,255,.12);
+      display:grid; place-items:center;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: rgba(255,255,255,.75);
+    }
+
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,.78);
+      border: 1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.92);
+      padding: 10px 12px;
+      border-radius: 14px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.6);
+      display:none;
+      z-index: 100;
+      font-size: 13px;
+      backdrop-filter: blur(10px);
+    }
+    .toast.show{display:block;}
+    .footer{
+      margin-top: 18px;
+      color: var(--dim);
+      font-size: 12.8px;
+      line-height:1.6;
+      text-align:center;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="grain"></div>
+
+  <header>
+    <div class="nav">
+      <div class="brand">
+        <span class="dot"></span>
+        <span class="chip"><b>MyndVerse</b> • Catálogo de Scripts</span>
+        <span class="chip">Arquitetura & Imobiliário</span>
+        <span class="chip">Preto & Dourado • Premium</span>
+      </div>
+
+      <div class="nav-actions">
+        <button class="btn" id="btnReset">
+          <span class="icon">R</span> Limpar filtros
+        </button>
+        <button class="btn primary" id="btnCopyLink">
+          <span class="icon">⧉</span> Copiar link do site
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <h1>Scripts prontos para vender com postura premium, sem forçar escassez.</h1>
+          <p class="sub">
+            Aqui você tem mensagens de início, continuidade, objeções, follow-up e recuperação.
+            Tudo com linguagem humana e perguntas que puxam conversa.
+            Use as variáveis para personalizar em 1 clique e copiar para WhatsApp ou DM.
+          </p>
+
+          <div class="row">
+            <span class="chip">Dica: personalize {NOME} e {CIDADE} antes de enviar</span>
+            <span class="chip">Tom: direto, elegante, sem exageros</span>
+          </div>
+
+          <div class="tabs" id="tabs"></div>
+        </div>
+
+        <div class="panel">
+          <h3>Cadência curta (sem parecer cobrança)</h3>
+          <p class="hint">
+            Se visualizou e sumiu: aguarde 3 a 6 horas e mande uma mensagem curta.
+            Se ainda assim não responder: espere 24 horas e mande outra, mais objetiva.
+            Evite mandar muita coisa de uma vez. Uma pergunta boa vale mais do que um texto longo.
+          </p>
+          <div class="row" style="margin-top:10px;">
+            <span class="chip">1º toque: pergunta simples</span>
+            <span class="chip">2º toque: exemplo rápido</span>
+            <span class="chip">3º toque: convite para call de 7 min</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="search">
+          <div class="field-label">Buscar por palavra</div>
+          <input id="q" type="text" placeholder="Ex: wix, indicação, orçamento, google, portfólio, anúncio..." />
+          <div class="row">
+            <button class="btn" id="btnOnlyQuestions"><span class="icon">?</span> Só mensagens com pergunta</button>
+            <button class="btn" id="btnShort"><span class="icon">S</span> Preferir curtas</button>
+          </div>
+        </div>
+
+        <div class="select">
+          <div class="field-label">Filtrar por cenário</div>
+          <select id="scenario"></select>
+          <div class="field-label" style="margin-top:10px;">Canal</div>
+          <select id="channel">
+            <option value="whatsapp">WhatsApp</option>
+            <option value="instagram">Instagram DM</option>
+            <option value="linkedin">LinkedIn</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="vars" style="margin-top:10px;">
+        <div class="field-label">Personalização rápida (opcional)</div>
+        <div class="vars-grid">
+          <div class="kv"><code>{NOME}</code><input id="v_nome" type="text" placeholder="Simone / Sarah / WL..." /></div>
+          <div class="kv"><code>{CIDADE}</code><input id="v_cidade" type="text" placeholder="Fronteira / Tanabi / ..." /></div>
+          <div class="kv"><code>{AREA}</code><input id="v_area" type="text" placeholder="arquitetura / imobiliário / móveis planejados" /></div>
+          <div class="kv"><code>{SITE}</code><input id="v_site" type="text" placeholder="site atual / wix / canva / não tenho" /></div>
+          <div class="kv"><code>{SEU_NOME}</code><input id="v_seu_nome" type="text" placeholder="Felipe" /></div>
+          <div class="kv"><code>{MARCA}</code><input id="v_marca" type="text" value="MyndVerse" /></div>
+        </div>
+        <p class="hint" style="margin-top:10px">
+          Você pode deixar em branco e usar as variáveis do jeito que estão. Isso é feito para copiar e colar rápido no dia a dia.
+        </p>
+      </div>
+    </section>
+
+    <section class="grid" id="list"></section>
+
+    <div class="footer">
+      Use com postura e contexto. Se o lead estiver frio, faça 1 pergunta e pare. Quando responder, você acelera.
+      • my﻿ndverse.com.br
+    </div>
+  </main>
+
+  <div class="toast" id="toast">Copiado.</div>
+
+  <script>
+    const CATEGORIES = [
+      { id: "inicio", label: "Início (pergunta que puxa resposta)" },
+      { id: "continuidade", label: "Continuação (depois que responde)" },
+      { id: "objeções", label: "Objeções (respostas prontas)" },
+      { id: "followup", label: "Follow-up (visualizou e sumiu)" },
+      { id: "recuperacao", label: "Recuperação (voltar a conversa)" },
+      { id: "qualificacao", label: "Qualificação (perguntas certas)" },
+      { id: "convite", label: "Convite para call (curta e elegante)" }
+    ];
+
+    const SCENARIOS = [
+      { id:"geral", label:"Geral (arquitetura/imobiliário)" },
+      { id:"wix_canva", label:"Tem site Wix/Canva e não usa" },
+      { id:"indicacao", label:"Vive de indicação" },
+      { id:"sem_site", label:"Não tem site" },
+      { id:"site_ruim", label:"Tem site fraco/desatualizado" },
+      { id:"anuncios", label:"Quer anunciar / tráfego pago" },
+      { id:"alto_padrao", label:"Posicionamento alto padrão" },
+      { id:"sem_tempo", label:"Sem tempo / muita correria" },
+      { id:"preco", label:"Preço / orçamento" }
+    ];
+
+    // Catálogo: intencionalmente grande e com variações humanas.
+    // Sem travessões, sem "vagas acabando", escassez só no critério e no tom.
+    const SCRIPTS = [
+      // =========================
+      // INÍCIO (perguntas que puxam resposta)
+      // =========================
+      {
+        id:"i01", cat:"inicio", scenario:"geral", tags:["pergunta","curta","premium"],
+        title:"Início 1 (curta, direta)",
+        text:`Oi {NOME}, tudo bem? Vi seu trabalho e achei bem acima da média. Posso te fazer uma pergunta rápida: hoje você usa seu digital para gerar oportunidades ou está mais no boca a boca?`
+      },
+      {
+        id:"i02", cat:"inicio", scenario:"alto_padrao", tags:["pergunta","premium"],
+        title:"Início 2 (alto padrão)",
+        text:`Oi {NOME}. Uma pergunta rápida e bem objetiva: seu portfólio hoje está apresentado do jeito que um cliente alto padrão espera antes de chamar no WhatsApp?`
+      },
+      {
+        id:"i03", cat:"inicio", scenario:"sem_site", tags:["pergunta","curta"],
+        title:"Início 3 (sem site)",
+        text:`Oi {NOME}! Você já tem um site oficial ou hoje o Instagram é o principal lugar onde a pessoa te encontra?`
+      },
+      {
+        id:"i04", cat:"inicio", scenario:"indicacao", tags:["pergunta"],
+        title:"Início 4 (indicação, sem confrontar)",
+        text:`Oi {NOME}, tudo certo? Muita gente boa vive de indicação mesmo. Posso te perguntar: quando alguém te indica, essa pessoa encontra um link oficial com seus projetos e um jeito fácil de pedir orçamento?`
+      },
+      {
+        id:"i05", cat:"inicio", scenario:"wix_canva", tags:["pergunta","curta"],
+        title:"Início 5 (Wix/Canva, delicado)",
+        text:`Oi {NOME}! Vi que você tem um site ({SITE}). Ele hoje te ajuda de verdade ou ficou mais como cartão de visita?`
+      },
+      {
+        id:"i06", cat:"inicio", scenario:"anuncios", tags:["pergunta","curta"],
+        title:"Início 6 (tráfego)",
+        text:`Oi {NOME}. Se você rodasse um anúncio hoje, você acha que seu site seguraria o clique e converteria bem, ou você sente que ainda falta uma estrutura mais preparada?`
+      },
+      {
+        id:"i07", cat:"inicio", scenario:"site_ruim", tags:["pergunta","premium"],
+        title:"Início 7 (site fraco, sem ofender)",
+        text:`Oi {NOME}, tudo bem? Posso ser bem direto: seu site hoje passa a mesma percepção do seu trabalho na vida real, ou você sente que ele ainda não te representa?`
+      },
+      {
+        id:"i08", cat:"inicio", scenario:"geral", tags:["pergunta","curta"],
+        title:"Início 8 (critério, sem número)",
+        text:`Oi {NOME}! A gente está abrindo um formato bem específico para {AREA} aqui na região. Antes de eu te explicar, queria entender: você quer crescer com mais previsibilidade ou está confortável do jeito que está hoje?`
+      },
+      {
+        id:"i09", cat:"inicio", scenario:"alto_padrao", tags:["pergunta","curta"],
+        title:"Início 9 (elegante, sem pressão)",
+        text:`Oi {NOME}. Rapidinho: quando alguém pesquisa seu nome no Google, aparece algo forte e bem apresentado ou quase nada?`
+      },
+      {
+        id:"i10", cat:"inicio", scenario:"sem_tempo", tags:["pergunta","curta"],
+        title:"Início 10 (para quem é ocupada)",
+        text:`Oi {NOME}! Prometo ser rápido: hoje você prefere captar clientes só por indicação ou toparia ter uma estrutura que filtra e organiza os pedidos sem tomar seu tempo?`
+      },
+
+      // =========================
+      // QUALIFICAÇÃO (perguntas que direcionam para o fechamento)
+      // =========================
+      {
+        id:"q01", cat:"qualificacao", scenario:"geral", tags:["pergunta"],
+        title:"Qualificação 1 (objetiva)",
+        text:`Para eu te orientar direito: você quer mais pedidos de orçamento, mais autoridade no Google ou os dois?`
+      },
+      {
+        id:"q02", cat:"qualificacao", scenario:"geral", tags:["pergunta"],
+        title:"Qualificação 2 (processo)",
+        text:`Hoje seu atendimento é como? A pessoa chama no WhatsApp e você faz tudo no manual, ou você já tem alguma triagem e formulário?`
+      },
+      {
+        id:"q03", cat:"qualificacao", scenario:"indicacao", tags:["pergunta"],
+        title:"Qualificação 3 (indicação vira conversão)",
+        text:`Quando alguém te indica, você perde algum lead por demora, falta de portfólio organizado ou falta de orçamento inicial?`
+      },
+      {
+        id:"q04", cat:"qualificacao", scenario:"anuncios", tags:["pergunta"],
+        title:"Qualificação 4 (anúncios)",
+        text:`Você pensa em anunciar em algum momento ou quer primeiro deixar o site pronto para converter bem e depois escalar?`
+      },
+      {
+        id:"q05", cat:"qualificacao", scenario:"wix_canva", tags:["pergunta"],
+        title:"Qualificação 5 (Wix/Canva sem julgamento)",
+        text:`Seu site atual você consegue editar com facilidade ou ele ficou parado porque dá trabalho mexer?`
+      },
+      {
+        id:"q06", cat:"qualificacao", scenario:"alto_padrao", tags:["pergunta"],
+        title:"Qualificação 6 (alto padrão)",
+        text:`Seu público é mais residencial, comercial ou alto padrão? Pergunto porque a apresentação e a narrativa mudam bastante.`
+      },
+      {
+        id:"q07", cat:"qualificacao", scenario:"geral", tags:["pergunta"],
+        title:"Qualificação 7 (resultado esperado)",
+        text:`Se esse projeto desse certo, o que seria um resultado excelente para você em 60 dias?`
+      },
+
+      // =========================
+      // CONTINUIDADE (depois que responde)
+      // =========================
+      {
+        id:"c01", cat:"continuidade", scenario:"wix_canva", tags:["curta","pergunta"],
+        title:"Continuação 1 (ela disse: tenho Wix/Canva mas nem uso)",
+        text:`Entendi. Isso é bem comum. Só para eu encaixar no seu cenário: você não usa porque não te gera retorno, ou porque ficou chato de atualizar e manter bonito?`
+      },
+      {
+        id:"c02", cat:"continuidade", scenario:"indicacao", tags:["curta","pergunta"],
+        title:"Continuação 2 (ela disse: 100% indicação)",
+        text:`Perfeito. Indicação é um ótimo sinal. A pergunta é: você quer manter só isso ou prefere ter um link que transforma cada indicação em orçamento mais rápido e organizado?`
+      },
+      {
+        id:"c03", cat:"continuidade", scenario:"sem_site", tags:["curta","pergunta"],
+        title:"Continuação 3 (ela disse: não tenho site)",
+        text:`Boa. Então dá para fazer algo bem forte desde o começo. Você quer um site mais portfólio e autoridade, ou quer um site que já filtre e capture pedidos de orçamento?`
+      },
+      {
+        id:"c04", cat:"continuidade", scenario:"site_ruim", tags:["pergunta"],
+        title:"Continuação 4 (ela disse: meu site não me representa)",
+        text:`Entendi. Quando a pessoa entra, o que você sente que mais pega: visual, velocidade, falta de projetos, falta de um caminho para orçamento, ou tudo junto?`
+      },
+      {
+        id:"c05", cat:"continuidade", scenario:"anuncios", tags:["pergunta"],
+        title:"Continuação 5 (ela disse: quero anunciar)",
+        text:`Perfeito. Antes de colocar grana em anúncio, faz sentido deixar a casa pronta para converter. Você prefere que o lead caia em um formulário bem qualificado ou que ele vá direto para o WhatsApp com triagem antes?`
+      },
+      {
+        id:"c06", cat:"continuidade", scenario:"geral", tags:["curta","pergunta"],
+        title:"Continuação 6 (geral, sem se alongar)",
+        text:`Me diz uma coisa: hoje você quer atrair mais clientes na sua cidade ({CIDADE}) ou você atende remoto também?`
+      },
+      {
+        id:"c07", cat:"continuidade", scenario:"alto_padrao", tags:["pergunta"],
+        title:"Continuação 7 (alto padrão, elegante)",
+        text:`Se eu te mostrasse uma estrutura que eleva a percepção do seu trabalho antes mesmo da conversa, isso faria sentido para o tipo de cliente que você quer atender hoje?`
+      },
+
+      // =========================
+      // OBJEÇÕES (respostas prontas)
+      // =========================
+      {
+        id:"o01", cat:"objeções", scenario:"preco", tags:["curta"],
+        title:"Objeção: 'Agora não tenho orçamento'",
+        text:`Tranquilo. Para não virar gasto, a gente monta para virar ativo. Posso te fazer só uma pergunta: você prefere algo mais enxuto para começar e evoluir depois, ou prefere esperar para fazer uma versão completa quando estiver mais confortável?`
+      },
+      {
+        id:"o02", cat:"objeções", scenario:"sem_tempo", tags:["curta"],
+        title:"Objeção: 'Estou sem tempo'",
+        text:`Eu entendo. A ideia é justamente tirar trabalho manual do seu dia. Se eu te fizer 3 perguntas e montar uma proposta de estrutura, você consegue me responder em áudio rápido quando puder?`
+      },
+      {
+        id:"o03", cat:"objeções", scenario:"indicacao", tags:["curta"],
+        title:"Objeção: 'Só indicação já me atende'",
+        text:`Perfeito. E dá para manter isso. O site entra como apoio: quando te indicam, a pessoa vê prova, portfólio e já chega mais decidida. Você quer que eu te mostre um exemplo de como isso reduz conversas longas e aumenta fechamento?`
+      },
+      {
+        id:"o04", cat:"objeções", scenario:"wix_canva", tags:["curta"],
+        title:"Objeção: 'Já tenho site'",
+        text:`Ter site e ter um site que trabalha por você são coisas diferentes. O seu hoje te traz pedidos de orçamento de forma consistente ou ele está mais parado?`
+      },
+      {
+        id:"o05", cat:"objeções", scenario:"preco", tags:["curta"],
+        title:"Objeção: 'Acho caro pagar por site'",
+        text:`Justo. A pergunta certa é: caro comparado a quê? Se um site te trouxer 1 cliente bom a mais por mês, ele já se paga. Você quer algo pensado para conversão ou só presença online?`
+      },
+      {
+        id:"o06", cat:"objeções", scenario:"geral", tags:["curta"],
+        title:"Objeção: 'Preciso pensar'",
+        text:`Claro. Para eu não te deixar no vazio: o que você precisa ter certeza para decidir? É valor, tempo, confiança, ou entender como seria na prática?`
+      },
+      {
+        id:"o07", cat:"objeções", scenario:"anuncios", tags:["curta"],
+        title:"Objeção: 'Não quero depender de anúncio'",
+        text:`Perfeito. A gente pode construir um caminho forte de Google e autoridade, e depois usar anúncio só como acelerador quando fizer sentido. Hoje você aparece bem no Google quando pesquisam seu nome?`
+      },
+      {
+        id:"o08", cat:"objeções", scenario:"geral", tags:["curta"],
+        title:"Objeção: 'Não entendo nada disso'",
+        text:`Sem problema. Você não precisa entender. Você só precisa me dizer o que você quer atrair e como você quer ser percebida. O resto é com a gente. Quer que eu te explique em 30 segundos como funciona?`
+      },
+
+      // =========================
+      // FOLLOW-UP (visualizou e sumiu)
+      // =========================
+      {
+        id:"f01", cat:"followup", scenario:"geral", tags:["curta","pergunta"],
+        title:"Follow-up 1 (3 a 6 horas depois)",
+        text:`{NOME}, só para eu não ficar te enchendo: faz sentido eu te mandar um exemplo rápido de como ficaria a estrutura do seu site, ou prefere que eu pare por aqui?`
+      },
+      {
+        id:"f02", cat:"followup", scenario:"geral", tags:["curta","pergunta"],
+        title:"Follow-up 2 (24h depois)",
+        text:`Oi {NOME}. Prometo ser rápido: você quer crescer com uma presença mais forte no Google ou por enquanto não é prioridade?`
+      },
+      {
+        id:"f03", cat:"followup", scenario:"indicacao", tags:["curta","pergunta"],
+        title:"Follow-up 3 (se ela falou de indicação)",
+        text:`{NOME}, fiquei pensando no que você disse sobre indicação. Você quer manter do jeito que está ou toparia ter um link oficial que ajuda a fechar mais rápido quando te indicam?`
+      },
+      {
+        id:"f04", cat:"followup", scenario:"wix_canva", tags:["curta","pergunta"],
+        title:"Follow-up 4 (Wix/Canva)",
+        text:`{NOME}, rapidinho: se eu te mostrasse uma versão bem mais premium do que Wix/Canva, mas sem virar dor de cabeça para manter, você teria curiosidade de ver?`
+      },
+      {
+        id:"f05", cat:"followup", scenario:"alto_padrao", tags:["curta","pergunta"],
+        title:"Follow-up 5 (alto padrão)",
+        text:`{NOME}, última e eu paro: você quer que seu digital passe mais autoridade alto padrão ou está ok do jeito que está hoje?`
+      },
+      {
+        id:"f06", cat:"followup", scenario:"anuncios", tags:["curta","pergunta"],
+        title:"Follow-up 6 (anúncios)",
+        text:`{NOME}, antes de investir em anúncio, você quer garantir uma página que converte bem. Posso te mandar um modelo de funil simples que funciona para {AREA}?`
+      },
+
+      // =========================
+      // RECUPERAÇÃO (voltar conversa dias depois, sem parecer que sumiu)
+      // =========================
+      {
+        id:"r01", cat:"recuperacao", scenario:"geral", tags:["curta","pergunta"],
+        title:"Recuperação 1 (2 a 4 dias depois)",
+        text:`Oi {NOME}. Lembrei de você porque vi um caso bem parecido com {AREA} e deu muito resultado. Você quer que eu te mostre a ideia em 2 min ou deixa para outro momento?`
+      },
+      {
+        id:"r02", cat:"recuperacao", scenario:"geral", tags:["curta","pergunta"],
+        title:"Recuperação 2 (sem insistir)",
+        text:`{NOME}, só confirmando: ainda faz sentido falarmos sobre melhorar seu site e sua presença no Google, ou você prefere que eu não toque mais nesse assunto?`
+      },
+      {
+        id:"r03", cat:"recuperacao", scenario:"indicacao", tags:["curta","pergunta"],
+        title:"Recuperação 3 (indicação)",
+        text:`Oi {NOME}. Se você quisesse aumentar fechamento sem depender de anúncio, eu iria exatamente pelo caminho de portfólio + prova + triagem. Quer que eu te faça 2 perguntas e te diga se vale a pena?`
+      },
+      {
+        id:"r04", cat:"recuperacao", scenario:"wix_canva", tags:["curta","pergunta"],
+        title:"Recuperação 4 (site parado)",
+        text:`{NOME}, lembrei do seu site ({SITE}). Se ele fosse atualizado e pensado para converter, você usaria com mais frequência ou não é algo que te anima?`
+      },
+
+      // =========================
+      // CONVITE PARA CALL (curto e elegante)
+      // =========================
+      {
+        id:"k01", cat:"convite", scenario:"geral", tags:["curta","premium"],
+        title:"Convite 1 (call de 7 min)",
+        text:`Se fizer sentido, a gente pode fazer uma call de 7 min só para eu entender seu cenário e te dizer exatamente o que eu faria. Você prefere hoje no fim da tarde ou amanhã de manhã?`
+      },
+      {
+        id:"k02", cat:"convite", scenario:"alto_padrao", tags:["curta","premium"],
+        title:"Convite 2 (alto padrão)",
+        text:`Posso te ligar por 6 min e te mostrar o caminho mais direto para elevar sua percepção online? Se não fizer sentido, a gente encerra sem compromisso.`
+      },
+      {
+        id:"k03", cat:"convite", scenario:"anuncios", tags:["curta"],
+        title:"Convite 3 (antes de anúncio)",
+        text:`Antes de investir em anúncio, vale uma conversa rápida para montar uma página que converte. Quer que eu te explique em 5 min como ficaria o funil?`
+      },
+      {
+        id:"k04", cat:"convite", scenario:"sem_tempo", tags:["curta"],
+        title:"Convite 4 (sem tempo)",
+        text:`Se você estiver corrida, me manda um áudio de 30 segundos dizendo seu objetivo e eu te devolvo com a estrutura que eu faria. Pode ser?`
+      },
+
+      // =========================
+      // CONTINUIDADE: RESPOSTAS POR CENÁRIO (catálogo grande)
+      // =========================
+
+      // Cenário: "Tenho Wix/Canva, nem uso"
+      {
+        id:"cx01", cat:"continuidade", scenario:"wix_canva", tags:["curta","pergunta"],
+        title:"Se ela disse 'tenho Wix/Canva e nem uso' (var 1)",
+        text:`Perfeito, isso já me diz bastante. Você não usa porque o site não te dá retorno, ou porque você não sente confiança na apresentação dele?`
+      },
+      {
+        id:"cx02", cat:"continuidade", scenario:"wix_canva", tags:["curta","pergunta"],
+        title:"Wix/Canva (var 2)",
+        text:`Entendi. E quando alguém te pede portfólio, você manda o Instagram ou manda o site?`
+      },
+      {
+        id:"cx03", cat:"continuidade", scenario:"wix_canva", tags:["curta","pergunta"],
+        title:"Wix/Canva (var 3)",
+        text:`Hoje, se alguém te procura no Google, aparece seu site de forma forte ou aparece pouca coisa?`
+      },
+      {
+        id:"cx04", cat:"continuidade", scenario:"wix_canva", tags:["curta","pergunta"],
+        title:"Wix/Canva (var 4)",
+        text:`Se eu te entregasse um site premium que você não precisa ficar mexendo toda hora, você usaria como link principal de apresentação?`
+      },
+
+      // Cenário: "Meus clientes são 100% indicação"
+      {
+        id:"ci01", cat:"continuidade", scenario:"indicacao", tags:["curta","pergunta"],
+        title:"Indicação (var 1)",
+        text:`Isso é excelente. Quando te indicam, a pessoa demora para fechar ou já chega bem decidida?`
+      },
+      {
+        id:"ci02", cat:"continuidade", scenario:"indicacao", tags:["curta","pergunta"],
+        title:"Indicação (var 2)",
+        text:`E dessas indicações, quantas viram orçamento de verdade? Você sente que perde alguma por falta de um link mais completo?`
+      },
+      {
+        id:"ci03", cat:"continuidade", scenario:"indicacao", tags:["curta","pergunta"],
+        title:"Indicação (var 3)",
+        text:`Quando o lead chega, ele já sabe seu estilo e faixa de valor, ou você ainda precisa explicar muito no WhatsApp?`
+      },
+      {
+        id:"ci04", cat:"continuidade", scenario:"indicacao", tags:["curta","pergunta"],
+        title:"Indicação (var 4)",
+        text:`Se seu site ajudasse a pré-qualificar, você preferiria que o lead já chegasse com metragem, cidade e objetivo do projeto?`
+      },
+
+      // Cenário: "Não tenho site"
+      {
+        id:"cs01", cat:"continuidade", scenario:"sem_site", tags:["curta","pergunta"],
+        title:"Sem site (var 1)",
+        text:`Então dá para fazer do jeito certo desde o início. Você quer que a pessoa peça orçamento pelo site ou prefere direcionar para WhatsApp com triagem?`
+      },
+      {
+        id:"cs02", cat:"continuidade", scenario:"sem_site", tags:["curta","pergunta"],
+        title:"Sem site (var 2)",
+        text:`Seu foco é mais fechar projeto completo ou também atender consultoria? Pergunto para montar o caminho certo no site.`
+      },
+      {
+        id:"cs03", cat:"continuidade", scenario:"sem_site", tags:["curta","pergunta"],
+        title:"Sem site (var 3)",
+        text:`Você atende mais em {CIDADE} ou pega projetos em outras cidades também?`
+      },
+      {
+        id:"cs04", cat:"continuidade", scenario:"sem_site", tags:["curta","pergunta"],
+        title:"Sem site (var 4)",
+        text:`Se eu te mostrasse uma estrutura que já organiza portfólio e captação em um só lugar, você quer ver?`
+      },
+
+      // Cenário: "Tenho site ruim"
+      {
+        id:"cr01", cat:"continuidade", scenario:"site_ruim", tags:["curta","pergunta"],
+        title:"Site fraco (var 1)",
+        text:`Entendi. Quando você olha seu site, o que mais te incomoda: a aparência, a bagunça, a falta de projetos, ou ele não gerar pedidos?`
+      },
+      {
+        id:"cr02", cat:"continuidade", scenario:"site_ruim", tags:["curta","pergunta"],
+        title:"Site fraco (var 2)",
+        text:`Se a gente deixasse ele rápido, premium e com um caminho claro para orçamento, isso resolveria sua dor principal?`
+      },
+      {
+        id:"cr03", cat:"continuidade", scenario:"site_ruim", tags:["curta","pergunta"],
+        title:"Site fraco (var 3)",
+        text:`Você tem fotos boas dos projetos e depoimentos? Se tiver, dá para levantar muito a percepção em pouco tempo.`
+      },
+
+      // Cenário: "Preço"
+      {
+        id:"cp01", cat:"objeções", scenario:"preco", tags:["curta","pergunta"],
+        title:"Preço (var 1)",
+        text:`Para eu te falar algo justo: você quer uma versão enxuta que já funcione e depois evolui, ou quer um projeto completo de uma vez?`
+      },
+      {
+        id:"cp02", cat:"objeções", scenario:"preco", tags:["curta","pergunta"],
+        title:"Preço (var 2)",
+        text:`Faz sentido. Só para alinhar: você está comparando com site simples ou com site pensado para converter e te posicionar no Google?`
+      },
+      {
+        id:"cp03", cat:"objeções", scenario:"preco", tags:["curta","pergunta"],
+        title:"Preço (var 3)",
+        text:`Se eu te mostrasse o que entra e como isso vira retorno, você toparia ver antes de decidir?`
+      },
+
+      // Cenário: "Sem tempo"
+      {
+        id:"ct01", cat:"objeções", scenario:"sem_tempo", tags:["curta","pergunta"],
+        title:"Sem tempo (var 1)",
+        text:`Entendi total. Você prefere resolver isso com uma call curtinha ou por áudio, para eu montar a proposta sem te tomar tempo?`
+      },
+      {
+        id:"ct02", cat:"objeções", scenario:"sem_tempo", tags:["curta","pergunta"],
+        title:"Sem tempo (var 2)",
+        text:`Me diz só uma coisa então: qual é seu objetivo principal agora, fechar mais, cobrar melhor ou aparecer mais?`
+      },
+
+      // =========================
+      // INÍCIO: VARIAÇÕES EXTRAS (mais humanizadas e com canal)
+      // =========================
+      {
+        id:"i11", cat:"inicio", scenario:"geral", tags:["pergunta","instagram"],
+        title:"Início 11 (Instagram DM, leve)",
+        text:`Oi {NOME}! Vi seus posts e gostei muito do padrão do seu trabalho. Me diz uma coisa: hoje você tem um link oficial (site) que organiza seus projetos e facilita orçamento, ou fica tudo no direct mesmo?`
+      },
+      {
+        id:"i12", cat:"inicio", scenario:"linkedin", tags:["pergunta","premium"],
+        title:"Início 12 (LinkedIn, profissional)",
+        text:`Olá, {NOME}. Gostei do seu posicionamento e queria te fazer uma pergunta rápida: hoje sua presença online está preparada para converter novas oportunidades ou está mais institucional?`
+      },
+      {
+        id:"i13", cat:"inicio", scenario:"alto_padrao", tags:["pergunta","curta"],
+        title:"Início 13 (puxando curiosidade)",
+        text:`{NOME}, pergunta sincera: seu digital hoje te ajuda a cobrar melhor ou ele ainda não entrega esse valor percebido?`
+      },
+      {
+        id:"i14", cat:"inicio", scenario:"anuncios", tags:["pergunta","curta"],
+        title:"Início 14 (se viu anúncio ou post)",
+        text:`Oi {NOME}. Vi seu conteúdo e pensei numa coisa: se entrassem 10 pessoas interessadas hoje, você tem uma estrutura que filtra e organiza ou vira tudo conversa longa no WhatsApp?`
+      },
+
+      // =========================
+      // FOLLOW-UP: VARIAÇÕES MAIS CURTAS (para não parecer insistente)
+      // =========================
+      {
+        id:"f07", cat:"followup", scenario:"geral", tags:["curta"],
+        title:"Follow-up 7 (super curto, educado)",
+        text:`{NOME}, pode deixar que eu paro por aqui. Se quiser que eu te mostre a ideia, é só me dizer "manda".`
+      },
+      {
+        id:"f08", cat:"followup", scenario:"geral", tags:["curta","pergunta"],
+        title:"Follow-up 8 (curto, com escolha)",
+        text:`{NOME}, prefere que eu te explique por texto rápido ou por áudio de 20 segundos?`
+      },
+      {
+        id:"f09", cat:"followup", scenario:"geral", tags:["curta","pergunta"],
+        title:"Follow-up 9 (call sem pressão)",
+        text:`Se for mais fácil, eu te ligo por 5 min e pronto. Faz sentido?`
+      },
+
+      // =========================
+      // RECUPERAÇÃO: VARIAÇÕES COM CONTEXTO (sem parecer recontato desesperado)
+      // =========================
+      {
+        id:"r05", cat:"recuperacao", scenario:"anuncios", tags:["curta","pergunta"],
+        title:"Recuperação 5 (voltar por contexto de anúncio)",
+        text:`Oi {NOME}. Vi um caso de {AREA} que estava com clique alto e conversão baixa, e resolveu só ajustando a página de entrada. Você quer que eu te diga o que mudou?`
+      },
+      {
+        id:"r06", cat:"recuperacao", scenario:"alto_padrao", tags:["curta","pergunta"],
+        title:"Recuperação 6 (alto padrão)",
+        text:`{NOME}, lembrei de você porque vi um portfólio que ficou absurdamente premium com poucos ajustes de narrativa e prova. Você quer ver a lógica por trás?`
+      }
+    ];
+
+    const tabsEl = document.getElementById("tabs");
+    const listEl = document.getElementById("list");
+    const qEl = document.getElementById("q");
+    const scenarioEl = document.getElementById("scenario");
+    const channelEl = document.getElementById("channel");
+    const btnReset = document.getElementById("btnReset");
+    const btnCopyLink = document.getElementById("btnCopyLink");
+    const toast = document.getElementById("toast");
+    const btnOnlyQuestions = document.getElementById("btnOnlyQuestions");
+    const btnShort = document.getElementById("btnShort");
+
+    const vars = {
+      nome: document.getElementById("v_nome"),
+      cidade: document.getElementById("v_cidade"),
+      area: document.getElementById("v_area"),
+      site: document.getElementById("v_site"),
+      seu_nome: document.getElementById("v_seu_nome"),
+      marca: document.getElementById("v_marca")
+    };
+
+    let activeTab = "inicio";
+    let onlyQuestions = false;
+    let preferShort = false;
+
+    function showToast(text){
+      toast.textContent = text || "Copiado.";
+      toast.classList.add("show");
+      setTimeout(()=>toast.classList.remove("show"), 1300);
+    }
+
+    function buildTabs(){
+      tabsEl.innerHTML = "";
+      CATEGORIES.forEach(c=>{
+        const b = document.createElement("div");
+        b.className = "tab" + (c.id===activeTab ? " active" : "");
+        b.textContent = c.label;
+        b.addEventListener("click", ()=>{
+          activeTab = c.id;
+          buildTabs();
+          render();
+        });
+        tabsEl.appendChild(b);
+      });
+    }
+
+    function buildScenarios(){
+      scenarioEl.innerHTML = "";
+      const optAll = document.createElement("option");
+      optAll.value = "all";
+      optAll.textContent = "Todos os cenários";
+      scenarioEl.appendChild(optAll);
+
+      SCENARIOS.forEach(s=>{
+        const o = document.createElement("option");
+        o.value = s.id;
+        o.textContent = s.label;
+        scenarioEl.appendChild(o);
+      });
+    }
+
+    function applyVars(text){
+      const v = {
+        NOME: vars.nome.value || "{NOME}",
+        CIDADE: vars.cidade.value || "{CIDADE}",
+        AREA: vars.area.value || "{AREA}",
+        SITE: vars.site.value || "{SITE}",
+        SEU_NOME: vars.seu_nome.value || "{SEU_NOME}",
+        MARCA: vars.marca.value || "{MARCA}"
+      };
+      return text
+        .replaceAll("{NOME}", v.NOME)
+        .replaceAll("{CIDADE}", v.CIDADE)
+        .replaceAll("{AREA}", v.AREA)
+        .replaceAll("{SITE}", v.SITE)
+        .replaceAll("{SEU_NOME}", v.SEU_NOME)
+        .replaceAll("{MARCA}", v.MARCA);
+    }
+
+    function matchesQuery(item, q){
+      if(!q) return true;
+      const hay = (item.title + " " + item.text + " " + (item.tags||[]).join(" ")).toLowerCase();
+      return hay.includes(q.toLowerCase());
+    }
+
+    function isShort(text){
+      return text.trim().length <= 220;
+    }
+
+    function hasQuestion(text){
+      return text.includes("?");
+    }
+
+    function channelOk(item, channel){
+      // Alguns scripts têm tag de canal, mas por padrão serve para todos.
+      if(!item.tags) return true;
+      if(channel === "instagram") return true;
+      if(channel === "whatsapp") return true;
+      if(channel === "linkedin") return true;
+      // fallback
+      return true;
+    }
+
+    function render(){
+      const q = qEl.value.trim();
+      const scen = scenarioEl.value;
+      const channel = channelEl.value;
+
+      let items = SCRIPTS.filter(s => s.cat === activeTab);
+
+      if(scen !== "all"){
+        items = items.filter(s => s.scenario === scen);
+      }
+
+      items = items.filter(s => matchesQuery(s, q));
+      items = items.filter(s => channelOk(s, channel));
+
+      if(onlyQuestions){
+        items = items.filter(s => hasQuestion(s.text));
+      }
+
+      if(preferShort){
+        items = items.filter(s => isShort(s.text));
+      }
+
+      // ordenação: curtas primeiro quando preferShort; senão por id
+      items.sort((a,b)=>{
+        if(preferShort){
+          return (a.text.length - b.text.length);
+        }
+        return a.id.localeCompare(b.id);
+      });
+
+      listEl.innerHTML = "";
+      items.forEach(item=>{
+        const card = document.createElement("article");
+        card.className = "card";
+
+        const catLabel = CATEGORIES.find(c=>c.id===item.cat)?.label || item.cat;
+        const scenLabel = SCENARIOS.find(s=>s.id===item.scenario)?.label || item.scenario;
+
+        const badge = document.createElement("div");
+        badge.className = "badge";
+        badge.innerHTML = `<b>${catLabel}</b><span style="opacity:.55">•</span>${scenLabel}`;
+        card.appendChild(badge);
+
+        const h = document.createElement("h4");
+        h.textContent = item.title;
+        card.appendChild(h);
+
+        const p = document.createElement("p");
+        p.className = "text";
+        p.textContent = applyVars(item.text);
+        card.appendChild(p);
+
+        const actions = document.createElement("div");
+        actions.className = "card-actions";
+
+        const mini = document.createElement("div");
+        mini.className = "mini";
+        const size = item.text.length;
+        const qmark = hasQuestion(item.text) ? "com pergunta" : "sem pergunta";
+        mini.textContent = `${size} caracteres • ${qmark}`;
+        actions.appendChild(mini);
+
+        const copy = document.createElement("button");
+        copy.className = "copy";
+        copy.innerHTML = `<span class="icon">⧉</span> Copiar`;
+        copy.addEventListener("click", async ()=>{
+          const txt = applyVars(item.text);
+          try{
+            await navigator.clipboard.writeText(txt);
+            showToast("Mensagem copiada.");
+          }catch(e){
+            // fallback
+            const ta = document.createElement("textarea");
+            ta.value = txt;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand("copy");
+            document.body.removeChild(ta);
+            showToast("Mensagem copiada.");
+          }
+        });
+        actions.appendChild(copy);
+
+        card.appendChild(actions);
+        listEl.appendChild(card);
+      });
+    }
+
+    buildTabs();
+    buildScenarios();
+
+    qEl.addEventListener("input", render);
+    scenarioEl.addEventListener("change", render);
+    channelEl.addEventListener("change", render);
+
+    Object.values(vars).forEach(el => el.addEventListener("input", render));
+
+    btnReset.addEventListener("click", ()=>{
+      qEl.value = "";
+      scenarioEl.value = "all";
+      channelEl.value = "whatsapp";
+      onlyQuestions = false;
+      preferShort = false;
+      btnOnlyQuestions.classList.remove("active");
+      btnShort.classList.remove("active");
+      render();
+      showToast("Filtros limpos.");
+    });
+
+    btnCopyLink.addEventListener("click", async ()=>{
+      const url = window.location.href;
+      try{
+        await navigator.clipboard.writeText(url);
+        showToast("Link copiado.");
+      }catch(e){
+        showToast("Não consegui copiar o link.");
+      }
+    });
+
+    btnOnlyQuestions.addEventListener("click", ()=>{
+      onlyQuestions = !onlyQuestions;
+      if(onlyQuestions) btnOnlyQuestions.classList.add("active");
+      else btnOnlyQuestions.classList.remove("active");
+      render();
+    });
+
+    btnShort.addEventListener("click", ()=>{
+      preferShort = !preferShort;
+      if(preferShort) btnShort.classList.add("active");
+      else btnShort.classList.remove("active");
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
