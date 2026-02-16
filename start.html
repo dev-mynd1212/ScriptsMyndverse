@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MyndVerse — Vencer ou Vencer (Apresentação Estratégica)</title>
+  <meta name="description" content="Plano estratégico em formato site: Onipresença, cenários, erros a evitar e estudos reais aplicados à MyndVerse."/>
+  <style>
+    :root{
+      --bg:#07070a;
+      --panel:#0d0d13;
+      --panel2:#0b0b10;
+      --text:#f3f4f6;
+      --muted:rgba(243,244,246,.72);
+      --muted2:rgba(243,244,246,.55);
+      --line:rgba(255,255,255,.10);
+      --line2:rgba(255,255,255,.14);
+      --purple:#8b5cf6;
+      --purple2:#a78bfa;
+      --green:#22c55e;
+      --amber:#f59e0b;
+      --red:#ef4444;
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius: 18px;
+      --radius2: 24px;
+      --max: 1120px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--font);
+      background: radial-gradient(1200px 800px at 20% -10%, rgba(139,92,246,.22), transparent 60%),
+                  radial-gradient(1000px 700px at 90% 20%, rgba(167,139,250,.12), transparent 55%),
+                  radial-gradient(900px 600px at 30% 110%, rgba(34,197,94,.08), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.45;
+      overflow-x:hidden;
+    }
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:var(--max); margin:0 auto; padding:20px}
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(14px);
+      background: rgba(7,7,10,.55);
+      border-bottom:1px solid var(--line);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      max-width:var(--max); margin:0 auto; padding:12px 20px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:900; letter-spacing:.4px;
+    }
+    .dot{
+      width:12px; height:12px; border-radius:999px;
+      background: radial-gradient(circle at 30% 30%, #fff, rgba(255,255,255,.2) 35%, transparent 60%),
+                  linear-gradient(135deg, var(--purple), rgba(34,197,94,.25));
+      box-shadow: 0 0 0 6px rgba(139,92,246,.12);
+    }
+    .navlinks{display:none; gap:14px; align-items:center; color:var(--muted)}
+    .navlinks a{padding:8px 10px; border-radius:12px; border:1px solid transparent}
+    .navlinks a:hover{border-color:var(--line2); color:var(--text)}
+    .cta{
+      display:flex; gap:10px; align-items:center;
+    }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      border-radius:14px; padding:10px 12px;
+      border:1px solid var(--line2);
+      background: rgba(255,255,255,.04);
+      color:var(--text);
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+      cursor:pointer;
+      user-select:none;
+      font-weight:700;
+    }
+    .btn:hover{transform: translateY(-1px); border-color: rgba(139,92,246,.45); background: rgba(139,92,246,.10)}
+    .btn.primary{
+      border-color: rgba(139,92,246,.55);
+      background: linear-gradient(135deg, rgba(139,92,246,.95), rgba(167,139,250,.65));
+      box-shadow: 0 16px 50px rgba(139,92,246,.25);
+    }
+    .btn.primary:hover{background: linear-gradient(135deg, rgba(139,92,246,1), rgba(167,139,250,.75))}
+    .btn.ghost{background: transparent}
+    .hero{
+      padding:34px 0 18px;
+    }
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:16px;
+      align-items:stretch;
+    }
+    .card{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+    }
+    .card .in{padding:18px}
+    .kicker{
+      display:inline-flex; align-items:center; gap:10px;
+      color:var(--muted); font-weight:800; text-transform:uppercase; font-size:12px; letter-spacing:.12em;
+    }
+    .kdot{width:8px;height:8px;border-radius:99px;background:var(--purple); box-shadow:0 0 0 6px rgba(139,92,246,.12)}
+    h1{
+      margin:10px 0 8px;
+      font-size: 34px;
+      line-height:1.08;
+      letter-spacing:-.02em;
+    }
+    .accent{color:var(--purple2)}
+    .sub{
+      color:var(--muted);
+      font-size:15px;
+      max-width:64ch;
+    }
+    .heroActions{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px}
+    .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px}
+    .chip{
+      font-size:12px; color:var(--muted);
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      padding:8px 10px; border-radius:999px;
+    }
+    .miniGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+      margin-top:12px;
+    }
+    .metric{
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.25);
+      border-radius: var(--radius);
+      padding:14px;
+      position:relative;
+      overflow:hidden;
+    }
+    .metric:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(500px 220px at 20% 20%, rgba(139,92,246,.18), transparent 55%),
+                  radial-gradient(500px 220px at 90% 80%, rgba(34,197,94,.08), transparent 55%);
+      pointer-events:none;
+    }
+    .metric > *{position:relative}
+    .mLabel{color:var(--muted); font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase}
+    .mValue{font-size:26px; font-weight:900; margin-top:6px}
+    .mHint{color:var(--muted2); font-size:13px; margin-top:4px}
+    .section{padding:14px 0}
+    .secHead{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
+      margin:10px 0;
+    }
+    h2{margin:0; font-size:20px; letter-spacing:-.01em}
+    .secNote{color:var(--muted); font-size:13px}
+    .grid2{display:grid; grid-template-columns:1fr; gap:12px}
+    .grid3{display:grid; grid-template-columns:1fr; gap:12px}
+    .panel{
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.22);
+      border-radius: var(--radius2);
+      overflow:hidden;
+    }
+    .panel .in{padding:16px}
+    .row{display:flex; gap:10px; align-items:flex-start}
+    .badge{
+      flex:0 0 auto;
+      font-weight:900;
+      border-radius: 999px;
+      padding:6px 10px;
+      border:1px solid var(--line2);
+      background: rgba(255,255,255,.04);
+      color:var(--text);
+      font-size:12px;
+    }
+    .badge.purple{border-color: rgba(139,92,246,.5); background: rgba(139,92,246,.12)}
+    .badge.green{border-color: rgba(34,197,94,.5); background: rgba(34,197,94,.10)}
+    .badge.amber{border-color: rgba(245,158,11,.55); background: rgba(245,158,11,.10)}
+    .badge.red{border-color: rgba(239,68,68,.55); background: rgba(239,68,68,.10)}
+    .p{color:var(--muted); font-size:14px; margin:8px 0 0}
+    .list{margin:10px 0 0; padding:0 0 0 18px; color:var(--muted)}
+    .list li{margin:6px 0}
+    details{
+      border-top:1px solid var(--line);
+      padding:12px 16px;
+    }
+    details:first-of-type{border-top:0}
+    summary{
+      cursor:pointer;
+      list-style:none;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      font-weight:900;
+    }
+    summary::-webkit-details-marker{display:none}
+    .sumHint{color:var(--muted); font-weight:700; font-size:12px}
+    .hr{height:1px; background: var(--line); margin:14px 0}
+    .callout{
+      border:1px solid rgba(139,92,246,.35);
+      background: linear-gradient(180deg, rgba(139,92,246,.14), rgba(0,0,0,.18));
+      border-radius: var(--radius2);
+      padding:16px;
+    }
+    .callout h3{margin:0 0 6px; font-size:16px}
+    .callout p{margin:0; color:var(--muted)}
+    .table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      overflow:hidden;
+      border:1px solid var(--line);
+      border-radius: var(--radius2);
+      background: rgba(0,0,0,.20);
+    }
+    .table th, .table td{
+      padding:12px 12px;
+      border-bottom:1px solid var(--line);
+      text-align:left;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .table th{
+      color: rgba(243,244,246,.86);
+      font-size:12px;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      background: rgba(255,255,255,.03);
+    }
+    .table tr:last-child td{border-bottom:0}
+    .twoCol{display:grid; grid-template-columns:1fr; gap:12px}
+    .footer{
+      padding:28px 0 40px;
+      color:var(--muted2);
+      font-size:12px;
+    }
+    .small{font-size:12px; color:var(--muted2)}
+    .input{
+      width:100%;
+      border:1px solid var(--line2);
+      background: rgba(255,255,255,.04);
+      color:var(--text);
+      padding:12px 12px;
+      border-radius:14px;
+      outline:none;
+      font-weight:800;
+    }
+    .input:focus{border-color: rgba(139,92,246,.55); box-shadow: 0 0 0 6px rgba(139,92,246,.12)}
+    .calcGrid{display:grid; grid-template-columns:1fr; gap:10px}
+    .calcOut{
+      border:1px dashed rgba(139,92,246,.45);
+      border-radius: var(--radius2);
+      padding:12px;
+      background: rgba(139,92,246,.08);
+      color: rgba(243,244,246,.88);
+      font-size:13px;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      border-radius:999px;
+      padding:6px 10px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color:var(--muted);
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.02em;
+    }
+    .ok{color: rgba(34,197,94,.95)}
+    .warn{color: rgba(245,158,11,.95)}
+    .bad{color: rgba(239,68,68,.95)}
+    .fadeIn{
+      opacity:0;
+      transform: translateY(10px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .fadeIn.show{opacity:1; transform: translateY(0)}
+    @media (min-width: 820px){
+      .navlinks{display:flex}
+      .heroGrid{grid-template-columns: 1.25fr .75fr}
+      .miniGrid{grid-template-columns: 1fr 1fr}
+      .grid2{grid-template-columns: 1fr 1fr}
+      .grid3{grid-template-columns: 1fr 1fr 1fr}
+      .twoCol{grid-template-columns: 1fr 1fr}
+      h1{font-size:44px}
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="nav">
+      <div class="brand">
+        <span class="dot" aria-hidden="true"></span>
+        <span>MyndVerse</span>
+        <span style="color:rgba(167,139,250,.9); font-weight:900;">— Vencer ou Vencer</span>
+      </div>
+
+      <nav class="navlinks" aria-label="Navegação">
+        <a href="#tese">Tese</a>
+        <a href="#cenarios">Cenários</a>
+        <a href="#onipresenca">Onipresença</a>
+        <a href="#erros">Erros fatais</a>
+        <a href="#casos">Casos reais</a>
+        <a href="#aplicar">Aplicar na MyndVerse</a>
+      </nav>
+
+      <div class="cta">
+        <button class="btn ghost" id="btnPrint" title="Imprimir / salvar em PDF">Imprimir</button>
+        <a class="btn primary" href="#aplicar">Executar agora</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="heroGrid">
+        <div class="card fadeIn">
+          <div class="in">
+            <div class="kicker"><span class="kdot"></span> apresentação estratégica • 1 arquivo • mobile-first</div>
+            <h1>
+              <span class="accent">Estruturar</span> demanda, confiança e recorrência — sem depender de uma pessoa.
+            </h1>
+            <p class="sub">
+              Este site é a “sala de guerra” da MyndVerse: cenários, calendário de onipresença, erros que quebram empresas,
+              e estudos reais (quebra + reerguer / começar do zero). Tudo adaptado pro jogo local e pra escala controlada.
+            </p>
+
+            <div class="heroActions">
+              <a class="btn primary" href="#onipresenca">Começar pela Onipresença</a>
+              <a class="btn" href="#cenarios">Ver cenários</a>
+              <a class="btn" href="#casos">Ver estudos reais</a>
+            </div>
+
+            <div class="chips">
+              <span class="chip">📌 Pilar: MyndVerse é protagonista</span>
+              <span class="chip">🧱 Case central: JRB Odontologia</span>
+              <span class="chip">📈 Tráfego: começa com R$100 e escala com validação</span>
+              <span class="chip">💵 Regra: sem recorrência, é risco</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card fadeIn">
+          <div class="in">
+            <div class="secHead">
+              <h2>Placar da guerra</h2>
+              <div class="secNote">métricas que evitam “quebrar crescendo”</div>
+            </div>
+
+            <div class="miniGrid">
+              <div class="metric">
+                <div class="mLabel">Objetivo de 30 dias</div>
+                <div class="mValue">3 cases</div>
+                <div class="mHint">fortes + publicáveis</div>
+              </div>
+              <div class="metric">
+                <div class="mLabel">Tráfego inicial</div>
+                <div class="mValue">R$ 100</div>
+                <div class="mHint">teste + aquecimento</div>
+              </div>
+              <div class="metric">
+                <div class="mLabel">Regra de escala</div>
+                <div class="mValue">Sinal → dobra</div>
+                <div class="mHint">sem sinal, não sobe</div>
+              </div>
+              <div class="metric">
+                <div class="mLabel">Meta real (60 dias)</div>
+                <div class="mValue">R$15k–25k</div>
+                <div class="mHint">previsível (recorrência)</div>
+              </div>
+            </div>
+
+            <div class="hr"></div>
+            <div class="small">
+              * “Quebrar crescendo” acontece quando entra caixa pontual e você aumenta custo fixo sem recorrência.
+              Esta apresentação te obriga a operar com validação.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESE -->
+    <section class="section" id="tese">
+      <div class="secHead">
+        <h2>Tese central</h2>
+        <div class="secNote">a estrutura que ganha o jogo</div>
+      </div>
+
+      <div class="grid2">
+        <div class="panel fadeIn">
+          <div class="in">
+            <div class="row">
+              <span class="badge purple">Princípio</span>
+              <div>
+                <strong>Autoridade precede abordagem.</strong>
+                <p class="p">
+                  Você não “vende” para quem não confia — você cria repetição (onipresença), prova (cases) e clareza (oferta).
+                  A venda vira consequência.
+                </p>
+              </div>
+            </div>
+            <ul class="list">
+              <li><strong>MyndVerse é mídia</strong> (conteúdo próprio constante)</li>
+              <li><strong>Parceiros são amplificadores</strong> (substituíveis)</li>
+              <li><strong>Oferta tem escada</strong> (entrada → principal → recorrência)</li>
+              <li><strong>Escala é validação</strong> (não é emoção)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="panel fadeIn">
+          <div class="in">
+            <div class="row">
+              <span class="badge green">Pilar</span>
+              <div>
+                <strong>JRB Odontologia = case central.</strong>
+                <p class="p">
+                  Para o mercado, JRB não é “parceria”. É “empresa estruturada pela MyndVerse”.
+                  Isso constrói credibilidade e abre portas para outros segmentos.
+                </p>
+              </div>
+            </div>
+            <div class="callout" style="margin-top:12px">
+              <h3>Regra: “sem dependência de pessoa”</h3>
+              <p>
+                Se um influenciador some, a máquina continua. A MyndVerse não pode ser coadjuvante do próprio crescimento.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CENARIOS -->
+    <section class="section" id="cenarios">
+      <div class="secHead">
+        <h2>3 cenários (com decisões)</h2>
+        <div class="secNote">qual caminho dá caixa sem risco</div>
+      </div>
+
+      <div class="grid3">
+        <div class="panel fadeIn">
+          <div class="in">
+            <div class="row">
+              <span class="badge amber">Cenário 1</span>
+              <div>
+                <strong>Boca a boca + poucas conversas</strong>
+                <p class="p">Útil como complemento. Fraco para previsibilidade.</p>
+              </div>
+            </div>
+            <ul class="list">
+              <li>Pró: baixo custo</li>
+              <li>Contra: lento, depende de sorte</li>
+              <li>Decisão: manter, mas não depender</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="panel fadeIn">
+          <div class="in">
+            <div class="row">
+              <span class="badge red">Cenário 2</span>
+              <div>
+                <strong>Anúncio nacional pesado</strong>
+                <p class="p">Risco alto se feito cedo: gasto sem prova social suficiente.</p>
+              </div>
+            </div>
+            <ul class="list">
+              <li>Pró: volume</li>
+              <li>Contra: CAC alto, baixa confiança</li>
+              <li>Decisão: só após cases + funil validado</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="panel fadeIn">
+          <div class="in">
+            <div class="row">
+              <span class="badge green">Cenário 3</span>
+              <div>
+                <strong>Base sólida via “autoridade orquestrada”</strong>
+                <p class="p">Melhor caminho: case + mídia + tráfego controlado.</p>
+              </div>
+            </div>
+            <ul class="list">
+              <li>Pró: confiança antes do contato</li>
+              <li>Contra: exige disciplina</li>
+              <li>Decisão: executar agora (30 dias)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel fadeIn" style="margin-top:12px">
+        <div class="in">
+          <strong>Simulador rápido: escala de tráfego (validação primeiro)</strong>
+          <p class="p">Começa com R$100. Você só dobra se tiver sinal (DM, salvamento, reunião).</p>
+
+          <div class="calcGrid" style="margin-top:10px">
+            <label class="small" for="budget">Orçamento inicial (R$)</label>
+            <input class="input" id="budget" type="number" value="100" min="50" step="10" />
+
+            <label class="small" for="weeks">Semanas de teste (1–6)</label>
+            <input class="input" id="weeks" type="number" value="4" min="1" max="6" />
+
+            <label class="small" for="signal">Sinal de validação semanal?</label>
+            <select class="input" id="signal">
+              <option value="yes" selected>Sim (dobrar)</option>
+              <option value="no">Não (manter)</option>
+            </select>
+
+            <div class="calcOut" id="calcOut">—</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ONIPRESENCA -->
+    <section class="section" id="onipresenca">
+      <div class="secHead">
+        <h2>Efeito Onipresença (30 dias)</h2>
+        <div class="secNote">a base que faz a abordagem virar “óbvia”</div>
+      </div>
+
+      <div class="grid2">
+        <div class="panel fadeIn">
+          <div class="in">
+            <div class="row">
+              <span class="badge purple">Definição</span>
+              <div>
+                <strong>O lead vê MyndVerse repetidamente em lugares diferentes.</strong>
+                <p class="p">A repetição cria familiaridade. A prova cria confiança. A clareza cria decisão.</p>
+              </div>
+            </div>
+
+            <details open>
+              <summary>
+                Semana 1 — Preparação (fundação)
+                <span class="sumHint">cases + perfil + ativos</span>
+              </summary>
+              <ul class="list">
+                <li>Fixar 3 posts: <em>Proposta</em>, <em>Case JRB</em>, <em>Oferta</em></li>
+                <li>Gravar 2 bast
