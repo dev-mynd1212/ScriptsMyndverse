@@ -3,104 +3,551 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Assinatura Digital — MyndVerse</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>MyndVerse — Assinatura Digital</title>
+
+  <style>
+    :root{
+      --bg:#0b0d12;
+      --card:#111522;
+      --text:#e9eefc;
+      --muted:rgba(233,238,252,.72);
+      --line:rgba(233,238,252,.10);
+      --accent:#7c5cff;
+      --ok:#2ee59d;
+      --shadow:0 16px 40px rgba(0,0,0,.45);
+    }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background:
+        radial-gradient(1200px 600px at 20% -10%, rgba(124,92,255,.25), transparent 60%),
+        radial-gradient(900px 500px at 85% 10%, rgba(46,229,157,.18), transparent 55%),
+        var(--bg);
+      color:var(--text);
+    }
+    header{
+      position:sticky; top:0; z-index:30;
+      backdrop-filter: blur(10px);
+      background: rgba(11,13,18,.70);
+      border-bottom:1px solid var(--line);
+      padding: 14px 14px calc(14px + env(safe-area-inset-top));
+    }
+    .brand{
+      max-width:980px; margin:0 auto;
+      display:flex; align-items:center; gap:10px;
+    }
+    .dot{
+      width:14px; height:14px; border-radius:6px;
+      background: linear-gradient(135deg, var(--accent), var(--ok));
+      box-shadow: 0 0 0 6px rgba(124,92,255,.10);
+    }
+    .brand-title{ font-weight:800; letter-spacing:.2px; }
+    .brand-sub{ font-size:12px; color:var(--muted); margin-top:2px; }
+
+    main{ max-width:980px; margin:14px auto 40px; padding:0 14px 24px; }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      border:1px solid var(--line);
+      border-radius:18px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      margin:14px 0;
+    }
+    .card-head{
+      padding:16px 16px 12px;
+      border-bottom:1px solid var(--line);
+    }
+    .card-head h1{ margin:0 0 6px; font-size:18px; }
+    .card-head p{ margin:0; font-size:13px; color:var(--muted); line-height:1.35; }
+
+    .status{
+      margin:12px;
+      padding:10px 12px;
+      border:1px dashed rgba(233,238,252,.18);
+      border-radius:12px;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .pdf-wrap{ padding: 0 12px 16px; }
+    .page{
+      margin: 12px 0 18px;
+    }
+    .page-label{
+      font-size:12px;
+      color:var(--muted);
+      margin: 0 0 8px 2px;
+    }
+    canvas.pdf{
+      width:100%;
+      height:auto;
+      display:block;
+      border-radius:14px;
+      border:1px solid rgba(233,238,252,.12);
+      background: rgba(255,255,255,.02);
+    }
+    .page2-container{
+      position:relative;
+      width:100%;
+    }
+    .overlay{
+      position:absolute;
+      inset:0;
+      pointer-events:none; /* só o sticker recebe pointer */
+    }
+
+    /* Sticker (assinatura) */
+    .sig-sticker{
+      position:absolute;
+      left:16px;
+      top:16px;
+      width:140px;
+      height:auto;
+      pointer-events:auto;
+      touch-action:none;
+      user-select:none;
+      -webkit-user-drag:none;
+      filter: drop-shadow(0 10px 16px rgba(0,0,0,.35));
+      border-radius:10px;
+    }
+    .sig-sticker.is-dragging{ cursor:grabbing; }
+    .sig-sticker.is-selected{ outline:2px solid rgba(124,92,255,.60); }
+
+    .hint{
+      margin-top:10px;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    /* Assinatura */
+    .pad-wrap{
+      padding:12px;
+    }
+    .sig-box{
+      border-radius:16px;
+      border:1px solid rgba(233,238,252,.14);
+      background: rgba(0,0,0,.20);
+      overflow:hidden;
+    }
+    canvas#sigPad{
+      width:100%;
+      height:180px;
+      display:block;
+      background: rgba(255,255,255,.02);
+    }
+    .row{
+      display:flex;
+      gap:10px;
+      margin-top:12px;
+    }
+    button{
+      appearance:none;
+      border:1px solid rgba(233,238,252,.14);
+      border-radius:14px;
+      padding:12px 14px;
+      font-weight:750;
+      width:100%;
+      color:var(--text);
+      background: rgba(255,255,255,.03);
+      cursor:pointer;
+    }
+    button:active{ transform: translateY(1px); }
+    .primary{
+      border-color: rgba(124,92,255,.45);
+      background: linear-gradient(135deg, rgba(124,92,255,.95), rgba(124,92,255,.55));
+    }
+    .ok{
+      border-color: rgba(46,229,157,.50);
+      background: linear-gradient(135deg, rgba(46,229,157,.25), rgba(46,229,157,.10));
+    }
+    .meta{
+      margin-top:12px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    label{ font-size:12px; color:var(--muted); }
+    input[type="range"]{ width:100%; }
+    .small{ font-size:12px; color:var(--muted); }
+
+    footer{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      color: rgba(233,238,252,.55);
+      font-size:12px;
+      margin-top:10px;
+    }
+
+    @media (min-width:740px){
+      canvas#sigPad{ height:220px; }
+      .card-head h1{ font-size:20px; }
+    }
+  </style>
 </head>
 
 <body>
-  <header class="topbar">
+  <header>
     <div class="brand">
-      <div class="logo-dot"></div>
-      <div class="brand-text">
-        <div class="brand-name">MyndVerse</div>
-        <div class="brand-sub">Assinatura digital do contrato</div>
+      <div class="dot"></div>
+      <div>
+        <div class="brand-title">MyndVerse</div>
+        <div class="brand-sub">Leitura e assinatura digital do contrato</div>
       </div>
     </div>
   </header>
 
-  <main class="container">
+  <main>
     <section class="card">
       <div class="card-head">
-        <h1>Contrato</h1>
-        <p>Leia as 2 páginas abaixo. Depois assine e posicione a assinatura na página 2.</p>
+        <h1>Contrato (Mynd.pdf)</h1>
+        <p>Leia as 2 páginas. Depois assine e posicione a assinatura no rodapé da página 2.</p>
       </div>
 
-      <div class="pdf-wrap">
-        <div id="pdfStatus" class="status">Carregando Mynd.pdf…</div>
+      <div id="status" class="status">Carregando Mynd.pdf…</div>
 
-        <!-- Página 1 -->
+      <div class="pdf-wrap">
         <div class="page">
           <div class="page-label">Página 1</div>
-          <canvas id="page1"></canvas>
+          <canvas id="page1" class="pdf"></canvas>
         </div>
 
-        <!-- Página 2 (com overlay para assinatura) -->
-        <div class="page page-2">
+        <div class="page">
           <div class="page-label">Página 2</div>
 
           <div id="page2Container" class="page2-container">
-            <canvas id="page2"></canvas>
-
-            <!-- overlay por cima do canvas da página 2 -->
-            <div id="overlay2" class="overlay">
-              <!-- assinatura “colada” entra aqui -->
-            </div>
+            <canvas id="page2" class="pdf"></canvas>
+            <div id="overlay" class="overlay"></div>
           </div>
 
-          <div class="hint">
-            Dica: depois de “Adicionar ao contrato”, arraste a assinatura para o local correto (rodapé da página 2).
-          </div>
+          <div class="hint">Depois de “Adicionar ao contrato”, arraste a assinatura até o local correto.</div>
         </div>
       </div>
     </section>
 
     <section class="card">
       <div class="card-head">
-        <h2>Assinar</h2>
-        <p>Assine com o dedo (cor preta). Se errar, limpe e assine de novo.</p>
+        <h1>Assinar</h1>
+        <p>Assine com o dedo (preto). Se errar, limpe e assine novamente.</p>
       </div>
 
-      <div class="signature-area">
-        <div class="sig-canvas-wrap">
-          <canvas id="sigPad" class="sig-canvas"></canvas>
+      <div class="pad-wrap">
+        <div class="sig-box">
+          <canvas id="sigPad"></canvas>
         </div>
 
-        <div class="sig-controls">
-          <button id="btnClear" class="btn btn-secondary" type="button">Limpar</button>
-          <button id="btnAdd" class="btn btn-primary" type="button">Adicionar ao contrato</button>
+        <div class="row">
+          <button id="btnClear">Limpar</button>
+          <button id="btnAdd" class="primary">Adicionar ao contrato</button>
         </div>
 
-        <div class="size-row">
-          <label for="sizeSlider">Tamanho da assinatura</label>
-          <input id="sizeSlider" type="range" min="40" max="220" value="120" />
-        </div>
-
-        <div class="download-row">
-          <button id="btnDownload" class="btn btn-ghost" type="button">
-            Baixar contrato assinado (PDF)
-          </button>
-          <div id="downloadHelp" class="small">
-            Você precisa adicionar e posicionar a assinatura na página 2 antes de baixar.
+        <div class="meta">
+          <div>
+            <label for="sizeSlider">Tamanho da assinatura</label>
+            <input id="sizeSlider" type="range" min="60" max="260" value="140" />
           </div>
+
+          <button id="btnDownload" class="ok">Baixar contrato assinado (PDF)</button>
+          <div id="help" class="small">Dica: adicione a assinatura e posicione na página 2 antes de baixar.</div>
         </div>
       </div>
     </section>
 
-    <footer class="footer">
-      <span>© MyndVerse</span>
-      <span class="dot">•</span>
-      <span>Assinatura digital</span>
+    <footer>
+      <span>© MyndVerse</span><span>•</span><span>Assinatura Digital</span>
     </footer>
   </main>
 
-  <!-- libs via CDN (ok no GitHub Pages) -->
+  <!-- libs (CDN) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/4.1.7/signature_pad.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 
-  <script src="script.js"></script>
+  <script>
+    // ===== CONFIG =====
+    const PDF_URL = "Mynd.pdf"; // precisa estar no root junto do index.html
+
+    // ===== STATE =====
+    let pdfBytes = null;
+    let pdfjsDoc = null;
+    let signaturePad = null;
+    let sticker = null;
+
+    const el = {
+      status: document.getElementById("status"),
+      page1: document.getElementById("page1"),
+      page2: document.getElementById("page2"),
+      page2Container: document.getElementById("page2Container"),
+      overlay: document.getElementById("overlay"),
+      sigPad: document.getElementById("sigPad"),
+      btnClear: document.getElementById("btnClear"),
+      btnAdd: document.getElementById("btnAdd"),
+      btnDownload: document.getElementById("btnDownload"),
+      sizeSlider: document.getElementById("sizeSlider"),
+      help: document.getElementById("help"),
+    };
+
+    function setStatus(msg){ el.status.textContent = msg; }
+
+    function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+
+    // ===== PDF RENDER =====
+    async function renderPdfPage(pageNumber, canvasEl){
+      const page = await pdfjsDoc.getPage(pageNumber);
+      const baseScale = 1.5; // legível no mobile
+      const viewport = page.getViewport({ scale: baseScale });
+
+      const dpr = Math.max(window.devicePixelRatio || 1, 1);
+      const canvas = canvasEl;
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = Math.floor(viewport.width * dpr);
+      canvas.height = Math.floor(viewport.height * dpr);
+
+      // pdf.js render em resolução alta
+      const renderViewport = page.getViewport({ scale: baseScale * dpr });
+
+      await page.render({
+        canvasContext: ctx,
+        viewport: renderViewport
+      }).promise;
+    }
+
+    async function loadPdf(){
+      try{
+        setStatus("Carregando Mynd.pdf…");
+
+        // worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.js";
+
+        const res = await fetch(PDF_URL, { cache: "no-store" });
+        if(!res.ok) throw new Error("Não encontrou Mynd.pdf. Coloque o arquivo no mesmo diretório do index.html.");
+        pdfBytes = await res.arrayBuffer();
+
+        pdfjsDoc = await pdfjsLib.getDocument({ data: pdfBytes }).promise;
+        if(pdfjsDoc.numPages < 2) throw new Error("O PDF precisa ter pelo menos 2 páginas.");
+
+        await renderPdfPage(1, el.page1);
+        await renderPdfPage(2, el.page2);
+
+        setStatus("PDF carregado. Assine, adicione e posicione na página 2.");
+      }catch(err){
+        console.error(err);
+        setStatus("Erro ao carregar o PDF. Verifique se Mynd.pdf está no root e com o nome exato.");
+      }
+    }
+
+    // ===== SIGNATURE PAD (RETINA SAFE) =====
+    function resizeSigCanvas(){
+      const canvas = el.sigPad;
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.max(window.devicePixelRatio || 1, 1);
+
+      canvas.width = Math.floor(rect.width * dpr);
+      canvas.height = Math.floor(rect.height * dpr);
+
+      const ctx = canvas.getContext("2d");
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // re-instancia mantendo config, e limpa (evita bugs em iOS)
+      signaturePad = new SignaturePad(canvas, {
+        penColor: "rgb(0,0,0)",
+        minWidth: 1.2,
+        maxWidth: 2.6,
+        backgroundColor: "rgba(0,0,0,0)"
+      });
+    }
+
+    // ===== STICKER (DRAG REAL COM LEFT/TOP) =====
+    function removeSticker(){
+      if(sticker && sticker.parentNode) sticker.parentNode.removeChild(sticker);
+      sticker = null;
+    }
+
+    function createStickerFromSignature(){
+      if(!signaturePad || signaturePad.isEmpty()){
+        alert("Assine antes de adicionar ao contrato.");
+        return;
+      }
+
+      removeSticker();
+
+      const img = document.createElement("img");
+      img.src = signaturePad.toDataURL("image/png");
+      img.className = "sig-sticker is-selected";
+
+      const w = Number(el.sizeSlider.value);
+      img.style.width = w + "px";
+      img.style.left = "16px";
+      img.style.top = "16px";
+
+      el.overlay.appendChild(img);
+      sticker = img;
+
+      enablePointerDrag(img);
+      el.help.textContent = "Agora arraste a assinatura para o rodapé da página 2 e clique em Baixar.";
+    }
+
+    function enablePointerDrag(target){
+      let dragging = false;
+      let startX = 0, startY = 0;
+      let originLeft = 0, originTop = 0;
+
+      target.addEventListener("pointerdown", (e) => {
+        e.preventDefault();
+        dragging = true;
+        target.classList.add("is-dragging","is-selected");
+        target.setPointerCapture(e.pointerId);
+
+        const rect = target.getBoundingClientRect();
+        startX = e.clientX;
+        startY = e.clientY;
+
+        // pega left/top atuais (px)
+        originLeft = parseFloat(target.style.left || "0");
+        originTop  = parseFloat(target.style.top  || "0");
+      }, { passive:false });
+
+      target.addEventListener("pointermove", (e) => {
+        if(!dragging) return;
+
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+
+        const containerRect = el.page2Container.getBoundingClientRect();
+        const targetRect = target.getBoundingClientRect();
+
+        // calcula limites em px do container
+        const maxLeft = containerRect.width - targetRect.width;
+        const maxTop  = containerRect.height - targetRect.height;
+
+        const nextLeft = clamp(originLeft + dx, 0, maxLeft);
+        const nextTop  = clamp(originTop  + dy, 0, maxTop);
+
+        target.style.left = nextLeft + "px";
+        target.style.top  = nextTop  + "px";
+      });
+
+      target.addEventListener("pointerup", (e) => {
+        dragging = false;
+        target.classList.remove("is-dragging");
+        try{ target.releasePointerCapture(e.pointerId); }catch(_){}
+      });
+      target.addEventListener("pointercancel", (e) => {
+        dragging = false;
+        target.classList.remove("is-dragging");
+        try{ target.releasePointerCapture(e.pointerId); }catch(_){}
+      });
+    }
+
+    // ===== EXPORT PDF (COORD CORRETA) =====
+    async function downloadSignedPdf(){
+      try{
+        if(!pdfBytes){
+          alert("PDF ainda não carregou.");
+          return;
+        }
+        if(!sticker){
+          alert("Adicione a assinatura ao contrato e posicione na página 2 antes de baixar.");
+          return;
+        }
+
+        const pdfDoc = await PDFLib.PDFDocument.load(pdfBytes);
+
+        // página 2 (index 1)
+        const page2 = pdfDoc.getPage(1);
+        const pageW = page2.getWidth();
+        const pageH = page2.getHeight();
+
+        // dimensões VISÍVEIS do canvas (CSS px)
+        const canvasRect = el.page2.getBoundingClientRect();
+
+        // posição do sticker relativa ao container (CSS px)
+        const left = parseFloat(sticker.style.left || "0");
+        const top  = parseFloat(sticker.style.top  || "0");
+
+        // tamanho do sticker (CSS px real)
+        const stickerRect = sticker.getBoundingClientRect();
+        const wCss = stickerRect.width;
+        const hCss = stickerRect.height;
+
+        // converte CSS -> PDF points
+        const xPdf = (left / canvasRect.width) * pageW;
+
+        // y no PDF começa embaixo; top no CSS começa em cima
+        const yTopPdf = (top / canvasRect.height) * pageH;
+        const hPdf = (hCss / canvasRect.height) * pageH;
+        const yPdf = pageH - yTopPdf - hPdf;
+
+        const pngBytes = await fetch(sticker.src).then(r => r.arrayBuffer());
+        const png = await pdfDoc.embedPng(pngBytes);
+
+        page2.drawImage(png, {
+          x: xPdf,
+          y: yPdf,
+          width: (wCss / canvasRect.width) * pageW,
+          height: hPdf,
+          opacity: 1
+        });
+
+        const out = await pdfDoc.save();
+        const blob = new Blob([out], { type:"application/pdf" });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "Mynd-assinado.pdf";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        URL.revokeObjectURL(url);
+      }catch(err){
+        console.error(err);
+        alert("Erro ao gerar o PDF assinado. Confira o console e tente novamente.");
+      }
+    }
+
+    // ===== HOOKS =====
+    el.btnClear.addEventListener("click", () => signaturePad && signaturePad.clear());
+    el.btnAdd.addEventListener("click", createStickerFromSignature);
+    el.btnDownload.addEventListener("click", downloadSignedPdf);
+
+    el.sizeSlider.addEventListener("input", () => {
+      if(sticker){
+        sticker.style.width = Number(el.sizeSlider.value) + "px";
+      }
+    });
+
+    // iOS: evita zoom ao focar (não tem input text aqui, mas safe)
+    document.addEventListener("gesturestart", (e) => e.preventDefault(), { passive:false });
+
+    // boot
+    window.addEventListener("load", async () => {
+      resizeSigCanvas();
+      await loadPdf();
+    });
+
+    // resize: reconfig signature pad (não perde o contrato)
+    window.addEventListener("resize", () => {
+      // mantém assinatura limpa pra evitar distorção
+      const hadInk = signaturePad && !signaturePad.isEmpty();
+      const data = hadInk ? signaturePad.toDataURL("image/png") : null;
+
+      resizeSigCanvas();
+      if(data){
+        // re-desenha a assinatura (optional) — simples e robusto:
+        const img = new Image();
+        img.onload = () => {
+          const ctx = el.sigPad.getContext("2d");
+          ctx.drawImage(img, 0, 0, el.sigPad.getBoundingClientRect().width, el.sigPad.getBoundingClientRect().height);
+        };
+        img.src = data;
+      }
+    });
+  </script>
 </body>
 </html>
