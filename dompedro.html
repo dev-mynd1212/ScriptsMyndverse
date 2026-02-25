@@ -1,14 +1,14 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Assinatura Digital • MyndVerse</title>
 
 <style>
 body{
   margin:0;
-  font-family:Arial, Helvetica, sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
   background:#0b0f17;
   color:#fff;
 }
@@ -19,7 +19,18 @@ body{
   padding:20px;
 }
 
-h2{ margin-top:0 }
+.card{
+  background:#111827;
+  border-radius:14px;
+  padding:20px;
+  margin-bottom:25px;
+  box-shadow:0 20px 40px rgba(0,0,0,.4);
+}
+
+h2{
+  margin-top:0;
+  font-size:18px;
+}
 
 canvas{
   width:100%;
@@ -33,23 +44,33 @@ button{
   border:none;
   border-radius:8px;
   font-weight:bold;
-  margin-top:10px;
   cursor:pointer;
+  margin-top:10px;
+  margin-right:8px;
 }
 
-.primary{ background:#6ea8ff; }
-.success{ background:#2ee59d; }
-.danger{ background:#ff5d5d; }
+.primary{background:#3b82f6;color:#fff;}
+.success{background:#10b981;color:#000;}
+.danger{background:#ef4444;color:#fff;}
 
 .pageWrap{
   position:relative;
-  margin-bottom:20px;
+  margin-bottom:25px;
+  border-radius:12px;
+  overflow:hidden;
+  background:#000;
 }
 
-#pages canvas{
+.pageWrap canvas{
   width:100%;
   height:auto;
   display:block;
+}
+
+.status{
+  margin-top:12px;
+  font-size:14px;
+  opacity:.8;
 }
 </style>
 </head>
@@ -57,18 +78,15 @@ button{
 <body>
 <div class="container">
 
+<div class="card">
 <h2>Assine abaixo</h2>
-
 <canvas id="sigCanvas"></canvas>
-
 <br>
 <button class="danger" id="clearSig">Limpar</button>
 <button class="primary" id="addSig">Adicionar na 2ª página</button>
-<button class="success" id="exportPdf" disabled>Baixar PDF assinado</button>
-
-<p id="status"></p>
-
-<hr style="opacity:.2;margin:30px 0">
+<button class="success" id="exportPdf" disabled>Baixar PDF</button>
+<div class="status" id="status"></div>
+</div>
 
 <div id="pages"></div>
 
@@ -99,8 +117,8 @@ let stampData=null;
 
 function setStatus(msg){ statusEl.innerText=msg; }
 
-// ===== ASSINATURA =====
-function resizeSig(){
+// ===== ASSINATURA CONTÍNUA REAL =====
+function resizeSignature(){
   const rect=sigCanvas.getBoundingClientRect();
   const dpr=window.devicePixelRatio||1;
   sigCanvas.width=rect.width*dpr;
@@ -108,33 +126,53 @@ function resizeSig(){
   sctx.setTransform(dpr,0,0,dpr,0,0);
   sctx.lineWidth=2.5;
   sctx.lineCap="round";
+  sctx.lineJoin="round";
   sctx.strokeStyle="#000";
 }
-resizeSig();
-window.addEventListener("resize",resizeSig);
+resizeSignature();
+window.addEventListener("resize",resizeSignature);
 
-function getPos(e){
+function getPosition(e){
   const rect=sigCanvas.getBoundingClientRect();
-  const x=(e.clientX||e.touches?.[0].clientX)-rect.left;
-  const y=(e.clientY||e.touches?.[0].clientY)-rect.top;
-  return{x,y};
+  const touch=e.touches?e.touches[0]:e;
+  return{
+    x:touch.clientX-rect.left,
+    y:touch.clientY-rect.top
+  };
 }
 
-sigCanvas.addEventListener("pointerdown",e=>{
+function startDraw(e){
   drawing=true;
-  const p=getPos(e);
+  const p=getPosition(e);
   sctx.beginPath();
   sctx.moveTo(p.x,p.y);
-});
-sigCanvas.addEventListener("pointermove",e=>{
+}
+
+function draw(e){
   if(!drawing)return;
-  const p=getPos(e);
+  const p=getPosition(e);
   sctx.lineTo(p.x,p.y);
   sctx.stroke();
   hasInk=true;
-});
-window.addEventListener("pointerup",()=>drawing=false);
+}
 
+function stopDraw(){
+  drawing=false;
+  sctx.closePath();
+}
+
+sigCanvas.addEventListener("mousedown",startDraw);
+sigCanvas.addEventListener("mousemove",draw);
+window.addEventListener("mouseup",stopDraw);
+
+sigCanvas.addEventListener("touchstart",startDraw,{passive:false});
+sigCanvas.addEventListener("touchmove",function(e){
+  draw(e);
+  e.preventDefault();
+},{passive:false});
+window.addEventListener("touchend",stopDraw);
+
+// ===== LIMPAR =====
 clearSigBtn.onclick=()=>{
   sctx.clearRect(0,0,sigCanvas.width,sigCanvas.height);
   hasInk=false;
@@ -142,7 +180,7 @@ clearSigBtn.onclick=()=>{
   setStatus("Assinatura limpa.");
 };
 
-// ===== RENDER PDF =====
+// ===== RENDER PDF 100% CORRETO =====
 async function loadPdf(){
   pdfDoc=await pdfjsLib.getDocument(PDF_PATH).promise;
   pagesEl.innerHTML="";
@@ -185,7 +223,7 @@ loadPdf();
 
 window.addEventListener("resize",loadPdf);
 
-// ===== ADICIONAR ASSINATURA =====
+// ===== ADICIONAR ASSINATURA NA SEGUNDA PÁGINA =====
 addSigBtn.onclick=()=>{
   if(!hasInk){
     setStatus("Assine antes.");
@@ -200,9 +238,9 @@ addSigBtn.onclick=()=>{
   const img=document.createElement("img");
   img.src=stampData;
   img.style.position="absolute";
-  img.style.left="40px";
-  img.style.top="120px";
-  img.style.width="200px";
+  img.style.left="60px";
+  img.style.top="160px";
+  img.style.width="220px";
   img.style.cursor="move";
 
   overlay.style.pointerEvents="auto";
