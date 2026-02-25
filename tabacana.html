@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico Estratégico | Tabacana por Myndverse</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #0a0a0f;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* HEADER PREMIUM */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 8%;
+            background: rgba(5, 5, 10, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 68, 0, 0.25);
+            z-index: 1000;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-logo img {
+            height: 42px;
+            filter: drop-shadow(0 0 8px #ff4500);
+        }
+
+        .header-tagline {
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #ff4d00, #ffbb00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-left: 2px solid #ff5500;
+            padding-left: 16px;
+        }
+
+        /* SECTIONS */
+        section {
+            position: relative;
+            padding: 140px 8%;
+            overflow: hidden;
+        }
+
+        /* BACKGROUND LIGHTS */
+        .light-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .light-bg::before {
+            content: '';
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 60, 0, 0.35), transparent 60%);
+            filter: blur(80px);
+        }
+
+        .light-bg::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 80%;
+            height: 80%;
+            background: radial-gradient(circle at 70% 70%, rgba(255, 180, 0, 0.35), transparent 60%);
+            filter: blur(100px);
+        }
+
+        /* TYPOGRAPHY */
+        h1, h2, h3 {
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .gradient-title {
+            font-size: clamp(40px, 6vw, 72px);
+            background: linear-gradient(120deg, #ff3700, #ffae00, #ff7b00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+
+        /* GRID CARDS PREMIUM */
+        .grid-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 32px;
+            margin: 60px 0;
+        }
+
+        .card-premium {
+            background: rgba(20, 20, 30, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 85, 0, 0.3);
+            border-radius: 36px;
+            padding: 40px 32px;
+            width: 340px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 68, 0, 0.2) inset;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card-premium:hover {
+            border-color: #ff5500;
+            transform: translateY(-8px);
+        }
+
+        .card-premium h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 28px;
+            background: linear-gradient(135deg, #ff5500, #ffaa00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card-premium ul {
+            list-style: none;
+        }
+
+        .card-premium li {
+            font-size: 18px;
+            font-weight: 400;
+            margin: 18px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #ddd;
+        }
+
+        .card-premium li strong {
+            color: #ffaa00;
+            font-weight: 700;
+        }
+
+        /* VIDEO GALLERY - NOVO ESTILO PARA VÍDEO */
+        .gallery-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 48px;
+            margin: 80px 0;
+        }
+
+        .video-frame {
+            position: relative;
+            width: 320px;
+            border-radius: 32px;
+            padding: 8px;
+            background: linear-gradient(45deg, #ff0000, #ffae00, #ff5500, #ff0000);
+            background-size: 300% 300%;
+            animation: borderFlow 8s ease infinite;
+            cursor: pointer;
+        }
+
+        .video-frame::before {
+            content: '';
+            position: absolute;
+            inset: -20px;
+            border-radius: 52px;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 68, 0, 0.7), transparent 70%);
+            filter: blur(30px);
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        .video-frame video {
+            width: 100%;
+            height: auto;
+            border-radius: 26px;
+            display: block;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+
+        /* Efeito de play overlay */
+        .video-frame::after {
+            content: '▶';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            color: white;
+            text-shadow: 0 0 20px #ff5500;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .video-frame:hover::after {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        @keyframes borderFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .image-frame {
+            position: relative;
+            width: 280px;
+            border-radius: 32px;
+            padding: 8px;
+            background: linear-gradient(45deg, #ff0000, #ffae00, #ff5500, #ff0000);
+            background-size: 300% 300%;
+            animation: borderFlow 8s ease infinite;
+        }
+
+        .image-frame::before {
+            content: '';
+            position: absolute;
+            inset: -20px;
+            border-radius: 52px;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 68, 0, 0.7), transparent 70%);
+            filter: blur(30px);
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        .image-frame img {
+            width: 100%;
+            border-radius: 26px;
+            display: block;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+
+        .image-caption {
+            margin-top: 16px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #ffaa00, #ff5500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 14px;
+        }
+
+        /* GRÁFICO DE EVOLUÇÃO */
+        .evolution-section {
+            background: rgba(0,0,0,0.3);
+            border-radius: 64px;
+            padding: 60px 40px;
+            margin: 60px 0;
+            border: 1px solid rgba(255, 85, 0, 0.2);
+        }
+
+        .chart {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            height: 300px;
+            margin: 40px 0 20px;
+            gap: 20px;
+        }
+
+        .bar-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100px;
+        }
+
+        .bar {
+            width: 60px;
+            background: linear-gradient(0deg, #ff4500, #ffae00);
+            border-radius: 30px 30px 8px 8px;
+            box-shadow: 0 0 30px #ff4500;
+            transition: height 1s ease;
+            height: 0; /* será definido inline */
+        }
+
+        .bar-label {
+            margin-top: 16px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .bar-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: #ffaa00;
+            margin-bottom: 8px;
+        }
+
+        /* AVATARES EXPLANATION */
+        .tech-specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin: 60px 0;
+        }
+
+        .spec-item {
+            background: rgba(255, 85, 0, 0.05);
+            border-radius: 40px;
+            padding: 40px 30px;
+            border: 1px solid rgba(255, 136, 0, 0.2);
+            backdrop-filter: blur(8px);
+        }
+
+        .spec-item h4 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ff7b00, #ffbb00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .spec-item p {
+            font-size: 18px;
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        .spec-item .highlight {
+            color: #ffaa00;
+            font-weight: 700;
+            font-size: 22px;
+            margin-top: 20px;
+        }
+
+        /* RESULT BOX */
+        .result-box {
+            background: rgba(255, 70, 0, 0.1);
+            border: 2px solid rgba(255, 120, 0, 0.5);
+            border-radius: 48px;
+            padding: 60px;
+            max-width: 900px;
+            margin: 60px auto;
+            box-shadow: 0 30px 60px rgba(255, 60, 0, 0.3);
+            backdrop-filter: blur(12px);
+        }
+
+        .result-box p {
+            font-size: 24px;
+            font-weight: 500;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: #fff;
+        }
+
+        .result-box span {
+            font-size: 32px;
+            color: #ffaa00;
+        }
+
+        /* INVESTMENT */
+        .investment {
+            text-align: center;
+            padding: 100px 20px;
+            background: radial-gradient(ellipse at center, rgba(255, 60, 0, 0.3), transparent 70%);
+        }
+
+        .investment h2 {
+            font-size: 80px;
+            font-weight: 900;
+            background: linear-gradient(120deg, #fff, #ffae00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .investment p {
+            font-size: 24px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 40px 8%;
+            text-align: center;
+            background: #05050a;
+            border-top: 1px solid rgba(255, 80, 0, 0.3);
+            font-size: 16px;
+            color: #ffaa00;
+            letter-spacing: 1px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .gradient-title {
+                font-size: 36px;
+            }
+            .chart {
+                flex-wrap: wrap;
+                height: auto;
+            }
+            .bar-container {
+                width: 60px;
+            }
+            .video-frame {
+                width: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-logo">
+        <img src="https://horizons-cdn.hostinger.com/bf6d56ee-21be-4c41-b968-23397b2876c1/design-sem-nome-1-iTZPG.png" alt="Myndverse">
+        <span class="header-tagline">MYNDVERSE · MARKETING TECNOLOGIA</span>
+    </div>
+    <div style="color:#ff8800; font-weight:600; font-size:14px; background: rgba(255,68,0,0.2); padding:8px 20px; border-radius:40px;">ESTRATÉGIA · BRAND · PERFORMANCE</div>
+</header>
+
+<!-- HERO SECTION -->
+<section style="padding-top: 180px;">
+    <div class="light-bg"></div>
+    <h1 class="gradient-title">
+        O Instagram da Tabacana está atraindo clientes todos os dias…<br>
+        ou apenas mostrando o cardápio?
+    </h1>
+    <p class="subtitle">Diagnóstico Estratégico Exclusivo para a Tabacana — Fevereiro 2026</p>
+    <div style="margin-top: 40px; display: flex; gap: 16px; justify-content: center;">
+        <span style="background: linear-gradient(135deg, #ff4500, #ff8800); padding: 12px 28px; border-radius: 60px; font-weight: 600;">ANÁLISE 360°</span>
+        <span style="background: rgba(255,68,0,0.15); border: 1px solid #ff5500; padding: 12px 28px; border-radius: 60px; font-weight: 500;">FEITO SOB MEDIDA</span>
+    </div>
+</section>
+
+<!-- DIAGNÓSTICO AVANÇADO -->
+<section>
+    <div class="light-bg"></div>
+    <h2 class="gradient-title">Diagnóstico Atual: Tabacana</h2>
+    <p class="subtitle">Benchmarking + Auditoria de Conversão + Análise de Concorrência</p>
+
+    <div class="grid-cards">
+        <div class="card-premium">
+            <h3>🔥 FORÇAS</h3>
+            <ul>
+                <li><strong>✓</strong> Marca consolidada desde 2009</li>
+                <li><strong>✓</strong> Produtos com alto desejo</li>
+                <li><strong>✓</strong> Presença ativa na cidade</li>
+                <li><strong>✓</strong> Público fiel</li>
+                <li><strong>✓</strong> Potencial para autoridade</li>
+            </ul>
+        </div>
+        <div class="card-premium">
+            <h3>⚠ FRAGILIDADES</h3>
+            <ul>
+                <li><strong>⚠</strong> Instagram como vitrine sem call to action</li>
+                <li><strong>⚠</strong> Bio genérica sem direcionamento</li>
+                <li><strong>⚠</strong> Nenhuma estrutura de conversão</li>
+                <li><strong>⚠</strong> Destaques desorganizados</li>
+                <li><strong>⚠</strong> Identidade visual inconsistente</li>
+            </ul>
+        </div>
+        <div class="card-premium">
+            <h3>📊 OPORTUNIDADES</h3>
+            <ul>
+                <li><strong>📈</strong> +127% engajamento com bio otimizada</li>
+                <li><strong>📱</strong> Direcionamento para pedidos via WhatsApp</li>
+                <li><strong>🎨</strong> Avatares exclusivos para identificação</li>
+                <li><strong>📹</strong> Conteúdo estratégico de baixo custo</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- O QUE ESTÁ SENDO PERDIDO -->
+<section class="evolution-section">
+    <h2 class="gradient-title" style="margin-bottom: 40px;">O Que Está Sendo Perdido?</h2>
+    <p class="subtitle">Pessoas entram, sentem vontade, mas não agem. Conversão real escorrendo.</p>
+
+    <div class="chart">
+        <div class="bar-container">
+            <div class="bar-value">0%</div>
+            <div class="bar" style="height: 30px;"></div>
+            <div class="bar-label">Conversão atual</div>
+        </div>
+        <div class="bar-container">
+            <div class="bar-value">+40%</div>
+            <div class="bar" style="height: 150px;"></div>
+            <div class="bar-label">Engajamento perdido</div>
+        </div>
+        <div class="bar-container">
+            <div class="bar-value">+60%</div>
+            <div class="bar" style="height: 220px;"></div>
+            <div class="bar-label">Pedidos não direcionados</div>
+        </div>
+        <div class="bar-container">
+            <div class="bar-value">R$ 0</div>
+            <div class="bar" style="height: 10px;"></div>
+            <div class="bar-label">Receita de oportunidade</div>
+        </div>
+   </section>
+
+<!-- O QUE VAMOS FAZER EM 7 DIAS -->
+<section>
+    <h2 class="gradient-title">Reestruturação Estratégica Completa</h2>
+    <p class="subtitle">7 dias para transformar o perfil em uma máquina de conversão</p>
+    <div class="grid-cards">
+        <div class="card-premium">
+            <h3>📝 SEMANA 1</h3>
+            <ul>
+                <li><strong>✓</strong> Nova bio persuasiva com links</li>
+                <li><strong>✓</strong> Organização estratégica dos destaques</li>
+                <li><strong>✓</strong> Estrutura de conversão para pedidos</li>
+                <li><strong>✓</strong> Padronização visual inicial</li>
+            </ul>
+        </div>
+        <div class="card-premium">
+            <h3>🎬 CONTEÚDO</h3>
+            <ul>
+                <li><strong>✓</strong> 3 roteiros estratégicos de vídeo</li>
+                <li><strong>✓</strong> Aplicação de identidade própria</li>
+                <li><strong>✓</strong> 5 figurinhas personalizadas para WhatsApp</li>
+                <li><strong>✓</strong> Calendário de conteúdo 14 dias</li>
+            </ul>
+        </div>
+        <div class="card-premium">
+            <h3>🤖 AVATARES EXCLUSIVOS</h3>
+            <ul>
+                <li><strong>✓</strong> Criação de avatar principal</li>
+                <li><strong>✓</strong> Variações para stories/interações</li>
+                <li><strong>✓</strong> Identidade única para a Tabacana</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- AVATARES E FIGURINHAS - EXPLICAÇÃO TÉCNICA -->
+<section>
+    <h2 class="gradient-title">Avatares & Figurinhas: Identidade que Conecta</h2>
+    <p class="subtitle">Tecnologia de personalidade de marca aplicada ao digital</p>
+
+    <div class="tech-specs">
+        <div class="spec-item">
+            <h4>🎭 Avatar Principal</h4>
+            <p>Personagem exclusivo que representa o espírito da Tabacana. Cria identificação imediata com o público e humaniza a marca no digital.</p>
+            <div class="highlight">+63% recall de marca</div>
+        </div>
+        <div class="spec-item">
+            <h4>🖼️ Artes Promocionais</h4>
+            <p>Peças com avatar em situações reais do restaurante, promovendo pratos, promoções e eventos. Padronizadas com a nova identidade.</p>
+            <div class="highlight">Alta taxa de compartilhamento</div>
+        </div>
+        <div class="spec-item">
+            <h4>📲 Figurinhas WhatsApp</h4>
+            <p>5 stickers personalizados para clientes usarem. Estratégia de engajamento e divulgação orgânica nas conversas do dia a dia.</p>
+            <div class="highlight">Alcance viral</div>
+        </div>
+    </div>
+
+   <div class="gallery-grid">
+        <div>
+            <div class="image-frame">
+                <img src="https://myndverse-host.sirv.com/arte.jpeg" alt="Avatar arte">
+            </div>
+            <div class="image-caption">Avatar • Estilo principal</div>
+        </div>
+        
+        <div>
+            <div class="image-frame">
+                <img src="https://myndverse-host.sirv.com/artespromo.jpeg" alt="Arte promocional">
+            </div>
+            <div class="image-caption">Peça promocional</div>
+        </div>
+
+        <div>
+            <div class="image-frame">
+                <img src="https://myndverse-host.sirv.com/figurinhas.jpeg" alt="Figurinhas">
+            </div>
+            <div class="image-caption">Figurinhas interativas</div>
+        </div>
+
+        <div>
+            <div class="image-frame">
+                <img src="https://myndverse-host.sirv.com/instagram.jpeg" alt="Perfil instagram prévia">
+            </div>
+            <div class="image-caption">Perfil instagram prévia</div>
+        </div>
+    </div>
+</section>
+
+<!-- ANTES E DEPOIS / RESULTADO ESPERADO -->
+<section>
+    <h2 class="gradient-title">Resultado Esperado</h2>
+    <div class="result-box">
+        <p><span>✔</span> Perfil mais profissional e autoridade na cidade</p>
+        <p><span>✔</span> Comunicação clara: cliente entende na hora como pedir</p>
+        <p><span>✔</span> Aumento de direcionamento para pedidos via WhatsApp</p>
+        <p><span>✔</span> Posicionamento dominante no mercado local</p>
+        <p><span>✔</span> Identidade visual única com avatar e stickers</p>
+        <p><span>📊</span> Projeção: +45% de conversão em 30 dias</p>
+    </div>
+</section>
+
+<!-- INVESTIMENTO FINAL -->
+<section class="investment">
+    <h2>R$ 897</h2>
+    <p>Investimento único · Projeto entregue em até 7 dias</p>
+    <p style="font-size: 16px; margin-top: 40px; background: rgba(255,255,255,0.05); padding: 16px 32px; border-radius: 60px; display: inline-block;">Tudo incluso: diagnóstico, avatares, figurinhas, roteiros, estrutura de conversão</p>
+</section>
+
+<footer>
+    © 2026 Myndverse · Marketing Tecnologia · sofisticação e resultado
+</footer>
+
+<!-- Script para garantir que o vídeo funcione corretamente -->
+<script>
+    // Garantir que todos os vídeos deem loop corretamente
+    document.addEventListener('DOMContentLoaded', function() {
+        const videos = document.querySelectorAll('video');
+        videos.forEach(video => {
+            video.loop = true;
+            video.muted = true;
+            video.play().catch(e => console.log('Autoplay prevented:', e));
+        });
+    });
+</script>
+
+</body>
+</html>
