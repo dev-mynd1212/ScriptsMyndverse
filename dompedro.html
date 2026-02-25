@@ -22,50 +22,60 @@
       min-height:100vh; overflow-x: hidden;
     }
 
-    header{
-      padding:20px; max-width:1200px; margin:0 auto;
-      display:flex; align-items:center; justify-content:space-between;
-    }
-    .logo{
-      width:30px; height:30px; border-radius:8px;
-      background: linear-gradient(135deg, #6ea8ff, #2ee59d);
-    }
+    header{ padding:20px; max-width:1200px; margin:0 auto; display:flex; align-items:center; gap:10px; }
+    .logo{ width:30px; height:30px; border-radius:8px; background: linear-gradient(135deg, #6ea8ff, #2ee59d); }
 
-    /* Ajuste para Mobile */
-    .wrap{
-      max-width:1200px; margin:0 auto; padding:10px;
-      display:grid; grid-template-columns: 1fr; gap:15px;
-    }
+    .wrap{ max-width:1200px; margin:0 auto; padding:10px; display:grid; grid-template-columns: 1fr; gap:15px; }
     @media (min-width: 980px){ .wrap{ grid-template-columns: 350px 1fr; } }
 
-    .card{
-      background: var(--card); border:1px solid rgba(255,255,255,.06);
-      border-radius:var(--radius); overflow:hidden; padding:15px;
-    }
+    .card{ background: var(--card); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius); overflow:hidden; padding:15px; }
 
-    /* Área do PDF - Crucial para não cortar no iPhone */
-    .stage{
-      position:relative; width:100%; overflow: hidden;
-      background: #333; border-radius: 10px;
-    }
+    .stage{ position:relative; width:100%; background: #333; border-radius: 10px; overflow: hidden; }
     #pdfCanvas{ width: 100% !important; height: auto !important; display: block; }
 
-    /* Assinatura */
-    .sigcanvas{
-      width:100%; height:180px; background: #fff; /* Fundo branco para enxergar a tinta preta */
-      border-radius:12px; touch-action:none; border: 2px solid var(--line);
+    /* Assinatura e Controles de Redimensionamento */
+    #sigContainer {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      display: none;
+      z-index: 100;
+      touch-action: none;
     }
 
-    #sigStamp{
-      position:absolute; left:20px; top:20px; width:150px;
-      cursor:move; touch-action:none; display:none; z-index: 10;
-      filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
+    #sigStamp {
+      width: 150px; /* Tamanho inicial */
+      display: block;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
     }
 
-    button{
-      width:100%; padding:14px; margin:5px 0; border-radius:12px; border:none;
-      font-weight:bold; cursor:pointer; font-size: 14px;
+    .resizer-controls {
+      position: absolute;
+      top: -45px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      background: rgba(0,0,0,0.8);
+      padding: 5px;
+      border-radius: 30px;
+      border: 1px solid var(--accent);
     }
+
+    .resizer-btn {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      font-weight: bold;
+      font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .sigcanvas{ width:100%; height:180px; background: #fff; border-radius:12px; touch-action:none; border: 2px solid var(--line); }
+
+    button{ width:100%; padding:14px; margin:5px 0; border-radius:12px; border:none; font-weight:bold; cursor:pointer; }
     .primary{ background: var(--accent); color:#000; }
     .success{ background: var(--ok); color:#000; }
     .danger{ background: rgba(255,255,255,0.1); color:#fff; }
@@ -77,87 +87,93 @@
 
 <body>
 <header>
-  <div style="display:flex; gap:10px; align-items:center;">
     <div class="logo"></div>
-    <b>MyndVerse</b>
-  </div>
+    <b>MyndVerse Digital</b>
 </header>
 
 <main class="wrap">
   <section class="card">
-    <h3 style="margin-top:0">1. Assine com o dedo</h3>
+    <h3 style="margin-top:0">1. Assine abaixo</h3>
     <canvas id="sigCanvas" class="sigcanvas"></canvas>
-    
     <button id="clearSig" class="danger">Limpar</button>
     <button id="applySig" class="primary">Colocar no Contrato</button>
     <hr style="border:0; border-top:1px solid var(--line); margin:15px 0;">
-    <button id="exportPdf" class="success" disabled>Baixar PDF Assinado</button>
-    <div class="status" id="status">Aguardando PDF...</div>
+    <button id="exportPdf" class="success" disabled>Baixar Contrato Final</button>
+    <div class="status" id="status">Carregando documento...</div>
   </section>
 
   <section class="card">
-    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-       <span>Pág: <b id="pageNum">1</b> / <b id="pageCount">?</b></span>
+    <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:14px;">
+       <span>Página <b id="pageNum">1</b> de <b id="pageCount">?</b></span>
        <div style="display:flex; gap:5px;">
-         <button onclick="changePage(-1)" style="padding:5px 10px; width:auto">◀</button>
-         <button onclick="changePage(1)" style="padding:5px 10px; width:auto">▶</button>
+         <button onclick="changePage(-1)" style="padding:5px 12px; width:auto; margin:0">◀</button>
+         <button onclick="changePage(1)" style="padding:5px 12px; width:auto; margin:0">▶</button>
        </div>
     </div>
 
     <div class="stage" id="stage">
       <canvas id="pdfCanvas"></canvas>
-      <img id="sigStamp" alt="Assinatura" />
+      
+      <div id="sigContainer">
+        <div class="resizer-controls">
+          <button class="resizer-btn" onclick="resizeSig(0.9)">−</button>
+          <button class="resizer-btn" onclick="resizeSig(1.1)">+</button>
+        </div>
+        <img id="sigStamp" alt="Assinatura" />
+      </div>
     </div>
   </section>
 </main>
 
 <script>
-  const PDF_PATH = "Mynd.pdf"; // Verifique se o arquivo está com M maiúsculo!
-  
+  const PDF_PATH = "Mynd.pdf"; 
   let pdfDoc = null, pageNum = 1, hasInk = false;
   const sigCanvas = document.getElementById("sigCanvas");
   const sctx = sigCanvas.getContext("2d");
   const statusEl = document.getElementById("status");
+  const sigContainer = document.getElementById("sigContainer");
   const sigStamp = document.getElementById("sigStamp");
 
-  // --- LÓGICA DA ASSINATURA (TINTA PRETA) ---
+  // Configurar Canvas de Assinatura
   function setupSig() {
     const rect = sigCanvas.getBoundingClientRect();
     sigCanvas.width = rect.width;
     sigCanvas.height = rect.height;
-    sctx.strokeStyle = "#000000"; // TINTA PRETA
+    sctx.strokeStyle = "#000000"; 
     sctx.lineWidth = 3;
     sctx.lineCap = "round";
   }
 
+  // Desenho (Touch/Mouse)
   let drawing = false;
   const start = (e) => { drawing = true; sctx.beginPath(); move(e); };
-  const end = () => { drawing = false; };
   const move = (e) => {
     if(!drawing) return;
     const rect = sigCanvas.getBoundingClientRect();
-    const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-    const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-    sctx.lineTo(x, y);
+    const t = e.touches ? e.touches[0] : e;
+    sctx.lineTo(t.clientX - rect.left, t.clientY - rect.top);
     sctx.stroke();
-    hasInk = true;
-    e.preventDefault();
+    hasInk = true; e.preventDefault();
   };
-
   sigCanvas.addEventListener("mousedown", start);
   sigCanvas.addEventListener("mousemove", move);
-  window.addEventListener("mouseup", end);
+  window.addEventListener("mouseup", () => drawing = false);
   sigCanvas.addEventListener("touchstart", start, {passive:false});
   sigCanvas.addEventListener("touchmove", move, {passive:false});
-  sigCanvas.addEventListener("touchend", end);
 
   document.getElementById("clearSig").onclick = () => {
     sctx.clearRect(0,0,sigCanvas.width, sigCanvas.height);
     hasInk = false;
-    sigStamp.style.display = "none";
+    sigContainer.style.display = "none";
   };
 
-  // --- LÓGICA DO PDF (CORREÇÃO DE RENDERIZAÇÃO) ---
+  // Redimensionar Assinatura
+  window.resizeSig = (factor) => {
+    let currentWidth = sigStamp.clientWidth;
+    sigStamp.style.width = (currentWidth * factor) + "px";
+  };
+
+  // PDF.js
   pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
   async function loadPdf() {
@@ -165,26 +181,23 @@
       pdfDoc = await pdfjsLib.getDocument(PDF_PATH).promise;
       document.getElementById("pageCount").textContent = pdfDoc.numPages;
       renderPage();
-      statusEl.textContent = "Contrato carregado!";
+      statusEl.textContent = "Contrato pronto.";
     } catch(e) {
-      statusEl.textContent = "Erro: Arquivo Mynd.pdf não encontrado.";
-      console.error(e);
+      statusEl.textContent = "Erro ao carregar Mynd.pdf";
     }
   }
 
   async function renderPage() {
     const page = await pdfDoc.getPage(pageNum);
     const stageWidth = document.getElementById("stage").clientWidth;
-    const viewportOriginal = page.getViewport({ scale: 1 });
-    const scale = stageWidth / viewportOriginal.width; // Faz o PDF caber na largura da tela
-    const viewport = page.getViewport({ scale: scale * 2 }); // Renderiza em 2x para nitidez
+    const viewportOrg = page.getViewport({ scale: 1 });
+    const scale = stageWidth / viewportOrg.width;
+    const viewport = page.getViewport({ scale: scale * 2 });
 
     const canvas = document.getElementById("pdfCanvas");
     const ctx = canvas.getContext("2d");
-    canvas.width = viewport.width;
-    canvas.height = viewport.height;
-
-    await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+    canvas.width = viewport.width; canvas.height = viewport.height;
+    await page.render({ canvasContext: ctx, viewport }).promise;
     document.getElementById("pageNum").textContent = pageNum;
   }
 
@@ -194,51 +207,48 @@
     renderPage();
   };
 
-  // --- LÓGICA DE ARRASTAR (TOUCH E MOUSE) ---
+  // Colocar no Contrato e Ativar Arrastar
   document.getElementById("applySig").onclick = () => {
     if(!hasInk) return alert("Assine primeiro!");
     sigStamp.src = sigCanvas.toDataURL("image/png");
-    sigStamp.style.display = "block";
+    sigContainer.style.display = "block";
     document.getElementById("exportPdf").disabled = false;
-    statusEl.textContent = "Arraste a assinatura para o local correto.";
+    statusEl.textContent = "Ajuste o tamanho (+/-) e arraste para o local.";
   };
 
   let isDragging = false, startX, startY;
-  const dragStart = (e) => {
+  const dStart = (e) => {
     isDragging = true;
     const t = e.touches ? e.touches[0] : e;
-    startX = t.clientX - sigStamp.offsetLeft;
-    startY = t.clientY - sigStamp.offsetTop;
+    startX = t.clientX - sigContainer.offsetLeft;
+    startY = t.clientY - sigContainer.offsetTop;
   };
-  const dragMove = (e) => {
+  const dMove = (e) => {
     if(!isDragging) return;
     const t = e.touches ? e.touches[0] : e;
-    sigStamp.style.left = (t.clientX - startX) + "px";
-    sigStamp.style.top = (t.clientY - startY) + "px";
+    sigContainer.style.left = (t.clientX - startX) + "px";
+    sigContainer.style.top = (t.clientY - startY) + "px";
     e.preventDefault();
   };
-  sigStamp.addEventListener("mousedown", dragStart);
-  window.addEventListener("mousemove", dragMove);
+  sigContainer.addEventListener("mousedown", dStart);
+  window.addEventListener("mousemove", dMove);
   window.addEventListener("mouseup", () => isDragging = false);
-  sigStamp.addEventListener("touchstart", dragStart);
-  window.addEventListener("touchmove", dragMove, {passive:false});
-  window.addEventListener("touchend", () => isDragging = false);
+  sigContainer.addEventListener("touchstart", dStart);
+  window.addEventListener("touchmove", dMove, {passive:false});
 
-  // --- EXPORTAR PDF FINAL ---
+  // Salvar PDF com as novas proporções
   document.getElementById("exportPdf").onclick = async () => {
-    statusEl.textContent = "Gerando arquivo...";
+    statusEl.textContent = "Salvando...";
     const pdfBytes = await fetch(PDF_PATH).then(res => res.arrayBuffer());
     const pdfLibDoc = await PDFLib.PDFDocument.load(pdfBytes);
     const page = pdfLibDoc.getPage(pageNum - 1);
-    
     const sigImg = await pdfLibDoc.embedPng(sigCanvas.toDataURL("image/png"));
     
-    // Cálculos de proporção para o PDF real
     const canvas = document.getElementById("pdfCanvas");
     const { width, height } = page.getSize();
     
-    const x = (sigStamp.offsetLeft / canvas.clientWidth) * width;
-    const y = height - ((sigStamp.offsetTop / canvas.clientHeight) * height) - ((sigStamp.clientHeight / canvas.clientHeight) * height);
+    const x = (sigContainer.offsetLeft / canvas.clientWidth) * width;
+    const y = height - ((sigContainer.offsetTop / canvas.clientHeight) * height) - ((sigStamp.clientHeight / canvas.clientHeight) * height);
     const w = (sigStamp.clientWidth / canvas.clientWidth) * width;
     const h = (sigStamp.clientHeight / canvas.clientHeight) * height;
 
@@ -248,9 +258,9 @@
     const blob = new Blob([savedBytes], {type: "application/pdf"});
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = "Contrato_Assinado.pdf";
+    link.download = "Contrato_Mynd_Assinado.pdf";
     link.click();
-    statusEl.textContent = "Pronto! PDF baixado.";
+    statusEl.textContent = "Baixado com sucesso!";
   };
 
   window.onload = () => { setupSig(); loadPdf(); };
