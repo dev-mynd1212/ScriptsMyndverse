@@ -1,1150 +1,284 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
-  <title>Assinatura Digital • MyndVerse</title>
-  <style>
-    :root{
-      --bg:#0b0f17;
-      --card:#0f1625;
-      --card2:#0c1220;
-      --txt:#ffffff;
-      --muted:#a9b6d3;
-      --accent:#6ea8ff;
-      --ok:#2ee59d;
-      --danger:#ff5d5d;
-      --shadow: 0 20px 60px rgba(0,0,0,.45);
-      --radius: 18px;
-      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      --line: rgba(255,255,255,.08);
-    }
-    *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      font-family:var(--font);
-      background: radial-gradient(1200px 700px at 20% -10%, rgba(110,168,255,.25), transparent 60%),
-                  radial-gradient(900px 600px at 100% 10%, rgba(46,229,157,.14), transparent 55%),
-                  var(--bg);
-      color:var(--txt);
-      min-height:100vh;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Assinatura Digital • MyndVerse</title>
 
-    header{
-      padding:18px 14px 8px;
-      max-width:1200px;
-      margin:0 auto;
-      display:flex;
-      gap:12px;
-      align-items:center;
-      justify-content:space-between;
-    }
-    .brand{ display:flex; gap:12px; align-items:center; }
-    .logo{
-      width:36px;height:36px;border-radius:12px;
-      background: linear-gradient(135deg, rgba(110,168,255,.95), rgba(46,229,157,.75));
-      box-shadow: 0 12px 30px rgba(110,168,255,.18);
-    }
-    .title{ display:flex;flex-direction:column; line-height:1.05; }
-    .title b{ font-size:14px; letter-spacing:.2px;}
-    .title span{ font-size:12px; color:var(--muted); margin-top:4px;}
-    .pill{
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.06);
-      color:var(--txt);
-      font-weight:700;
-      font-size:12px;
-      white-space:nowrap;
-    }
+<style>
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:#0b0f17;
+  color:#fff;
+}
 
-    .wrap{
-      max-width:1200px;
-      margin:0 auto;
-      padding:8px 14px 92px; /* espaço do toolbar mobile */
-      display:grid;
-      grid-template-columns: 380px 1fr;
-      gap:14px;
-    }
-    @media (max-width: 980px){
-      .wrap{ grid-template-columns: 1fr; }
-      .pill{ display:none; }
-    }
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+}
 
-    .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.03), transparent 60%), var(--card);
-      border:1px solid rgba(255,255,255,.06);
-      border-radius:var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .card h2{
-      margin:0;
-      padding:14px 14px 8px;
-      font-size:14px;
-      letter-spacing:.25px;
-    }
-    .sub{
-      padding:0 14px 12px;
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.35;
-    }
-    .section{
-      padding:12px 14px 14px;
-      border-top:1px solid rgba(255,255,255,.06);
-      background: linear-gradient(180deg, rgba(255,255,255,.02), transparent 60%), var(--card2);
-    }
+h2{ margin-top:0 }
 
-    .btnrow{ display:flex; flex-wrap:wrap; gap:10px; }
-    button{
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.06);
-      color:var(--txt);
-      padding:10px 12px;
-      border-radius:12px;
-      cursor:pointer;
-      font-weight:700;
-      font-size:13px;
-      transition: transform .06s ease, background .2s ease, border-color .2s ease;
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
-    }
-    button:hover{ background: rgba(255,255,255,.10); }
-    button:active{ transform: translateY(1px); }
-    button:disabled{ opacity:.45; cursor:not-allowed; filter:saturate(.6); }
+canvas{
+  width:100%;
+  height:160px;
+  background:#fff;
+  border-radius:10px;
+}
 
-    .primary{
-      background: linear-gradient(135deg, rgba(110,168,255,.95), rgba(110,168,255,.55));
-      border-color: rgba(110,168,255,.55);
-      color:#081225;
-    }
-    .success{
-      background: linear-gradient(135deg, rgba(46,229,157,.95), rgba(46,229,157,.55));
-      border-color: rgba(46,229,157,.55);
-      color:#061a14;
-    }
-    .danger{
-      background: linear-gradient(135deg, rgba(255,93,93,.95), rgba(255,93,93,.55));
-      border-color: rgba(255,93,93,.55);
-      color:#1b0606;
-    }
+button{
+  padding:12px 16px;
+  border:none;
+  border-radius:8px;
+  font-weight:bold;
+  margin-top:10px;
+  cursor:pointer;
+}
 
-    .divider{ height:1px; background: rgba(255,255,255,.06); margin:12px 0; }
+.primary{ background:#6ea8ff; }
+.success{ background:#2ee59d; }
+.danger{ background:#ff5d5d; }
 
-    .sigbox{
-      background: rgba(0,0,0,.25);
-      border:1px dashed rgba(255,255,255,.18);
-      border-radius:14px;
-      padding:12px;
-    }
-    .sigcanvas{
-      width:100%;
-      height:170px;
-      display:block;
-      background: rgba(255,255,255,.92); /* fundo claro p/ assinatura preta ficar visível */
-      border:1px solid rgba(0,0,0,.15);
-      border-radius:12px;
-      touch-action:none;
-    }
-    .hint{
-      margin-top:10px;
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.35;
-    }
+.pageWrap{
+  position:relative;
+  margin-bottom:20px;
+}
 
-    .fieldgrid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-    }
-    @media (max-width: 980px){
-      .fieldgrid{ grid-template-columns: 1fr; }
-    }
-    .field label{
-      display:block;
-      font-size:11px;
-      color:var(--muted);
-      margin-bottom:6px;
-    }
-    .field input{
-      width:100%;
-      padding:11px 12px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.06);
-      color:var(--txt);
-      outline:none;
-      font-weight:700;
-    }
-    .field input::placeholder{ color: rgba(255,255,255,.35); font-weight:600; }
-
-    .toggle{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.06);
-      user-select:none;
-    }
-    .toggle input{ width:18px; height:18px; }
-
-    /* Viewer (scroll contínuo) */
-    .viewer{
-      position:relative;
-      padding:14px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-    .toolbarTop{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-      justify-content:space-between;
-    }
-    .small{ font-size:12px; color:var(--muted); line-height:1.35; }
-
-    #pages{
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-    }
-    .pageWrap{
-      position:relative;
-      border-radius:16px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.06);
-      background: rgba(0,0,0,.25);
-    }
-    .pageWrap.selected{
-      outline: 2px solid rgba(110,168,255,.7);
-      box-shadow: 0 0 0 6px rgba(110,168,255,.10);
-    }
-    .pageCanvas{
-      display:block;
-      width:100%;
-      height:auto;
-    }
-    .overlay{
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-    }
-    .stamp{
-      position:absolute;
-      left:40px; top:60px;
-      width:220px;
-      height:auto;
-      opacity:0.98;
-      filter: drop-shadow(0 18px 40px rgba(0,0,0,.55));
-      cursor:grab;
-      pointer-events:auto;
-      user-select:none;
-      touch-action:none;
-      border-radius:10px;
-    }
-    .stamp.selected{
-      outline: 2px solid rgba(46,229,157,.85);
-      box-shadow: 0 0 0 6px rgba(46,229,157,.14);
-    }
-    .stamp:active{ cursor:grabbing; }
-
-    .pageBadge{
-      position:absolute;
-      left:10px; top:10px;
-      padding:6px 9px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.35);
-      font-weight:800;
-      font-size:12px;
-      color:var(--txt);
-      backdrop-filter: blur(6px);
-    }
-
-    .status{
-      margin-top:10px;
-      font-size:12px;
-      color:var(--muted);
-      min-height:18px;
-    }
-
-    /* Toolbar mobile fixo */
-    .dock{
-      position:fixed;
-      left:0; right:0; bottom:0;
-      padding:10px 12px 12px;
-      background: rgba(10,14,22,.72);
-      border-top: 1px solid rgba(255,255,255,.08);
-      backdrop-filter: blur(10px);
-      z-index:50;
-    }
-    .dockInner{
-      max-width:1200px;
-      margin:0 auto;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:space-between;
-    }
-    .dockGroup{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-    .range{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      padding:9px 10px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.06);
-      font-size:12px;
-      color:var(--muted);
-      font-weight:800;
-    }
-    .range input[type="range"]{ width:140px; }
-    @media (min-width: 981px){
-      .dock{ display:none; }
-      .wrap{ padding-bottom:28px; }
-    }
-  </style>
+#pages canvas{
+  width:100%;
+  height:auto;
+  display:block;
+}
+</style>
 </head>
 
 <body>
-<header>
-  <div class="brand">
-    <div class="logo"></div>
-    <div class="title">
-      <b>Assinatura Digital • MyndVerse</b>
-      <span>Assine, toque na página, posicione e baixe o PDF final.</span>
-    </div>
-  </div>
-  <div class="pill">Arquivo: <span id="fileName">Mynd.pdf</span></div>
-</header>
+<div class="container">
 
-<main class="wrap">
-  <!-- Left: signature -->
-  <section class="card">
-    <h2>1) Assine aqui</h2>
-    <div class="sub">
-      Desenhe a assinatura. Depois toque em uma página do PDF (à direita) e clique em <b>Adicionar assinatura</b>.
-      Você pode colocar <b>várias assinaturas</b> (em páginas diferentes) e ajustar tamanho/rotação/opacity.
-    </div>
+<h2>Assine abaixo</h2>
 
-    <div class="section">
-      <div class="sigbox">
-        <canvas id="sigCanvas" class="sigcanvas"></canvas>
-        <div class="hint">
-          Dica mobile: use o dedo. Você pode limpar e assinar de novo.<br/>
-          A assinatura será “recortada” automaticamente (trim) ao adicionar no PDF.
-        </div>
-      </div>
+<canvas id="sigCanvas"></canvas>
 
-      <div class="divider"></div>
+<br>
+<button class="danger" id="clearSig">Limpar</button>
+<button class="primary" id="addSig">Adicionar na 2ª página</button>
+<button class="success" id="exportPdf" disabled>Baixar PDF assinado</button>
 
-      <div class="fieldgrid">
-        <div class="field">
-          <label>Nome (opcional)</label>
-          <input id="inpName" placeholder="Ex: Felipe Fidelo" />
-        </div>
-        <div class="field">
-          <label>CPF (opcional)</label>
-          <input id="inpCpf" placeholder="Ex: 000.000.000-00" />
-        </div>
-      </div>
+<p id="status"></p>
 
-      <div class="divider"></div>
+<hr style="opacity:.2;margin:30px 0">
 
-      <div class="toggle">
-        <input id="chkAudit" type="checkbox" checked />
-        <div>
-          <div style="font-weight:800;font-size:12px;color:var(--txt)">Inserir texto de auditoria</div>
-          <div style="font-size:12px;color:var(--muted)">“Assinado por… / CPF… / data e hora” no PDF</div>
-        </div>
-      </div>
+<div id="pages"></div>
 
-      <div class="divider"></div>
-
-      <div class="btnrow">
-        <button id="clearSig" class="danger">Limpar</button>
-        <button id="addSig" class="primary">Adicionar assinatura</button>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="btnrow">
-        <button id="rotateL">↺ Girar</button>
-        <button id="rotateR">↻ Girar</button>
-        <button id="deleteStamp" class="danger" disabled>Remover assinatura</button>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="btnrow">
-        <button id="exportPdf" class="success" disabled>Baixar PDF assinado</button>
-      </div>
-
-      <div class="status" id="status"></div>
-    </div>
-  </section>
-
-  <!-- Right: PDF viewer -->
-  <section class="card viewer">
-    <div class="toolbarTop">
-      <div class="pill">Páginas: <b id="pageCount">?</b> • Página selecionada: <b id="selPage">—</b></div>
-      <div class="pill">Zoom: <b id="zoomLabel">100%</b></div>
-    </div>
-
-    <div class="small">
-      Toque em uma página para selecionar. Depois <b>Adicionar assinatura</b>. Arraste a assinatura para posicionar.
-    </div>
-
-    <div id="pages"></div>
-  </section>
-</main>
-
-<!-- dock mobile -->
-<div class="dock">
-  <div class="dockInner">
-    <div class="dockGroup">
-      <div class="range">
-        Zoom
-        <input id="zoomRange" type="range" min="70" max="180" value="100" />
-        <span id="zoomRangeLabel">100%</span>
-      </div>
-      <div class="range">
-        Tamanho
-        <input id="sizeRange" type="range" min="80" max="520" value="220" />
-      </div>
-      <div class="range">
-        Opacity
-        <input id="opRange" type="range" min="30" max="100" value="98" />
-      </div>
-    </div>
-
-    <div class="dockGroup">
-      <button id="exportPdfDock" class="success" disabled>Baixar</button>
-    </div>
-  </div>
 </div>
 
-<!-- PDF.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<!-- pdf-lib -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 
 <script>
-  // ===== Config =====
-  const PDF_PATH = "./Mynd.pdf";
+const PDF_PATH = "./Mynd.pdf";
+const SIGN_PAGE_INDEX = 1; // segunda página
 
-  // ===== UI refs =====
-  const statusEl = document.getElementById("status");
-  const sigCanvas = document.getElementById("sigCanvas");
-  const pagesEl = document.getElementById("pages");
-  const pageCountEl = document.getElementById("pageCount");
-  const selPageEl = document.getElementById("selPage");
-  const zoomLabelEl = document.getElementById("zoomLabel");
-  const zoomRange = document.getElementById("zoomRange");
-  const zoomRangeLabel = document.getElementById("zoomRangeLabel");
-  const sizeRange = document.getElementById("sizeRange");
-  const opRange = document.getElementById("opRange");
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-  const clearSigBtn = document.getElementById("clearSig");
-  const addSigBtn = document.getElementById("addSig");
-  const exportPdfBtn = document.getElementById("exportPdf");
-  const exportPdfDockBtn = document.getElementById("exportPdfDock");
-  const rotateLBtn = document.getElementById("rotateL");
-  const rotateRBtn = document.getElementById("rotateR");
-  const deleteStampBtn = document.getElementById("deleteStamp");
+const sigCanvas = document.getElementById("sigCanvas");
+const sctx = sigCanvas.getContext("2d");
+const pagesEl = document.getElementById("pages");
+const exportBtn = document.getElementById("exportPdf");
+const addSigBtn = document.getElementById("addSig");
+const clearSigBtn = document.getElementById("clearSig");
+const statusEl = document.getElementById("status");
 
-  const inpName = document.getElementById("inpName");
-  const inpCpf = document.getElementById("inpCpf");
-  const chkAudit = document.getElementById("chkAudit");
+let drawing=false;
+let hasInk=false;
+let pdfDoc=null;
+let stampData=null;
 
-  document.getElementById("fileName").textContent = PDF_PATH.replace("./","");
+function setStatus(msg){ statusEl.innerText=msg; }
 
-  // ===== Signature pad =====
-  const sctx = sigCanvas.getContext("2d");
-  let drawing = false;
-  let hasInk = false;
+// ===== ASSINATURA =====
+function resizeSig(){
+  const rect=sigCanvas.getBoundingClientRect();
+  const dpr=window.devicePixelRatio||1;
+  sigCanvas.width=rect.width*dpr;
+  sigCanvas.height=rect.height*dpr;
+  sctx.setTransform(dpr,0,0,dpr,0,0);
+  sctx.lineWidth=2.5;
+  sctx.lineCap="round";
+  sctx.strokeStyle="#000";
+}
+resizeSig();
+window.addEventListener("resize",resizeSig);
 
-  function resizeSigCanvas(){
-    const rect = sigCanvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-    sigCanvas.width = Math.floor(rect.width * dpr);
-    sigCanvas.height = Math.floor(rect.height * dpr);
-    sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    sctx.lineWidth = 2.6;
-    sctx.lineCap = "round";
-    sctx.lineJoin = "round";
-    sctx.strokeStyle = "#000000";
-  }
+function getPos(e){
+  const rect=sigCanvas.getBoundingClientRect();
+  const x=(e.clientX||e.touches?.[0].clientX)-rect.left;
+  const y=(e.clientY||e.touches?.[0].clientY)-rect.top;
+  return{x,y};
+}
 
-  function getPos(e, target){
-    const rect = target.getBoundingClientRect();
-    const t = e.touches && e.touches[0];
-    const clientX = t ? t.clientX : e.clientX;
-    const clientY = t ? t.clientY : e.clientY;
-    return { x: clientX - rect.left, y: clientY - rect.top };
-  }
+sigCanvas.addEventListener("pointerdown",e=>{
+  drawing=true;
+  const p=getPos(e);
+  sctx.beginPath();
+  sctx.moveTo(p.x,p.y);
+});
+sigCanvas.addEventListener("pointermove",e=>{
+  if(!drawing)return;
+  const p=getPos(e);
+  sctx.lineTo(p.x,p.y);
+  sctx.stroke();
+  hasInk=true;
+});
+window.addEventListener("pointerup",()=>drawing=false);
 
-  function startDraw(e){
-    drawing = true;
-    const p = getPos(e, sigCanvas);
-    sctx.beginPath();
-    sctx.moveTo(p.x, p.y);
-    e.preventDefault();
-  }
-  function moveDraw(e){
-    if(!drawing) return;
-    const p = getPos(e, sigCanvas);
-    sctx.lineTo(p.x, p.y);
-    sctx.stroke();
-    hasInk = true;
-    e.preventDefault();
-  }
-  function endDraw(){ drawing = false; }
+clearSigBtn.onclick=()=>{
+  sctx.clearRect(0,0,sigCanvas.width,sigCanvas.height);
+  hasInk=false;
+  stampData=null;
+  setStatus("Assinatura limpa.");
+};
 
-  sigCanvas.addEventListener("pointerdown", startDraw);
-  sigCanvas.addEventListener("pointermove", moveDraw);
-  window.addEventListener("pointerup", endDraw);
-  sigCanvas.addEventListener("touchstart", startDraw, {passive:false});
-  sigCanvas.addEventListener("touchmove", moveDraw, {passive:false});
-  sigCanvas.addEventListener("touchend", endDraw);
+// ===== RENDER PDF =====
+async function loadPdf(){
+  pdfDoc=await pdfjsLib.getDocument(PDF_PATH).promise;
+  pagesEl.innerHTML="";
 
-  clearSigBtn.addEventListener("click", ()=>{
-    sctx.clearRect(0,0,sigCanvas.width, sigCanvas.height);
-    hasInk = false;
-    setStatus("Assinatura limpa.");
-  });
+  for(let i=1;i<=pdfDoc.numPages;i++){
+    const page=await pdfDoc.getPage(i);
+    const base=page.getViewport({scale:1});
+    const containerWidth=pagesEl.clientWidth;
+    const scale=containerWidth/base.width;
+    const viewport=page.getViewport({scale});
 
-  // ===== Trim assinatura (recorta áreas transparentes e mantém alpha) =====
-  function trimSignatureToPngDataUrl(){
-    const src = sigCanvas;
-    const w = src.width, h = src.height;
-    const ctx = src.getContext("2d");
-    const img = ctx.getImageData(0,0,w,h);
-    const data = img.data;
+    const wrap=document.createElement("div");
+    wrap.className="pageWrap";
 
-    let minX=w, minY=h, maxX=0, maxY=0;
-    let found = false;
+    const canvas=document.createElement("canvas");
+    const ctx=canvas.getContext("2d");
 
-    // threshold para considerar pixel "assinado"
-    const TH = 10;
+    canvas.width=viewport.width;
+    canvas.height=viewport.height;
 
-    for(let y=0; y<h; y++){
-      for(let x=0; x<w; x++){
-        const i = (y*w + x)*4;
-        const r = data[i], g=data[i+1], b=data[i+2], a=data[i+3];
+    await page.render({canvasContext:ctx,viewport}).promise;
 
-        // detecta traço preto (ou qualquer não-fundo) com alpha
-        // como fundo é branco opaco, usamos diferença: pixel escuro (r,g,b menores) e alpha alto
-        const isInk = (a > 0) && (r < 240 || g < 240 || b < 240);
+    wrap.appendChild(canvas);
 
-        if(isInk){
-          found = true;
-          if(x<minX) minX=x;
-          if(y<minY) minY=y;
-          if(x>maxX) maxX=x;
-          if(y>maxY) maxY=y;
-        }
-      }
-    }
-
-    if(!found){
-      return null;
-    }
-
-    // margem extra
-    const pad = Math.floor(Math.max(w,h) * 0.01) + 12;
-    minX = Math.max(0, minX - pad);
-    minY = Math.max(0, minY - pad);
-    maxX = Math.min(w-1, maxX + pad);
-    maxY = Math.min(h-1, maxY + pad);
-
-    const tw = maxX - minX + 1;
-    const th = maxY - minY + 1;
-
-    const out = document.createElement("canvas");
-    out.width = tw;
-    out.height = th;
-    const octx = out.getContext("2d");
-
-    // pega recorte
-    const cut = ctx.getImageData(minX, minY, tw, th);
-
-    // transforma fundo branco em transparente (chroma-like) e mantém traço preto
-    const d = cut.data;
-    for(let i=0;i<d.length;i+=4){
-      const r=d[i], g=d[i+1], b=d[i+2], a=d[i+3];
-      // se for "quase branco", torna transparente
-      if(r>245 && g>245 && b>245){
-        d[i+3] = 0;
-      } else {
-        // força para preto puro (melhor no PDF)
-        d[i]=0; d[i+1]=0; d[i+2]=0;
-        d[i+3] = Math.min(255, a);
-      }
-    }
-    octx.putImageData(cut, 0, 0);
-
-    return out.toDataURL("image/png");
-  }
-
-  // ===== PDF viewer: scroll contínuo (todas as páginas) =====
-  pdfjsLib.GlobalWorkerOptions.workerSrc =
-    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-
-  let pdfDoc = null;
-  let pageCount = 0;
-
-  // zoom multiplicador (auto-fit * zoom)
-  let zoom = 1.0; // 1.0 = 100%
-
-  // seleção
-  let selectedPageIndex = null; // 0-based
-  let selectedStampEl = null;
-
-  // dados de páginas renderizadas (para export)
-  const pages = []; // { wrap, canvas, overlay, viewport, baseViewport, scaleFinal }
-
-  // todos os stamps (múltiplas assinaturas)
-  // stamp = { el, pageIndex, xPx, yPx, wPx, opacity, rotationDeg, dataUrl }
-  const stamps = [];
-
-  function setStatus(msg){ statusEl.textContent = msg; }
-
-  async function loadPdf(){
-    setStatus("Carregando PDF...");
-    pdfDoc = await pdfjsLib.getDocument(PDF_PATH).promise;
-    pageCount = pdfDoc.numPages;
-    pageCountEl.textContent = pageCount;
-
-    pagesEl.innerHTML = "";
-    pages.length = 0;
-    stamps.length = 0;
-    selectedStampEl = null;
-    selectedPageIndex = null;
-    selPageEl.textContent = "—";
-    updateExportEnabled();
-
-    // cria placeholders de páginas
-    for(let i=0;i<pageCount;i++){
-      const wrap = document.createElement("div");
-      wrap.className = "pageWrap";
-      wrap.dataset.pageIndex = String(i);
-
-      const badge = document.createElement("div");
-      badge.className = "pageBadge";
-      badge.textContent = "Página " + (i+1);
-
-      const canvas = document.createElement("canvas");
-      canvas.className = "pageCanvas";
-      canvas.dataset.pageIndex = String(i);
-
-      const overlay = document.createElement("div");
-      overlay.className = "overlay";
-
-      wrap.appendChild(canvas);
+    if(i-1===SIGN_PAGE_INDEX){
+      const overlay=document.createElement("div");
+      overlay.id="signOverlay";
+      overlay.style.position="absolute";
+      overlay.style.inset="0";
+      overlay.style.pointerEvents="none";
       wrap.appendChild(overlay);
-      wrap.appendChild(badge);
-      pagesEl.appendChild(wrap);
-
-      wrap.addEventListener("click", ()=>{
-        selectPage(i);
-      });
-
-      pages.push({ wrap, canvas, overlay, viewport: null, baseViewport: null, scaleFinal: null });
     }
 
-    // renderiza todas
-    await renderAllPages();
-    // seleciona primeira página automaticamente
-    selectPage(0);
-
-    setStatus("PDF pronto. Assine e adicione a assinatura na página desejada.");
+    pagesEl.appendChild(wrap);
   }
 
-  async function renderAllPages(){
-    if(!pdfDoc) return;
-    setStatus("Renderizando páginas...");
-    // render em sequência (mais estável no mobile)
-    for(let i=0;i<pageCount;i++){
-      await renderPage(i);
-    }
-    setStatus("Páginas renderizadas ✅");
+  setStatus("PDF carregado.");
+}
+loadPdf();
+
+window.addEventListener("resize",loadPdf);
+
+// ===== ADICIONAR ASSINATURA =====
+addSigBtn.onclick=()=>{
+  if(!hasInk){
+    setStatus("Assine antes.");
+    return;
   }
 
-  async function renderPage(i){
-    const page = await pdfDoc.getPage(i+1);
-    const entry = pages[i];
-    const wrap = entry.wrap;
-    const canvas = entry.canvas;
-    const overlay = entry.overlay;
+  const overlay=document.getElementById("signOverlay");
+  overlay.innerHTML="";
 
-    // largura do container real
-    const containerWidth = wrap.clientWidth;
+  stampData=sigCanvas.toDataURL("image/png");
 
-    // viewport base (scale 1)
-    const base = page.getViewport({ scale: 1 });
-    const autoScale = containerWidth / base.width;
-    const finalScale = autoScale * zoom;
+  const img=document.createElement("img");
+  img.src=stampData;
+  img.style.position="absolute";
+  img.style.left="40px";
+  img.style.top="120px";
+  img.style.width="200px";
+  img.style.cursor="move";
 
-    const viewport = page.getViewport({ scale: finalScale });
+  overlay.style.pointerEvents="auto";
+  overlay.appendChild(img);
 
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width  = Math.floor(viewport.width * dpr);
-    canvas.height = Math.floor(viewport.height * dpr);
-    canvas.style.width  = Math.floor(viewport.width) + "px";
-    canvas.style.height = Math.floor(viewport.height) + "px";
+  enableDrag(img);
+  exportBtn.disabled=false;
+};
 
-    overlay.style.width = canvas.style.width;
-    overlay.style.height = canvas.style.height;
+function enableDrag(el){
+  let dragging=false,startX=0,startY=0,origX=0,origY=0;
 
-    const ctx = canvas.getContext("2d");
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-    await page.render({ canvasContext: ctx, viewport }).promise;
-
-    entry.viewport = viewport;
-    entry.baseViewport = base;
-    entry.scaleFinal = finalScale;
-
-    // reposiciona stamps da página proporcionalmente ao novo overlay
-    syncStampsToOverlay(i);
-  }
-
-  function selectPage(i){
-    selectedPageIndex = i;
-    selPageEl.textContent = String(i+1);
-
-    pages.forEach((p, idx)=>{
-      p.wrap.classList.toggle("selected", idx === i);
-    });
-
-    // se tiver stamp selecionado de outra página, deseleciona
-    if(selectedStampEl){
-      const stampPage = Number(selectedStampEl.dataset.pageIndex);
-      if(stampPage !== i){
-        selectStamp(null);
-      }
-    }
-  }
-
-  function selectStamp(el){
-    selectedStampEl = el;
-    // marca seleção visual
-    document.querySelectorAll(".stamp").forEach(s=>s.classList.remove("selected"));
-    if(el) el.classList.add("selected");
-    deleteStampBtn.disabled = !el;
-
-    // sincroniza sliders com stamp selecionado
-    if(el){
-      const w = el.getBoundingClientRect().width;
-      sizeRange.value = String(Math.round(w));
-      opRange.value = String(Math.round(parseFloat(el.style.opacity || "0.98") * 100));
-    }
-  }
-
-  function updateExportEnabled(){
-    const ok = stamps.length > 0;
-    exportPdfBtn.disabled = !ok;
-    exportPdfDockBtn.disabled = !ok;
-  }
-
-  // ===== Controles de Zoom (mobile slider + labels) =====
-  function setZoomFromUI(){
-    zoom = Number(zoomRange.value) / 100;
-    zoomLabelEl.textContent = Math.round(zoom*100) + "%";
-    zoomRangeLabel.textContent = Math.round(zoom*100) + "%";
-    // rerender tudo para qualidade (melhor leitura)
-    // debounce leve:
-    scheduleRerenderAll();
-  }
-  zoomRange.addEventListener("input", setZoomFromUI);
-
-  let rerenderTimer = null;
-  function scheduleRerenderAll(){
-    if(rerenderTimer) clearTimeout(rerenderTimer);
-    rerenderTimer = setTimeout(async ()=>{
-      if(!pdfDoc) return;
-      for(let i=0;i<pageCount;i++){
-        await renderPage(i);
-      }
-    }, 120);
-  }
-
-  window.addEventListener("resize", ()=>{
-    resizeSigCanvas();
-    scheduleRerenderAll();
+  el.addEventListener("pointerdown",e=>{
+    dragging=true;
+    startX=e.clientX;
+    startY=e.clientY;
+    origX=parseFloat(el.style.left);
+    origY=parseFloat(el.style.top);
   });
 
-  // ===== Stamp drag/scale/rotate/op =====
-  function addStampToSelectedPage(dataUrl){
-    const i = selectedPageIndex ?? 0;
-    const entry = pages[i];
-    const overlay = entry.overlay;
-
-    const img = document.createElement("img");
-    img.className = "stamp";
-    img.src = dataUrl;
-    img.dataset.pageIndex = String(i);
-    img.style.left = "38px";
-    img.style.top  = "80px";
-    img.style.width = (Number(sizeRange.value) || 220) + "px";
-    img.style.opacity = (Number(opRange.value) / 100).toFixed(2);
-    img.dataset.rotation = "0";
-    img.style.transform = "rotate(0deg)";
-
-    overlay.style.pointerEvents = "auto";
-    overlay.appendChild(img);
-
-    const stampObj = {
-      el: img,
-      pageIndex: i,
-      dataUrl,
-      // x/y/w guardados em px do overlay (atual)
-      xPx: 38,
-      yPx: 80,
-      wPx: Number(sizeRange.value) || 220,
-      opacity: Number(opRange.value)/100,
-      rotationDeg: 0
-    };
-    stamps.push(stampObj);
-
-    enableStampInteractions(img);
-
-    img.addEventListener("click", (e)=>{
-      e.stopPropagation(); // não troca página ao clicar no stamp
-      selectPage(i);
-      selectStamp(img);
-    });
-
-    // auto selecionar
-    selectPage(i);
-    selectStamp(img);
-    updateExportEnabled();
-  }
-
-  function getStampObj(el){
-    return stamps.find(s => s.el === el) || null;
-  }
-
-  function enableStampInteractions(img){
-    let dragging = false;
-    let startX=0, startY=0, origLeft=0, origTop=0;
-
-    const clamp = (v,min,max)=>Math.max(min,Math.min(max,v));
-
-    function down(e){
-      dragging = true;
-      selectStamp(img);
-      const wrap = pages[Number(img.dataset.pageIndex)].wrap;
-      const rect = wrap.getBoundingClientRect();
-      const imgRect = img.getBoundingClientRect();
-      const t = e.touches && e.touches[0];
-      const cx = t ? t.clientX : e.clientX;
-      const cy = t ? t.clientY : e.clientY;
-      startX = cx; startY = cy;
-      origLeft = imgRect.left - rect.left;
-      origTop  = imgRect.top  - rect.top;
-      e.preventDefault();
-    }
-
-    function move(e){
-      if(!dragging) return;
-      const pageIndex = Number(img.dataset.pageIndex);
-      const wrap = pages[pageIndex].wrap;
-      const rect = wrap.getBoundingClientRect();
-      const t = e.touches && e.touches[0];
-      const cx = t ? t.clientX : e.clientX;
-      const cy = t ? t.clientY : e.clientY;
-      const dx = cx - startX;
-      const dy = cy - startY;
-
-      const newLeft = origLeft + dx;
-      const newTop  = origTop  + dy;
-
-      // limites no overlay
-      const maxLeft = rect.width - img.offsetWidth;
-      const maxTop  = rect.height - img.offsetHeight;
-
-      const cl = clamp(newLeft, 0, Math.max(0, maxLeft));
-      const ct = clamp(newTop,  0, Math.max(0, maxTop));
-
-      img.style.left = cl + "px";
-      img.style.top  = ct + "px";
-
-      const obj = getStampObj(img);
-      if(obj){
-        obj.xPx = cl;
-        obj.yPx = ct;
-      }
-
-      e.preventDefault();
-    }
-
-    function up(){ dragging = false; }
-
-    img.addEventListener("pointerdown", down);
-    window.addEventListener("pointermove", move, {passive:false});
-    window.addEventListener("pointerup", up);
-    img.addEventListener("touchstart", down, {passive:false});
-    window.addEventListener("touchmove", move, {passive:false});
-    window.addEventListener("touchend", up);
-  }
-
-  // sliders alteram stamp selecionado
-  sizeRange.addEventListener("input", ()=>{
-    if(!selectedStampEl) return;
-    const w = Number(sizeRange.value);
-    selectedStampEl.style.width = w + "px";
-    const obj = getStampObj(selectedStampEl);
-    if(obj) obj.wPx = w;
+  window.addEventListener("pointermove",e=>{
+    if(!dragging)return;
+    el.style.left=(origX+(e.clientX-startX))+"px";
+    el.style.top=(origY+(e.clientY-startY))+"px";
   });
 
-  opRange.addEventListener("input", ()=>{
-    if(!selectedStampEl) return;
-    const op = Number(opRange.value)/100;
-    selectedStampEl.style.opacity = op.toFixed(2);
-    const obj = getStampObj(selectedStampEl);
-    if(obj) obj.opacity = op;
-  });
+  window.addEventListener("pointerup",()=>dragging=false);
+}
 
-  rotateLBtn.addEventListener("click", ()=>{
-    if(!selectedStampEl) return;
-    rotateSelected(-5);
-  });
-  rotateRBtn.addEventListener("click", ()=>{
-    if(!selectedStampEl) return;
-    rotateSelected(+5);
-  });
-
-  function rotateSelected(delta){
-    const el = selectedStampEl;
-    const cur = Number(el.dataset.rotation || "0");
-    const next = cur + delta;
-    el.dataset.rotation = String(next);
-    el.style.transform = "rotate(" + next + "deg)";
-    const obj = getStampObj(el);
-    if(obj) obj.rotationDeg = next;
+// ===== EXPORTAR =====
+exportBtn.onclick=async()=>{
+  if(!stampData){
+    setStatus("Adicione a assinatura.");
+    return;
   }
 
-  deleteStampBtn.addEventListener("click", ()=>{
-    if(!selectedStampEl) return;
-    const el = selectedStampEl;
-    const objIdx = stamps.findIndex(s=>s.el===el);
-    if(objIdx >= 0) stamps.splice(objIdx,1);
-    el.remove();
-    selectStamp(null);
-    updateExportEnabled();
-    setStatus("Assinatura removida.");
-  });
+  setStatus("Gerando PDF...");
 
-  // ao mudar zoom/render, manter stamps no lugar proporcional
-  function syncStampsToOverlay(pageIndex){
-    const entry = pages[pageIndex];
-    const wrap = entry.wrap;
-    const overlay = entry.overlay;
+  const pdfBytes=await fetch(PDF_PATH).then(r=>r.arrayBuffer());
+  const doc=await PDFLib.PDFDocument.load(pdfBytes);
 
-    const ow = overlay.clientWidth;
-    const oh = overlay.clientHeight;
-    if(!ow || !oh) return;
+  const page=doc.getPage(SIGN_PAGE_INDEX);
+  const {width,height}=page.getSize();
 
-    // Para preservar posição ao re-render:
-    // armazenamos x/y/w em px; quando canvas muda, recalculamos proporcionalmente ao tamanho anterior.
-    // Guardamos last overlay dims por página
-    if(!entry._lastOW){
-      entry._lastOW = ow;
-      entry._lastOH = oh;
-      return;
-    }
+  const overlay=document.getElementById("signOverlay");
+  const img=overlay.querySelector("img");
 
-    const prevW = entry._lastOW;
-    const prevH = entry._lastOH;
+  const overlayW=overlay.clientWidth;
+  const overlayH=overlay.clientHeight;
 
-    if(prevW === ow && prevH === oh) return;
+  const leftPx=parseFloat(img.style.left);
+  const topPx=parseFloat(img.style.top);
+  const stampWpx=img.getBoundingClientRect().width;
+  const stampHpx=img.getBoundingClientRect().height;
 
-    const rx = ow / prevW;
-    const ry = oh / prevH;
+  const x=(leftPx/overlayW)*width;
+  const w=(stampWpx/overlayW)*width;
+  const h=(stampHpx/overlayH)*height;
+  const y=height-((topPx/overlayH)*height)-h;
 
-    stamps.forEach(s=>{
-      if(s.pageIndex !== pageIndex) return;
-      s.xPx = s.xPx * rx;
-      s.yPx = s.yPx * ry;
-      s.wPx = s.wPx * rx;
+  const pngBytes=await fetch(stampData).then(r=>r.arrayBuffer());
+  const pngImage=await doc.embedPng(pngBytes);
 
-      s.el.style.left = s.xPx + "px";
-      s.el.style.top  = s.yPx + "px";
-      s.el.style.width = s.wPx + "px";
-    });
+  page.drawImage(pngImage,{x,y,width:w,height:h});
 
-    entry._lastOW = ow;
-    entry._lastOH = oh;
-  }
+  const out=await doc.save();
+  const blob=new Blob([out],{type:"application/pdf"});
+  const url=URL.createObjectURL(blob);
 
-  // ===== Add signature =====
-  addSigBtn.addEventListener("click", ()=>{
-    if(!hasInk){
-      setStatus("Assine antes de adicionar no PDF.");
-      return;
-    }
-    if(selectedPageIndex === null){
-      selectPage(0);
-    }
-    const trimmed = trimSignatureToPngDataUrl();
-    if(!trimmed){
-      setStatus("Não detectei traço na assinatura. Assine de novo.");
-      return;
-    }
-    addStampToSelectedPage(trimmed);
-    setStatus("Assinatura adicionada. Arraste e ajuste (tamanho/opacity/rotação).");
-  });
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="Mynd_assinado.pdf";
+  a.click();
 
-  // ===== Export =====
-  async function fetchArrayBuffer(path){
-    const res = await fetch(path);
-    if(!res.ok) throw new Error("Falha ao carregar PDF. Confira se Mynd.pdf está no mesmo diretório do index.html.");
-    return await res.arrayBuffer();
-  }
-
-  function formatNowBR(){
-    const d = new Date();
-    const pad = (n)=> String(n).padStart(2,"0");
-    return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
-  }
-
-  async function exportSignedPdf(){
-    try{
-      if(stamps.length === 0){
-        setStatus("Adicione ao menos 1 assinatura antes de exportar.");
-        return;
-      }
-
-      setStatus("Gerando PDF assinado...");
-
-      const pdfBytes = await fetchArrayBuffer(PDF_PATH);
-      const doc = await PDFLib.PDFDocument.load(pdfBytes);
-
-      // para texto
-      const font = await doc.embedFont(PDFLib.StandardFonts.Helvetica);
-
-      // embed das imagens (cache para não embedar repetido)
-      const embedCache = new Map();
-
-      for(const s of stamps){
-        const page = doc.getPage(s.pageIndex);
-        const { width: pageW, height: pageH } = page.getSize();
-
-        // overlay dimensions (CSS px)
-        const entry = pages[s.pageIndex];
-        const overlay = entry.overlay;
-        const overlayW = overlay.clientWidth;
-        const overlayH = overlay.clientHeight;
-
-        // dimensões reais do elemento na tela (px)
-        const el = s.el;
-        const stampWpx = el.getBoundingClientRect().width;
-        const stampHpx = el.getBoundingClientRect().height;
-
-        // converte px->pdf
-        const x = (s.xPx / overlayW) * pageW;
-        const w = (stampWpx / overlayW) * pageW;
-
-        const h = (stampHpx / overlayH) * pageH;
-        const y = pageH - ((s.yPx / overlayH) * pageH) - h;
-
-        // embed png
-        let pngImage = embedCache.get(s.dataUrl);
-        if(!pngImage){
-          const pngBytes = await fetch(s.dataUrl).then(r=>r.arrayBuffer());
-          pngImage = await doc.embedPng(pngBytes);
-          embedCache.set(s.dataUrl, pngImage);
-        }
-
-        // rotação
-        const rot = Number(s.rotationDeg || 0);
-        const radians = (rot * Math.PI) / 180;
-
-        page.drawImage(pngImage, {
-          x, y,
-          width: w,
-          height: h,
-          rotate: PDFLib.degrees(rot),
-          opacity: Math.max(0.05, Math.min(1, s.opacity ?? 0.98))
-        });
-
-        // texto de auditoria (opcional)
-        if(chkAudit.checked){
-          const name = (inpName.value || "").trim();
-          const cpf  = (inpCpf.value || "").trim();
-          const when = formatNowBR();
-
-          const parts = [];
-          if(name) parts.push(`Assinado por: ${name}`);
-          if(cpf)  parts.push(`CPF: ${cpf}`);
-          parts.push(`Em: ${when}`);
-
-          const line = parts.join(" • ");
-          const fontSize = 9;
-          const margin = 10;
-
-          // tenta colocar logo abaixo da assinatura; se não couber, joga pro rodapé
-          let tx = x;
-          let ty = y - (fontSize + 6);
-
-          if(ty < margin){
-            ty = margin;
-            tx = margin;
-          }
-
-          page.drawText(line, {
-            x: tx,
-            y: ty,
-            size: fontSize,
-            font,
-            color: PDFLib.rgb(0,0,0),
-            opacity: 0.85
-          });
-        }
-      }
-
-      const outBytes = await doc.save();
-      const blob = new Blob([outBytes], { type:"application/pdf" });
-      const url = URL.createObjectURL(blob);
-
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "Mynd_assinado.pdf";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-
-      setTimeout(()=>URL.revokeObjectURL(url), 2500);
-      setStatus("PDF assinado baixado ✅");
-
-    } catch(err){
-      console.error(err);
-      setStatus("Erro: " + (err?.message || "não foi possível exportar o PDF."));
-    }
-  }
-
-  exportPdfBtn.addEventListener("click", exportSignedPdf);
-  exportPdfDockBtn.addEventListener("click", exportSignedPdf);
-
-  // ===== Init =====
-  resizeSigCanvas();
-  zoomRange.value = "100";
-  zoomRangeLabel.textContent = "100%";
-  zoomLabelEl.textContent = "100%";
-  sizeRange.value = "220";
-  opRange.value = "98";
-
-  loadPdf();
+  setStatus("PDF baixado ✅");
+};
 </script>
 </body>
 </html>
