@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Assinatura Digital • MyndVerse</title>
+  <style>
+    :root{
+      --bg:#0b0f17;
+      --card:#0f1625;
+      --card2:#0c1220;
+      --line:#1f2a3d;
+      --txt:#eaf0ff;
+      --muted:#a9b6d3;
+      --accent:#6ea8ff;
+      --ok:#2ee59d;
+      --danger:#ff5d5d;
+      --shadow: 0 20px 60px rgba(0,0,0,.45);
+      --radius: 18px;
+      --radius2: 14px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family:var(--font);
+      background: radial-gradient(1200px 700px at 20% -10%, rgba(110,168,255,.25), transparent 60%),
+                  radial-gradient(900px 600px at 100% 10%, rgba(46,229,157,.14), transparent 55%),
+                  var(--bg);
+      color:var(--txt);
+      min-height:100vh;
+    }
+
+    header{
+      padding:24px 18px 10px;
+      max-width:1200px;
+      margin:0 auto;
+      display:flex;
+      gap:14px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .logo{
+      width:38px;height:38px;border-radius:12px;
+      background: linear-gradient(135deg, rgba(110,168,255,.95), rgba(46,229,157,.75));
+      box-shadow: 0 12px 30px rgba(110,168,255,.18);
+    }
+    .title{
+      display:flex;flex-direction:column;
+      line-height:1.05;
+    }
+    .title b{ font-size:15px; letter-spacing:.2px;}
+    .title span{ font-size:12px; color:var(--muted); margin-top:4px;}
+
+    .wrap{
+      max-width:1200px;
+      margin:0 auto;
+      padding:10px 18px 28px;
+      display:grid;
+      grid-template-columns: 380px 1fr;
+      gap:16px;
+    }
+    @media (max-width: 980px){
+      .wrap{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.03), transparent 60%), var(--card);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card h2{
+      margin:0;
+      padding:16px 16px 10px;
+      font-size:14px;
+      letter-spacing:.25px;
+    }
+    .card .sub{
+      padding:0 16px 14px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.35;
+    }
+    .section{
+      padding:14px 16px 16px;
+      border-top:1px solid rgba(255,255,255,.06);
+      background: linear-gradient(180deg, rgba(255,255,255,.02), transparent 60%), var(--card2);
+    }
+
+    .btnrow{ display:flex; flex-wrap:wrap; gap:10px; }
+    button{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color:var(--txt);
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:600;
+      font-size:13px;
+      transition: transform .06s ease, background .2s ease, border-color .2s ease;
+      user-select:none;
+    }
+    button:hover{ background: rgba(255,255,255,.10); }
+    button:active{ transform: translateY(1px); }
+    .primary{
+      background: linear-gradient(135deg, rgba(110,168,255,.95), rgba(110,168,255,.55));
+      border-color: rgba(110,168,255,.55);
+      color:#081225;
+    }
+    .success{
+      background: linear-gradient(135deg, rgba(46,229,157,.95), rgba(46,229,157,.55));
+      border-color: rgba(46,229,157,.55);
+      color:#061a14;
+    }
+    .danger{
+      background: linear-gradient(135deg, rgba(255,93,93,.95), rgba(255,93,93,.55));
+      border-color: rgba(255,93,93,.55);
+      color:#1b0606;
+    }
+    button:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+      filter:saturate(.6);
+    }
+
+    .sigbox{
+      background: rgba(0,0,0,.25);
+      border:1px dashed rgba(255,255,255,.18);
+      border-radius:14px;
+      padding:12px;
+    }
+    .sigcanvas{
+      width:100%;
+      height:170px;
+      display:block;
+      background: rgba(255,255,255,.02);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:12px;
+      touch-action:none;
+    }
+    .hint{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.35;
+    }
+
+    /* Viewer */
+    .viewer{
+      position:relative;
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .toolbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .pager{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+      color:var(--muted); font-size:12px;
+    }
+    .pill{
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color:var(--txt);
+      font-weight:700;
+      font-size:12px;
+    }
+    .stage{
+      position:relative;
+      border-radius:16px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.06);
+      background: rgba(0,0,0,.25);
+    }
+    #pdfCanvas{
+      width:100%;
+      display:block;
+    }
+    /* overlay for signature placement */
+    #overlay{
+      position:absolute;
+      inset:0;
+      pointer-events:none; /* enable only when signature exists */
+    }
+    #sigStamp{
+      position:absolute;
+      left:40px; top:40px;
+      width:240px;
+      height:auto;
+      opacity:0.98;
+      filter: drop-shadow(0 18px 40px rgba(0,0,0,.55));
+      cursor:grab;
+      pointer-events:auto;
+      user-select:none;
+      touch-action:none;
+      display:none;
+    }
+    #sigStamp:active{ cursor:grabbing; }
+
+    .status{
+      margin-top:8px;
+      font-size:12px;
+      color:var(--muted);
+      min-height:18px;
+    }
+    .divider{
+      height:1px;
+      background: rgba(255,255,255,.06);
+      margin:12px 0;
+    }
+    .small{
+      font-size:12px;color:var(--muted);line-height:1.35;
+    }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas;
+      font-size:11px;
+      padding:2px 6px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--txt);
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="brand">
+    <div class="logo"></div>
+    <div class="title">
+      <b>Assinatura Digital • MyndVerse</b>
+      <span>Assine, posicione no PDF e baixe o arquivo final.</span>
+    </div>
+  </div>
+  <div class="pill">Arquivo: <span id="fileName">Mynd.pdf</span></div>
+</header>
+
+<main class="wrap">
+  <!-- Left: signature -->
+  <section class="card">
+    <h2>1) Assine aqui</h2>
+    <div class="sub">Desenhe sua assinatura no quadro. Depois clique em <b>Aplicar no PDF</b> e arraste a assinatura para o lugar certo.</div>
+
+    <div class="section">
+      <div class="sigbox">
+        <canvas id="sigCanvas" class="sigcanvas"></canvas>
+        <div class="hint">
+          Dica: use o dedo no celular. No PC: clique e arraste.<br/>
+          Você pode limpar e assinar de novo sem perder o PDF.
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="btnrow">
+        <button id="clearSig" class="danger">Limpar</button>
+        <button id="applySig" class="primary">Aplicar no PDF</button>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="small">
+        Controles rápidos: <span class="kbd">Arrastar</span> para posicionar •
+        <span class="kbd">+ / -</span> para aumentar/diminuir (no PC) •
+        <span class="kbd">Zoom</span> do PDF não altera o tamanho final no arquivo gerado.
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="btnrow">
+        <button id="exportPdf" class="success" disabled>Baixar PDF assinado</button>
+      </div>
+
+      <div class="status" id="status"></div>
+    </div>
+  </section>
+
+  <!-- Right: PDF viewer -->
+  <section class="card viewer">
+    <div class="toolbar">
+      <div class="btnrow">
+        <button id="prevPage">◀ Página</button>
+        <button id="nextPage">Página ▶</button>
+      </div>
+      <div class="pager">
+        <span class="pill">Página <b id="pageNum">1</b> / <b id="pageCount">?</b></span>
+        <span class="pill">Zoom <b id="zoomLabel">120%</b></span>
+        <div class="btnrow">
+          <button id="zoomOut">−</button>
+          <button id="zoomIn">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage" id="stage">
+      <canvas id="pdfCanvas"></canvas>
+
+      <div id="overlay">
+        <img id="sigStamp" alt="Assinatura posicionável" />
+      </div>
+    </div>
+
+    <div class="small">
+      Se a assinatura não aparecer: clique em <b>Aplicar no PDF</b> novamente após assinar.
+    </div>
+  </section>
+</main>
+
+<!-- PDF.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<!-- pdf-lib -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+
+<script>
+  // ===== Config =====
+  const PDF_PATH = "./Mynd.pdf";
+
+  // ===== UI refs =====
+  const statusEl = document.getElementById("status");
+  const sigCanvas = document.getElementById("sigCanvas");
+  const pdfCanvas = document.getElementById("pdfCanvas");
+  const stage = document.getElementById("stage");
+  const sigStamp = document.getElementById("sigStamp");
+  const overlay = document.getElementById("overlay");
+
+  const clearSigBtn = document.getElementById("clearSig");
+  const applySigBtn = document.getElementById("applySig");
+  const exportPdfBtn = document.getElementById("exportPdf");
+
+  const prevPageBtn = document.getElementById("prevPage");
+  const nextPageBtn = document.getElementById("nextPage");
+  const zoomInBtn = document.getElementById("zoomIn");
+  const zoomOutBtn = document.getElementById("zoomOut");
+
+  const pageNumEl = document.getElementById("pageNum");
+  const pageCountEl = document.getElementById("pageCount");
+  const zoomLabelEl = document.getElementById("zoomLabel");
+  document.getElementById("fileName").textContent = PDF_PATH.replace("./","");
+
+  // ===== Signature pad (simple) =====
+  const sctx = sigCanvas.getContext("2d");
+  let drawing = false;
+  let hasInk = false;
+
+  function resizeSigCanvas(){
+    const rect = sigCanvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    sigCanvas.width = Math.floor(rect.width * dpr);
+    sigCanvas.height = Math.floor(rect.height * dpr);
+    sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    // keep clean background (transparent signature)
+    sctx.lineWidth = 2.4;
+    sctx.lineCap = "round";
+    sctx.lineJoin = "round";
+    sctx.strokeStyle = "white";
+  }
+
+  function getPos(e, target){
+    const rect = target.getBoundingClientRect();
+    const touch = e.touches && e.touches[0];
+    const clientX = touch ? touch.clientX : e.clientX;
+    const clientY = touch ? touch.clientY : e.clientY;
+    return { x: clientX - rect.left, y: clientY - rect.top };
+  }
+
+  function startDraw(e){
+    drawing = true;
+    const p = getPos(e, sigCanvas);
+    sctx.beginPath();
+    sctx.moveTo(p.x, p.y);
+    e.preventDefault();
+  }
+  function moveDraw(e){
+    if(!drawing) return;
+    const p = getPos(e, sigCanvas);
+    sctx.lineTo(p.x, p.y);
+    sctx.stroke();
+    hasInk = true;
+    e.preventDefault();
+  }
+  function endDraw(){
+    drawing = false;
+  }
+
+  sigCanvas.addEventListener("pointerdown", startDraw);
+  sigCanvas.addEventListener("pointermove", moveDraw);
+  window.addEventListener("pointerup", endDraw);
+  sigCanvas.addEventListener("touchstart", startDraw, {passive:false});
+  sigCanvas.addEventListener("touchmove", moveDraw, {passive:false});
+  sigCanvas.addEventListener("touchend", endDraw);
+
+  clearSigBtn.addEventListener("click", ()=>{
+    sctx.clearRect(0,0,sigCanvas.width, sigCanvas.height);
+    hasInk = false;
+    setStatus("Assinatura limpa.");
+  });
+
+  // ===== PDF viewer via PDF.js =====
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+  const pctx = pdfCanvas.getContext("2d");
+  let pdfDoc = null;
+  let pageNum = 1;
+  let pageCount = 0;
+  let scale = 1.2; // initial zoom
+
+  async function loadPdf(){
+    setStatus("Carregando PDF...");
+    pdfDoc = await pdfjsLib.getDocument(PDF_PATH).promise;
+    pageCount = pdfDoc.numPages;
+    pageCountEl.textContent = pageCount;
+    await renderPage();
+    setStatus("PDF pronto. Assine e aplique no documento.");
+  }
+
+  async function renderPage(){
+    const page = await pdfDoc.getPage(pageNum);
+    const viewport = page.getViewport({ scale });
+
+    // Fit canvas to viewport
+    const dpr = window.devicePixelRatio || 1;
+    pdfCanvas.width = Math.floor(viewport.width * dpr);
+    pdfCanvas.height = Math.floor(viewport.height * dpr);
+    pdfCanvas.style.width = Math.floor(viewport.width) + "px";
+    pdfCanvas.style.height = Math.floor(viewport.height) + "px";
+
+    // overlay match
+    overlay.style.width = pdfCanvas.style.width;
+    overlay.style.height = pdfCanvas.style.height;
+
+    // HiDPI
+    pctx.setTransform(dpr,0,0,dpr,0,0);
+
+    await page.render({ canvasContext: pctx, viewport }).promise;
+
+    pageNumEl.textContent = pageNum;
+    zoomLabelEl.textContent = Math.round(scale*100) + "%";
+  }
+
+  prevPageBtn.addEventListener("click", async ()=>{
+    if(!pdfDoc) return;
+    pageNum = Math.max(1, pageNum - 1);
+    await renderPage();
+  });
+  nextPageBtn.addEventListener("click", async ()=>{
+    if(!pdfDoc) return;
+    pageNum = Math.min(pageCount, pageNum + 1);
+    await renderPage();
+  });
+  zoomInBtn.addEventListener("click", async ()=>{
+    scale = Math.min(2.2, scale + 0.1);
+    await renderPage();
+  });
+  zoomOutBtn.addEventListener("click", async ()=>{
+    scale = Math.max(0.6, scale - 0.1);
+    await renderPage();
+  });
+
+  // ===== Apply signature as draggable stamp =====
+  function signatureToPngDataUrl(){
+    // Trim not implemented; keep simple and transparent
+    // We export the signature canvas as PNG with alpha
+    // But because we drew in white, it will be white ink on transparent.
+    return sigCanvas.toDataURL("image/png");
+  }
+
+  function enableStampDrag(){
+    let dragging = false;
+    let startX = 0, startY = 0;
+    let origLeft = 0, origTop = 0;
+
+    const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+    function down(e){
+      dragging = true;
+      const rect = stage.getBoundingClientRect();
+      const imgRect = sigStamp.getBoundingClientRect();
+      const touch = e.touches && e.touches[0];
+      const clientX = touch ? touch.clientX : e.clientX;
+      const clientY = touch ? touch.clientY : e.clientY;
+
+      startX = clientX;
+      startY = clientY;
+
+      origLeft = imgRect.left - rect.left;
+      origTop  = imgRect.top  - rect.top;
+      e.preventDefault();
+    }
+
+    function move(e){
+      if(!dragging) return;
+      const rect = stage.getBoundingClientRect();
+      const touch = e.touches && e.touches[0];
+      const clientX = touch ? touch.clientX : e.clientX;
+      const clientY = touch ? touch.clientY : e.clientY;
+
+      const dx = clientX - startX;
+      const dy = clientY - startY;
+
+      const newLeft = origLeft + dx;
+      const newTop  = origTop + dy;
+
+      const maxLeft = rect.width - sigStamp.offsetWidth;
+      const maxTop  = rect.height - sigStamp.offsetHeight;
+
+      sigStamp.style.left = clamp(newLeft, 0, Math.max(0, maxLeft)) + "px";
+      sigStamp.style.top  = clamp(newTop , 0, Math.max(0, maxTop )) + "px";
+
+      e.preventDefault();
+    }
+
+    function up(){ dragging = false; }
+
+    sigStamp.addEventListener("pointerdown", down);
+    window.addEventListener("pointermove", move, {passive:false});
+    window.addEventListener("pointerup", up);
+
+    sigStamp.addEventListener("touchstart", down, {passive:false});
+    window.addEventListener("touchmove", move, {passive:false});
+    window.addEventListener("touchend", up);
+
+    // PC scale control: +/-
+    window.addEventListener("keydown", (e)=>{
+      if(sigStamp.style.display !== "block") return;
+      if(e.key === "+" || e.key === "="){
+        resizeStamp(1.08);
+      } else if(e.key === "-" || e.key === "_"){
+        resizeStamp(0.92);
+      }
+    });
+  }
+
+  function resizeStamp(mult){
+    const w = sigStamp.offsetWidth || 240;
+    const newW = Math.max(100, Math.min(520, w * mult));
+    sigStamp.style.width = newW + "px";
+  }
+
+  let dragEnabled = false;
+
+  applySigBtn.addEventListener("click", ()=>{
+    if(!hasInk){
+      setStatus("Assine antes de aplicar no PDF.");
+      return;
+    }
+    const url = signatureToPngDataUrl();
+    sigStamp.src = url;
+    sigStamp.style.display = "block";
+    sigStamp.style.left = "48px";
+    sigStamp.style.top = "70px";
+    sigStamp.style.width = "240px";
+    overlay.style.pointerEvents = "auto";
+    exportPdfBtn.disabled = false;
+    setStatus("Assinatura aplicada. Arraste até o local correto e depois baixe o PDF assinado.");
+
+    if(!dragEnabled){
+      enableStampDrag();
+      dragEnabled = true;
+    }
+  });
+
+  // ===== Export signed PDF via pdf-lib =====
+  async function fetchArrayBuffer(path){
+    const res = await fetch(path);
+    if(!res.ok) throw new Error("Falha ao carregar PDF. Rode via servidor e confira o caminho do arquivo.");
+    return await res.arrayBuffer();
+  }
+
+  exportPdfBtn.addEventListener("click", async ()=>{
+    try{
+      if(sigStamp.style.display !== "block") {
+        setStatus("Aplique a assinatura no PDF antes de exportar.");
+        return;
+      }
+
+      setStatus("Gerando PDF assinado...");
+
+      const pdfBytes = await fetchArrayBuffer(PDF_PATH);
+      const pdfDocLib = await PDFLib.PDFDocument.load(pdfBytes);
+
+      const pngDataUrl = sigStamp.src;
+      const pngBytes = await fetch(pngDataUrl).then(r => r.arrayBuffer());
+      const pngImage = await pdfDocLib.embedPng(pngBytes);
+
+      // Page where stamp is placed
+      const page = pdfDocLib.getPage(pageNum - 1);
+      const { width: pageW, height: pageH } = page.getSize();
+
+      // Convert stamp position from screen px -> PDF coords
+      // overlay dimensions are same as rendered canvas in CSS px
+      const overlayW = parseFloat(overlay.style.width);
+      const overlayH = parseFloat(overlay.style.height);
+
+      const leftPx = parseFloat(sigStamp.style.left);
+      const topPx  = parseFloat(sigStamp.style.top);
+
+      const stampWpx = sigStamp.getBoundingClientRect().width;
+      const stampHpx = sigStamp.getBoundingClientRect().height;
+
+      // Map to PDF: x proportional, y inverted
+      const x = (leftPx / overlayW) * pageW;
+      const w = (stampWpx / overlayW) * pageW;
+      const h = (stampHpx / overlayH) * pageH;
+      const y = pageH - ((topPx / overlayH) * pageH) - h;
+
+      page.drawImage(pngImage, { x, y, width: w, height: h });
+
+      const outBytes = await pdfDocLib.save();
+      const blob = new Blob([outBytes], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "Mynd_assinado.pdf";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      setStatus("PDF assinado gerado e baixado ✅");
+      setTimeout(()=>URL.revokeObjectURL(url), 2000);
+
+    } catch(err){
+      console.error(err);
+      setStatus("Erro: " + (err?.message || "não foi possível exportar o PDF."));
+    }
+  });
+
+  function setStatus(msg){
+    statusEl.textContent = msg;
+  }
+
+  // resize signature canvas properly on load/resize
+  window.addEventListener("resize", resizeSigCanvas);
+  resizeSigCanvas();
+  loadPdf();
+</script>
+</body>
+</html>
