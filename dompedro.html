@@ -172,7 +172,8 @@
       cursor:move;
       pointer-events:auto;
       touch-action:none;
-      border-radius:8px;
+      border-radius:0; /* sem borda arredondada */
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); /* sombra leve */
     }
     .stamp.selected{
       outline: 3px solid #2ee59d;
@@ -310,13 +311,16 @@
     let drawing = false;
     let hasSignature = false;
 
+    // Configurar canvas
     function resizeCanvas() {
       const rect = sigCanvas.getBoundingClientRect();
       sigCanvas.width = rect.width;
       sigCanvas.height = rect.height;
-      ctx.lineWidth = 2.5;
+      ctx.lineWidth = 3;
       ctx.lineCap = "round";
-      ctx.strokeStyle = "#000";
+      ctx.lineJoin = "round";
+      ctx.strokeStyle = "#000000";
+      ctx.fillStyle = "#000000";
     }
 
     function getCoords(e) {
@@ -365,17 +369,29 @@
       setStatus("Assinatura limpa");
     });
 
-    // Extrair assinatura como PNG (remove fundo branco)
+    // FUNÇÃO CORRIGIDA - Extrair apenas os traços da assinatura
     function getSignatureAsPNG() {
       if (!hasSignature) return null;
       
       const w = sigCanvas.width;
       const h = sigCanvas.height;
-      const imageData = ctx.getImageData(0, 0, w, h);
+      
+      // Criar um canvas temporário
+      const tempCanvas = document.createElement("canvas");
+      tempCanvas.width = w;
+      tempCanvas.height = h;
+      const tempCtx = tempCanvas.getContext("2d");
+      
+      // Copiar o desenho original
+      tempCtx.drawImage(sigCanvas, 0, 0);
+      
+      // Pegar os dados da imagem
+      const imageData = tempCtx.getImageData(0, 0, w, h);
       const data = imageData.data;
       
-      // Encontrar bounds da assinatura
+      // Encontrar os limites da assinatura (pixels não-brancos)
       let minX = w, minY = h, maxX = 0, maxY = 0;
+      let foundPixel = false;
       
       for (let y = 0; y < h; y++) {
         for (let x = 0; x < w; x++) {
@@ -383,21 +399,23 @@
           const r = data[i];
           const g = data[i+1];
           const b = data[i+2];
+          const a = data[i+3];
           
-          // Se não for branco (pixel escuro)
-          if (r < 240 || g < 240 || b < 240) {
-            if (x < minX) minX = x;
-            if (y < minY) minY = y;
-            if (x > maxX) maxX = x;
-            if (y > maxY) maxY = y;
+          // Se não for branco (considerando variações)
+          if (a > 0 && (r < 250 || g < 250 || b < 250)) {
+            minX = Math.min(minX, x);
+            minY = Math.min(minY, y);
+            maxX = Math.max(maxX, x);
+            maxY = Math.max(maxY, y);
+            foundPixel = true;
           }
         }
       }
       
-      if (maxX < minX) return null; // Nada desenhado
+      if (!foundPixel) return null;
       
       // Adicionar margem
-      const padding = 10;
+      const padding = 15;
       minX = Math.max(0, minX - padding);
       minY = Math.max(0, minY - padding);
       maxX = Math.min(w - 1, maxX + padding);
@@ -406,35 +424,47 @@
       const width = maxX - minX + 1;
       const height = maxY - minY + 1;
       
-      // Criar canvas temporário
-      const tempCanvas = document.createElement("canvas");
-      tempCanvas.width = width;
-      tempCanvas.height = height;
-      const tempCtx = tempCanvas.getContext("2d");
+      // Canvas final com fundo transparente
+      const finalCanvas = document.createElement("canvas");
+      finalCanvas.width = width;
+      finalCanvas.height = height;
+      const finalCtx = finalCanvas.getContext("2d");
       
-      // Copiar apenas a assinatura, tornando fundo branco transparente
-      const cutData = ctx.getImageData(minX, minY, width, height);
-      const cut = cutData.data;
+      // Limpar com fundo transparente
+      finalCtx.clearRect(0, 0, width, height);
       
-      for (let i = 0; i < cut.length; i += 4) {
-        const r = cut[i];
-        const g = cut[i+1];
-        const b = cut[i+2];
+      // Desenhar apenas a assinatura (preto puro)
+      finalCtx.drawImage(
+        sigCanvas,
+        minX, minY, width, height,  // fonte
+        0, 0, width, height          // destino
+      );
+      
+      // Processar pixel a pixel para garantir que só reste o traço preto
+      const finalData = finalCtx.getImageData(0, 0, width, height);
+      const finalPixels = finalData.data;
+      
+      for (let i = 0; i < finalPixels.length; i += 4) {
+        const r = finalPixels[i];
+        const g = finalPixels[i+1];
+        const b = finalPixels[i+2];
         
-        // Se for quase branco, transparente
+        // Se for muito claro (fundo), tornar transparente
         if (r > 240 && g > 240 && b > 240) {
-          cut[i+3] = 0; // alpha 0
+          finalPixels[i+3] = 0; // alpha 0
         } else {
-          // Preto puro para a assinatura
-          cut[i] = 0;
-          cut[i+1] = 0;
-          cut[i+2] = 0;
-          cut[i+3] = 255;
+          // Garantir que seja preto puro
+          finalPixels[i] = 0;
+          finalPixels[i+1] = 0;
+          finalPixels[i+2] = 0;
+          finalPixels[i+3] = 255; // alpha máximo
         }
       }
       
-      tempCtx.putImageData(cutData, 0, 0);
-      return tempCanvas.toDataURL("image/png");
+      finalCtx.putImageData(finalData, 0, 0);
+      
+      // Retornar como data URL
+      return finalCanvas.toDataURL("image/png");
     }
 
     // ===== PDF Viewer =====
@@ -442,7 +472,7 @@
     
     let pdfDoc = null;
     let numPages = 0;
-    const pages = []; // { wrap, canvas, overlay }
+    const pages = []; // { wrap, canvas, overlay, pageNum }
     let stamps = [];
     let selectedStamp = null;
 
@@ -535,7 +565,11 @@
       img.style.left = "50px";
       img.style.top = "150px";
       img.style.width = sizeRange.value + "px";
+      img.style.height = "auto"; // manter proporção
       img.style.opacity = opRange.value / 100;
+      img.style.backgroundColor = "transparent";
+      img.style.pointerEvents = "auto";
+      img.draggable = false;
       img.dataset.rotation = "0";
       img.dataset.pageIndex = "1"; // página 2 (0-based)
       
@@ -570,6 +604,7 @@
       
       function onDown(e) {
         e.preventDefault();
+        e.stopPropagation();
         dragging = true;
         selectStamp(img);
         
@@ -584,6 +619,7 @@
       function onMove(e) {
         if (!dragging) return;
         e.preventDefault();
+        e.stopPropagation();
         
         const touch = e.touches && e.touches[0];
         const clientX = touch ? touch.clientX : e.clientX;
@@ -601,17 +637,23 @@
         const imgWidth = img.offsetWidth;
         const imgHeight = img.offsetHeight;
         
-        const maxLeft = overlayRect.right - imgWidth;
-        const maxTop = overlayRect.bottom - imgHeight;
+        const maxLeft = overlayRect.right - imgWidth - overlayRect.left;
+        const maxTop = overlayRect.bottom - imgHeight - overlayRect.top;
         
-        img.style.left = Math.max(overlayRect.left, Math.min(newLeft, maxLeft)) - overlayRect.left + "px";
-        img.style.top = Math.max(overlayRect.top, Math.min(newTop, maxTop)) - overlayRect.top + "px";
+        let finalLeft = newLeft - overlayRect.left;
+        let finalTop = newTop - overlayRect.top;
+        
+        finalLeft = Math.max(0, Math.min(finalLeft, maxLeft));
+        finalTop = Math.max(0, Math.min(finalTop, maxTop));
+        
+        img.style.left = finalLeft + "px";
+        img.style.top = finalTop + "px";
         
         // Atualizar objeto
         const obj = stamps.find(s => s.el === img);
         if (obj) {
-          obj.x = parseFloat(img.style.left);
-          obj.y = parseFloat(img.style.top);
+          obj.x = finalLeft;
+          obj.y = finalTop;
         }
       }
       
