@@ -1,0 +1,954 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MyndVerse • Identidade Premium — Marquinho Tatto Studio</title>
+  <meta name="description" content="Apresentação premium: Identidade visual dark tattoo + feed padronizado + posicionamento como referência regional em realismo." />
+  <style>
+    :root{
+      --bg0:#07070a;
+      --bg1:#0b0b10;
+      --card:rgba(255,255,255,.06);
+      --card2:rgba(255,255,255,.085);
+      --line:rgba(255,255,255,.10);
+      --txt:#f6f3ef;
+      --muted:rgba(246,243,239,.72);
+
+      /* Psicologia das cores (dark tattoo premium) */
+      --dark-black:#000000;   /* preto absoluto: força / sofisticação */
+      --dark-gray:#1C1C1C;    /* cinza grafite: autoridade / profundidade */
+      --dark-lead:#2E2E2E;    /* cinza chumbo: elegância / sofisticação */
+      --accent-red:#8B0000;   /* vermelho sangue profundo: intensidade / arte / identidade */
+      --cream:#f0f0f0;        /* cinza claro para contraste */
+      --light-gray:#e0e0e0;   /* cinza claro: elegância */
+      --accent:#8B0000;
+
+      --radius:22px;
+      --radius2:28px;
+      --shadow: 0 18px 70px rgba(0,0,0,.55);
+      --shadow2: 0 12px 40px rgba(0,0,0,.35);
+
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      --serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+
+      --max: 1120px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:var(--font);
+      color:var(--txt);
+      background:
+        radial-gradient(1100px 600px at 15% 0%, rgba(139,0,0,.12), transparent 60%),
+        radial-gradient(900px 520px at 80% 10%, rgba(46,46,46,.14), transparent 55%),
+        radial-gradient(1200px 750px at 40% 85%, rgba(0,0,0,.45), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x:hidden;
+    }
+
+    a{color:inherit; text-decoration:none}
+    img{max-width:100%; display:block}
+    .wrap{max-width:var(--max); margin:0 auto; padding:0 18px}
+    .grid{display:grid; gap:18px}
+    .btn{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:12px 16px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      box-shadow:0 10px 28px rgba(0,0,0,.28);
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+      cursor:pointer;
+      user-select:none;
+      font-weight:650;
+      letter-spacing:.2px;
+    }
+    .btn:hover{ transform: translateY(-2px); border-color:rgba(139,0,0,.45) }
+    .btn.primary{
+      border-color: rgba(139,0,0,.45);
+      background: linear-gradient(180deg, rgba(139,0,0,.22), rgba(139,0,0,.12));
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(139,0,0,.25);
+      background: rgba(139,0,0,.08);
+      color: rgba(255,243,232,.92);
+      font-weight:650;
+      letter-spacing:.25px;
+      font-size:12px;
+    }
+    .card{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
+      border-radius:var(--radius);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+      position:relative;
+    }
+    .card.pad{padding:18px}
+    .muted{color:var(--muted)}
+    .h1{
+      font-family:var(--serif);
+      font-weight:700;
+      letter-spacing:-.5px;
+      line-height:1.02;
+      font-size: clamp(34px, 5vw, 58px);
+      margin:10px 0 12px;
+    }
+    .h2{
+      font-family:var(--serif);
+      font-weight:720;
+      letter-spacing:-.35px;
+      font-size: clamp(24px, 3.4vw, 40px);
+      margin:0 0 10px;
+    }
+    .h3{
+      font-weight:780;
+      letter-spacing:-.2px;
+      font-size: clamp(18px, 2.6vw, 22px);
+      margin:0 0 8px;
+    }
+    .p{line-height:1.6; margin:0}
+    .kicker{font-weight:750; letter-spacing:.6px; text-transform:uppercase; font-size:12px; color:rgba(255,243,232,.78)}
+    .divider{
+      height:1px; background:linear-gradient(90deg, transparent, rgba(215,180,138,.25), transparent);
+      margin:14px 0;
+    }
+
+    /* Topbar */
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      background:rgba(7,7,10,.62);
+      backdrop-filter: blur(14px);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .topbar .inner{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:12px 0;
+      gap:14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      min-width: 210px;
+    }
+    .logoMark{
+      width:34px; height:34px; border-radius:12px;
+      border:1px solid rgba(139,0,0,.35);
+      background:
+        radial-gradient(10px 10px at 30% 30%, rgba(255,255,255,.14), transparent 60%),
+        linear-gradient(180deg, rgba(139,0,0,.18), rgba(0,0,0,.25));
+      box-shadow:0 12px 30px rgba(0,0,0,.35);
+      display:grid; place-items:center;
+      font-weight:900; color:rgba(255,243,232,.95);
+    }
+    .brandTitle{font-weight:850; letter-spacing:.2px}
+    .nav{
+      display:flex; gap:14px; flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-end;
+    }
+    .nav a{
+      font-size:13px; color:rgba(246,243,239,.78);
+      padding:8px 10px; border-radius:12px;
+      border:1px solid transparent;
+      transition: all .18s ease;
+    }
+    .nav a:hover{
+      color:rgba(255,243,232,.95);
+      border-color: rgba(139,0,0,.28);
+      background: rgba(139,0,0,.06);
+    }
+
+    /* Hero */
+    .hero{
+      padding:34px 0 10px;
+    }
+    .heroGrid{
+      grid-template-columns: 1.05fr .95fr;
+      align-items:stretch;
+    }
+    .heroLeft{padding:22px}
+    .heroRight{padding:18px}
+    .heroArt{
+      height:100%;
+      min-height: 420px;
+      border-radius: var(--radius2);
+      overflow:hidden;
+      border:1px solid rgba(139,0,0,.25);
+      position:relative;
+      box-shadow: var(--shadow);
+      background:
+        radial-gradient(700px 380px at 60% 20%, rgba(139,0,0,.15), transparent 58%),
+        radial-gradient(900px 560px at 10% 80%, rgba(46,46,46,.12), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.05));
+    }
+    .heroArt img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter:saturate(1.05) contrast(1.05);
+      transform: scale(1.02);
+    }
+    .heroOverlay{
+      position:absolute; inset:0;
+      background: linear-gradient(90deg, rgba(7,7,10,.55), rgba(7,7,10,.12) 55%, rgba(7,7,10,.55));
+      pointer-events:none;
+    }
+    .heroBadges{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin:14px 0 18px;
+    }
+    .heroActions{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px}
+    .statRow{
+      display:flex; gap:12px; flex-wrap:wrap;
+      margin-top:18px;
+    }
+    .stat{
+      flex:1 1 170px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      padding:12px 12px;
+      background: rgba(0,0,0,.15);
+    }
+    .stat b{display:block; font-size:18px}
+    .stat span{display:block; margin-top:4px; font-size:12px; color:rgba(246,243,239,.7)}
+
+    /* Section */
+    section{padding:28px 0}
+    .sectionHead{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:14px; flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+    .sectionHead .hint{max-width:560px}
+    .twoCol{
+      grid-template-columns: 1fr 1fr;
+      align-items:stretch;
+    }
+
+    /* Palette */
+    .palette{
+      display:flex; gap:12px; flex-wrap:wrap; margin-top:12px
+    }
+    .swatch{
+      display:flex; align-items:center; gap:10px;
+      border:1px solid rgba(139,0,0,.2);
+      background: rgba(139,0,0,.05);
+      border-radius:16px;
+      padding:10px 12px;
+      min-width: 180px;
+    }
+    .dot{
+      width:16px; height:16px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.25);
+      box-shadow: 0 10px 25px rgba(0,0,0,.25);
+    }
+    .swatch small{display:block; color:rgba(246,243,239,.7); font-size:12px}
+    .swatch b{display:block; font-size:13px}
+
+    /* Gallery */
+    .masonry{
+      grid-template-columns: repeat(12, 1fr);
+      gap:14px;
+    }
+    .tile{
+      border:1px solid rgba(255,255,255,.09);
+      border-radius:18px;
+      overflow:hidden;
+      position:relative;
+      background: rgba(255,255,255,.03);
+      cursor:pointer;
+      transition: transform .18s ease, border-color .18s ease;
+      box-shadow: 0 14px 40px rgba(0,0,0,.35);
+    }
+    .tile:hover{transform: translateY(-3px); border-color: rgba(215,180,138,.25)}
+    .tile img{width:100%; height:100%; object-fit:cover}
+    .tile .cap{
+      position:absolute; left:10px; bottom:10px;
+      background: rgba(0,0,0,.55);
+      border:1px solid rgba(255,255,255,.12);
+      padding:8px 10px;
+      border-radius: 14px;
+      font-size:12px;
+      color: rgba(255,243,232,.92);
+      backdrop-filter: blur(10px);
+      max-width: calc(100% - 20px);
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Features */
+    .features{grid-template-columns: repeat(3, 1fr)}
+    .feat{
+      padding:18px;
+      border-radius:22px;
+      border:1px solid rgba(139,0,0,.15);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(139,0,0,.03));
+      box-shadow: 0 16px 48px rgba(0,0,0,.35);
+      min-height: 170px;
+      position:relative;
+      overflow:hidden;
+    }
+    .feat:before{
+      content:"";
+      position:absolute; inset:-60px -60px auto auto;
+      width:140px; height:140px;
+      background: radial-gradient(circle at 30% 30%, rgba(139,0,0,.18), transparent 62%);
+      transform: rotate(20deg);
+      pointer-events:none;
+    }
+    .feat .icon{
+      width:42px; height:42px;
+      border-radius:16px;
+      border:1px solid rgba(139,0,0,.25);
+      background: rgba(139,0,0,.08);
+      display:grid; place-items:center;
+      font-weight:900;
+      margin-bottom:10px;
+      color: rgba(255,243,232,.95);
+    }
+
+    /* Logos */
+    .logos{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:14px;
+    }
+    .logoCard{
+      border:1px solid rgba(255,255,255,.09);
+      border-radius:18px;
+      padding:14px;
+      background: rgba(0,0,0,.16);
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-height: 86px;
+    }
+    .logoCard img{
+      width:46px; height:46px; border-radius:14px;
+      object-fit:cover;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+    }
+    .logoCard b{display:block; font-size:13px}
+    .logoCard span{display:block; font-size:12px; color:rgba(246,243,239,.7); margin-top:2px}
+
+    /* CTA */
+    .cta{
+      padding:26px;
+      border-radius: var(--radius2);
+      border:1px solid rgba(139,0,0,.28);
+      background:
+        radial-gradient(900px 450px at 18% 30%, rgba(139,0,0,.15), transparent 60%),
+        radial-gradient(700px 380px at 85% 20%, rgba(46,46,46,.12), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.15));
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .cta:after{
+      content:"";
+      position:absolute; inset:auto -120px -120px auto;
+      width:260px; height:260px;
+      background: radial-gradient(circle at 30% 30%, rgba(139,0,0,.15), transparent 60%);
+      transform: rotate(18deg);
+      pointer-events:none;
+    }
+    .ctaRow{display:flex; gap:12px; flex-wrap:wrap; margin-top:14px}
+
+    /* Modal */
+    .modal{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.78);
+      display:none;
+      align-items:center; justify-content:center;
+      z-index:80;
+      padding:18px;
+    }
+    .modal.on{display:flex}
+    .modalBox{
+      max-width: min(1000px, 100%);
+      max-height: min(90vh, 100%);
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(12,12,16,.78);
+      backdrop-filter: blur(14px);
+      overflow:hidden;
+      box-shadow: var(--shadow);
+      position:relative;
+    }
+    .modalTop{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:12px 12px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      gap:10px;
+    }
+    .modalTop .title{font-weight:800; font-size:13px; color:rgba(255,243,232,.9); overflow:hidden; white-space:nowrap; text-overflow:ellipsis}
+    .modalTop button{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      border-radius:12px;
+      padding:8px 10px;
+      color:rgba(255,243,232,.9);
+      cursor:pointer;
+    }
+    .modalImgWrap{max-height: calc(90vh - 60px); overflow:auto}
+    .modalImgWrap img{width:100%; height:auto; display:block}
+
+    /* Animations */
+    .reveal{
+      opacity:0;
+      transform: translateY(10px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .reveal.on{
+      opacity:1;
+      transform: translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .heroGrid{grid-template-columns:1fr}
+      .twoCol{grid-template-columns:1fr}
+      .features{grid-template-columns:1fr}
+      .logos{grid-template-columns:1fr 1fr}
+      .brand{min-width:auto}
+      .nav{display:none}
+    }
+    @media (max-width: 520px){
+      .logos{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="wrap">
+      <div class="inner">
+        <div class="brand">
+          <div class="logoMark">🖤</div>
+          <div>
+            <div class="brandTitle">MyndVerse • Apresentação</div>
+            <div class="muted" style="font-size:12px; margin-top:2px">Identidade Dark Tattoo — Marquinho Tatto Studio</div>
+          </div>
+        </div>
+
+        <nav class="nav" aria-label="Navegação">
+          <a href="#projeto">O Projeto</a>
+          <a href="#galeria">Galeria</a>
+          <a href="#instagram">Instagram</a>
+          <a href="#processo">Processo</a>
+          <a href="#provas">Provas</a>
+          <a href="#cta" class="btn primary" style="padding:10px 12px">Quero isso</a>
+        </nav>
+
+        <a class="btn primary" href="#cta" style="white-space:nowrap">Ver proposta</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="wrap">
+      <div class="grid heroGrid">
+
+        <div class="card heroLeft reveal">
+          <div class="pill">🖤 Estúdio referência em Fronteira • Realismo & Identidade</div>
+          <h1 class="h1">Você não é um tatuador comum.<br/>Sua tatuagem precisa parecer assim.</h1>
+          <p class="p muted">
+            Marquinho já tem autoridade. Agora, vamos deixar isso <b>visível em 3 segundos</b> — com identidade visual dark premium,
+            feed padronizado com altíssimo padrão e um Instagram que converte portfólio em agenda.
+          </p>
+
+          <div class="heroBadges">
+            <span class="pill">🖤 Especialista em Realismo</span>
+            <span class="pill">🔥 Identidade Dark Premium</span>
+            <span class="pill">📲 Feed + Destaques estruturados</span>
+            <span class="pill">⭐ Prova social forte</span>
+          </div>
+
+          <div class="heroActions">
+            <a class="btn primary" href="#instagram">Ver o Instagram posicionado</a>
+            <a class="btn" href="#galeria">Ver portfólio transformado</a>
+          </div>
+
+          <div class="statRow">
+            <div class="stat">
+              <b>Referência regional</b>
+              <span>Quando alguém pensa tatuagem em Fronteira, pensa em você.</span>
+            </div>
+            <div class="stat">
+              <b>Conversão automática</b>
+              <span>Portfólio claro + processo + autoridade = mais agendamentos.</span>
+            </div>
+            <div class="stat">
+              <b>Consistência forte</b>
+              <span>Template dark: portfólio, processo, cuidados, avaliações.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="heroRight reveal">
+          <div class="heroArt" role="img" aria-label="Tabela e conceito visual">
+            <img src="https://ustreggl.sirv.com/marquitos%20tatto/avatar.jpeg" alt="Portfólio tatuagem" />
+            <div class="heroOverlay"></div>
+          </div>
+          <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap">
+            <div class="pill">🖤 Sensação: força + sofisticação</div>
+            <div class="pill">💎 Paleta Dark (preto / cinza / vermelho sangue)</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Posicionamento -->
+  <section id="projeto">
+    <div class="wrap">
+      <div class="sectionHead reveal">
+        <div>
+          <div class="kicker">Posicionamento</div>
+          <h2 class="h2">Marquinho não é um estúdio comum. É referência de realismo na região.</h2>
+        </div>
+        <div class="hint muted p">
+          Quando o tatuador é único, a comunicação precisa parecer forte e autorizada.
+          A proposta aqui é criar presença de <b>marca premium</b>, demonstrar expertise e converter seguidores em agenda.
+        </div>
+      </div>
+
+      <div class="grid twoCol">
+        <div class="card pad reveal">
+          <h3 class="h3">O que a identidade faz (na prática)</h3>
+          <p class="p muted">
+            Em segundos, a pessoa decide se você é o tatuador certo. A identidade dark + portfólio claro tornam o perfil
+            <b>autorizado</b> e com "cara de artista de alto nível". Isso elimina dúvidas e converte para agenda.
+          </p>
+          <div class="divider"></div>
+          <div class="grid" style="gap:10px">
+            <div class="pill">🖤 Psicologia: preto + cinza = sofisticação</div>
+            <div class="pill">💎 Vermelho sangue = intensidade, arte, força</div>
+            <div class="pill">⚡ Dark premium = autoridade visual imediata</div>
+          </div>
+        </div>
+
+        <div class="card pad reveal">
+          <h3 class="h3">Paleta (Dark Tattoo Premium)</h3>
+          <p class="p muted">Uma paleta que comunica: <b>força</b>, <b>autoridade</b> e <b>arte sofisticada</b>.</p>
+
+          <div class="palette">
+            <div class="swatch">
+              <span class="dot" style="background:#000000"></span>
+              <div><b>Preto Absoluto</b><small>#000000</small></div>
+            </div>
+            <div class="swatch">
+              <span class="dot" style="background:#1C1C1C"></span>
+              <div><b>Cinza Grafite</b><small>#1C1C1C</small></div>
+            </div>
+            <div class="swatch">
+              <span class="dot" style="background:#2E2E2E"></span>
+              <div><b>Cinza Chumbo</b><small>#2E2E2E</small></div>
+            </div>
+            <div class="swatch">
+              <span class="dot" style="background:#8B0000"></span>
+              <div><b>Vermelho Sangue</b><small>#8B0000</small></div>
+            </div>
+            <div class="swatch">
+              <span class="dot" style="background:#f0f0f0"></span>
+              <div><b>Cinza Claro</b><small>#F0F0F0</small></div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+          <p class="p muted">
+            Resultado: o perfil passa a sensação de "<b>tatuador referência</b>".
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Entregáveis -->
+  <section>
+    <div class="wrap">
+      <div class="sectionHead reveal">
+        <div>
+          <div class="kicker">Entregáveis</div>
+          <h2 class="h2">O que a MyndVerse entrega para o estúdio</h2>
+        </div>
+        <div class="hint muted p">
+          Um pacote completo para transformar o Instagram em máquina de vendas:
+          portfólio padronizado, autoridade demonstrada e conversão estruturada.
+        </div>
+      </div>
+
+      <div class="grid features">
+        <div class="feat reveal">
+          <div class="icon">🎭</div>
+          <div class="h3">Identidade Dark Premium</div>
+          <p class="p muted">Paleta escura com vermelho sangue — transmite força, sofisticação e expertise.</p>
+        </div>
+        <div class="feat reveal">
+         <div class="icon">🎨</div>
+          <div class="h3">Identidade Visual</div>
+          <p class="p muted">Paleta, tipografia e padrão visual para manter tudo com cara premium.</p>
+        </div>
+        <div class="feat reveal">
+          <div class="icon">📲</div>
+          <div class="h3">Feed padronizado</div>
+          <p class="p muted">Templates e artes com consistência: promoções, institucionais e provas sociais.</p>
+        </div>
+        <div class="feat reveal">
+          <div class="icon">📸</div>
+          <div class="h3">Stories prontos</div>
+          <p class="p muted">Stories no padrão do perfil (chamando atenção com elegância).</p>
+        </div>
+        <div class="feat reveal">
+          <div class="icon">⭐</div>
+          <div class="h3">Artes de avaliação</div>
+          <p class="p muted">Prova social visual (cards de avaliação) para aumentar confiança.</p>
+        </div>
+        <div class="feat reveal">
+          <div class="icon">💬</div>
+          <div class="h3">WhatsApp & extras</div>
+          <p class="p muted">Potencial para figurinhas, gifs e peças especiais para campanhas/eventos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Galeria -->
+  <section id="galeria">
+    <div class="wrap">
+      <div class="sectionHead reveal">
+        <div>
+          <div class="kicker">Galeria</div>
+          <h2 class="h2">Portfólio, destaques e padrão visual já pronto</h2>
+        </div>
+        <div class="hint muted p">
+          Clique em qualquer imagem para abrir em tela cheia.
+          A intenção é mostrar "como fica na vida real" — profissional, consistente e com autoridade.
+        </div>
+      </div>
+
+      <div class="grid masonry">
+        <!-- Avatar / peças -->
+        <div class="tile reveal" style="grid-column: span 6; aspect-ratio: 16/11" data-title="Portfólio">
+          <img src="https://ustreggl.sirv.com/marquitos%20tatto/avatar.jpeg" alt="Portfólio tatuagem" />
+          <div class="cap">Portfólio (destaque)</div>
+        </div>
+
+        <div class="tile reveal" style="grid-column: span 4; aspect-ratio: 1/1" data-title="Arte 01">
+          <img src="https://ustreggl.sirv.com/marquitos%20tatto/arte%201.png" alt="Arte cafeteria" />
+          <div class="cap">Arte promocional</div>
+        </div>
+
+        <div class="tile reveal" style="grid-column: span 4; aspect-ratio: 1/1" data-title="Arte 02">
+          <img src="https://ustreggl.sirv.com/marquitos%20tatto/Promo%C3%A7%C3%A3o%20de%20tatuagens%20Marquinho.png" alt="Segunda arte cafeteria" />
+          <div class="cap">Arte promocional</div>
+        </div>
+
+        <div class="tile reveal" style="grid-column: span 4; aspect-ratio: 1/1" data-title="Arte 03">
+          <img src="https://ustreggl.sirv.com/marquitos%20tatto/arte%202.png" alt="Terceira arte cafeteria" />
+          <div class="cap">Arte promocional</div>
+        </div>
+
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- Instagram -->
+  <section id="instagram">
+    <div class="wrap">
+      <div class="sectionHead reveal">
+        <div>
+          <div class="kicker">Instagram</div>
+          <h2 class="h2">O perfil deixa de parecer “postagem”. Vira marca.</h2>
+        </div>
+        <div class="hint muted p">
+          Feed padronizado, destaques com ícones, foto de perfil autorizada e identidade coerente.
+          O objetivo é criar <b>memória visual imediata</b> e <b>autoridade</b>.
+        </div>
+      </div>
+
+      <div class="grid twoCol">
+        <div class="card pad reveal">
+          <h3 class="h3">Prévia do resultado</h3>
+          <p class="p muted">
+            Visualização do feed e destaques de um tatuador posicionado corretamente
+          </p>
+          <div class="divider"></div>
+          <div class="grid" style="gap:10px">
+            <div class="pill">📌 Foto de perfil de autoridade</div>
+            <div class="pill">🎯 Destaques padronizados dark</div>
+            <div class="pill">🧩 Feed com padrão tattoo</div>
+            <div class="pill">⭐ Prova social em vídeo</div>
+          </div>
+        </div>
+
+        <div class="card reveal" style="cursor:pointer" data-title="Prévia do Instagram (mockup)">
+          <img src="https://ustreggl.sirv.com/marquitos%20tatto/Perfil%20do%20Marquinho%20Tattoo%20em%20MG.png" alt="Prévia Instagram" style="width:100%; height:auto" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Estratégia de Conversão -->
+  <section id="processo">
+    <div class="wrap">
+      <div class="sectionHead reveal">
+        <div>
+          <div class="kicker">Estratégia</div>
+          <h2 class="h2">Como converter Instagram em agendamentos</h2>
+        </div>
+        <div class="hint muted p">
+          Dark palette + portfólio claro + prova social = conversão estruturada.
+          Não é sobre parecer bonito. É sobre fechar agenda.
+        </div>
+      </div>
+
+      <div class="grid twoCol">
+        <div class="card pad reveal">
+          <h3 class="h3">Instagram: referência em 3 segundos</h3>
+          <p class="p muted">
+            O cérebro reconhece padrão visual mais rápido do que logo.
+            Uma identidade dark consistente vira uma assinatura: quando o público vê, já sabe que é de Marquinho.
+          </p>
+          <div class="divider"></div>
+          <h3 class="h3">Portfólio: demonstração de expertise</h3>
+          <p class="p muted">
+            Tatuagens finalizadas + closes de detalhe + antes/depois + processo.
+            Cada post mostra um argumento: "Você é o tatuador certo".
+        </div>
+
+        <div class="card pad reveal">
+          <h3 class="h3">WhatsApp: agenda + relacionamento</h3>
+          <p class="p muted">
+            Stories fixos, horários, condições e preços no mesmo padrão.
+            O cliente sente "tatuador profissional e organizado".
+          </p>
+          <div class="divider"></div>
+          <h3 class="h3">Prova social: elimina objeções</h3>
+          <p class="p muted">
+            Vídeos de depoimentos, caps de avaliações e processamento de cicatrização aumentam confiança,
+            porque removem insegurança antes do contato inicial.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Processo -->
+  <section>
+    <div class="wrap">
+      <div class="sectionHead reveal">
+        <div>
+          <div class="kicker">Execução</div>
+          <h2 class="h2">Como a MyndVerse constrói o posicionamento</h2>
+        </div>
+        <div class="hint muted p">
+          Processo de posicionamento forte, visual impactante e estratégia de conversão.
+        </div>
+      </div>
+
+      <div class="grid features">
+        <div class="feat reveal">
+          <div class="icon">1</div>
+          <div class="h3">Briefing (15–20min)</div>
+          <p class="p muted">Entender o estilo, público, produtos e sensação da marca.</p>
+        </div>
+        <div class="feat reveal">
+          <div class="icon">2</div>
+          <div class="h3">Paleta Dark Tattoo</div>
+          <p class="p muted">Identidade dark com vermelho sangue + tipografia minimalista + composição focada em portfolio.</p>
+        </div>
+        <div class="feat reveal">
+          <div class="icon">3</div>
+          <div class="h3">Portfólio Padronizado</div>
+          <p class="p muted">Estruturação de imagens, descrições e padrão visual para destacar tatuagens realizadas.</p>
+        </div>
+        <div class="feat reveal">
+          <div class="icon">4</div>
+          <div class="h3">Destaques Estruturados</div>
+          <p class="p muted">Portfólio, Avaliações, Processo, Cuidados, Agenda, Novo Estúdio — cada um com capa dark padronizada.</p>
+        </div>
+        <div class="feat reveal">
+          <div class="icon">5</div>
+          <div class="h3">Instagram Posicionado</div>
+          <p class="p muted">Mockup do feed, destaques e CTA para agenda — pronto para lançar.
+          </p>
+        </div>
+        <div class="feat reveal">
+          <div class="icon">6</div>
+          <div class="h3">Lançamento + Evolução</div>
+          <p class="p muted">Kit entregue, treinamento e opções futuras: vídeos de processo, cicatrização, campanhas sazonais.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Prova Social -->
+  <section id="provas">
+    <div class="wrap">
+      <div class="sectionHead reveal">
+        <div>
+          <div class="kicker">Prova social</div>
+          <h2 class="h2">Nós confiamos em Marquinho — e você também deveria</h2>
+        </div>
+        <div class="hint muted p">
+          Clientes que transformaram sua presença com MyndVerse. O mesmo que vamos fazer com Marquinho.
+        </div>
+      </div>
+
+      <div class="logos">
+        <div class="logoCard reveal">
+          <img src="https://horizons-cdn.hostinger.com/cc64ec28-8404-430a-bd2c-c38386f32d83/f774a065a6d3b24078b7f7bdd21e7d83.png" alt="JRB Odontologia" />
+          <div>
+            <b>JRB Odontologia</b>
+            <span>Implantes há +10 anos</span>
+          </div>
+        </div>
+
+        <div class="logoCard reveal">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/27/fa/8b/27fa8baa-f7da-9b69-fe8a-988e40f3d3d8/AppIcon-0-0-1x_U007epad-0-85-220.png/200x200ia-75.webp" alt="TV Rio Grande" />
+          <div>
+            <b>TV Rio Grande</b>
+            <span>Conteúdo e presença digital</span>
+          </div>
+        </div>
+
+        <div class="logoCard reveal">
+          <img src="https://myndverse-host.sirv.com/WhatsApp%20Image%202026-02-25%20at%201.20.18%20PM.jpeg" alt="Hotel Tabacana" />
+          <div>
+            <b>Hotel Tabacana</b>
+            <span>Maior hotel da região • 3 estrelas</span>
+          </div>
+        </div>
+
+        <div class="logoCard reveal">
+          <img src="https://myndverse-host.sirv.com/283288187_950821505588118_1026961100769060215_n.jpg" alt="Dom Pedro Pizzaria" />
+          <div>
+            <b>Dom Pedro Pizzaria</b>
+            <span>Maior pizzaria da cidade</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta">
+    <div class="wrap">
+      <div class="cta reveal">
+        <div class="kicker">Fechamento</div>
+        <h2 class="h2" style="margin-top:6px">Vamos transformar Marquinho na referência regional em realismo e autoridade.</h2>
+        <p class="p muted">
+          Se você quiser, a gente já sai dessa reunião com:
+          <b>definição de padrão visual</b>, <b>primeiros feeds padronizados</b> e o <b>plano de destaques</b>.
+        </p>
+
+        <div class="ctaRow">
+          <a class="btn primary" href="#galeria">Ver portfólio transformado</a>
+          <a class="btn" href="#provas">Ver referências (clientes)</a>
+          <a class="btn" href="#processo">Entender o processo</a>
+        </div>
+
+        <div class="divider"></div>
+        <p class="p muted" style="font-size:13px">
+          <b>MyndVerse</b> • Identidade, autoridade e conversão — do posicionamento ao agendamento.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="padding:24px 0 40px">
+    <div class="wrap" style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:center">
+      <div class="muted" style="font-size:12px">© <span id="year"></span> MyndVerse — Apresentação.</div>
+      <div class="muted" style="font-size:12px">Feito para apresentação presencial no notebook (HTML único).</div>
+    </div>
+  </footer>
+
+  <!-- Modal -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modalBox" role="dialog" aria-modal="true" aria-label="Visualizador de imagem">
+      <div class="modalTop">
+        <div class="title" id="modalTitle">Imagem</div>
+        <div style="display:flex; gap:8px">
+          <button id="openNew" title="Abrir em nova aba">Abrir</button>
+          <button id="closeModal" title="Fechar">Fechar</button>
+        </div>
+      </div>
+      <div class="modalImgWrap">
+        <img id="modalImg" alt="Imagem em destaque" src="" />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Ano
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Reveal on scroll
+    const els = Array.from(document.querySelectorAll('.reveal'));
+    const io = new IntersectionObserver((entries)=>{
+      for(const e of entries){
+        if(e.isIntersecting){
+          e.target.classList.add('on');
+          io.unobserve(e.target);
+        }
+      }
+    }, { threshold: 0.12 });
+    els.forEach(el=>io.observe(el));
+
+    // Modal gallery
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modalImg');
+    const modalTitle = document.getElementById('modalTitle');
+    const closeModalBtn = document.getElementById('closeModal');
+    const openNewBtn = document.getElementById('openNew');
+
+    let currentSrc = "";
+
+    function openModal(src, title){
+      currentSrc = src;
+      modalImg.src = src;
+      modalTitle.textContent = title || "Imagem";
+      modal.classList.add('on');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(){
+      modal.classList.remove('on');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      modalImg.src = "";
+      currentSrc = "";
+    }
+
+    document.querySelectorAll('.tile, .card[data-title]').forEach(card=>{
+      card.addEventListener('click', ()=>{
+        const img = card.querySelector('img');
+        const title = card.getAttribute('data-title') || (card.querySelector('.cap')?.textContent || "Imagem");
+        if(img && img.src) openModal(img.src, title);
+      });
+    });
+
+    closeModalBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e)=>{ if(e.target === modal) closeModal(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && modal.classList.contains('on')) closeModal(); });
+
+    openNewBtn.addEventListener('click', ()=>{
+      if(currentSrc) window.open(currentSrc, '_blank', 'noopener,noreferrer');
+    });
+  </script>
+</body>
+
+</html>
