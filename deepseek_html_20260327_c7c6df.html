@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>💧 Ciclo Biogeoquímico da Água | Mapa Mental + Notas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #eef5f0 0%, #e2f0e6 100%);
+            font-family: system-ui, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            padding: 20px 16px 48px;
+            color: #1a3a2b;
+        }
+
+        .study-container {
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        /* cabeçalho */
+        .header {
+            margin-bottom: 28px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #0a5e3a, #1f8a4c);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge {
+            background: #c8e6d9;
+            display: inline-flex;
+            padding: 6px 16px;
+            border-radius: 60px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #0a5c38;
+            margin-top: 8px;
+            gap: 6px;
+            backdrop-filter: blur(2px);
+        }
+
+        .sub {
+            font-size: 0.9rem;
+            color: #2c6e4f;
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        /* GRADE DE NOTAS */
+        .notes-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 36px;
+            box-shadow: 0 12px 28px rgba(0, 32, 16, 0.1);
+            overflow: hidden;
+            transition: transform 0.1s ease;
+            border: 1px solid #d4ecd9;
+        }
+
+        .card-header {
+            background: #f1fbf5;
+            padding: 16px 22px;
+            border-bottom: 2px solid #c6e2d0;
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .card-header h2 {
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: #165a37;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .shortcut {
+            background: #2c7a4b20;
+            font-family: monospace;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 40px;
+            color: #136b40;
+            border: 0.5px solid #aad0b9;
+        }
+
+        .card-content {
+            padding: 20px 22px 24px;
+            font-size: 1rem;
+            line-height: 1.48;
+        }
+
+        .highlight {
+            background: #fef8e7;
+            border-left: 5px solid #f5b342;
+            padding: 14px 18px;
+            border-radius: 24px;
+            margin: 16px 0 12px;
+            font-weight: 500;
+        }
+
+        .memory-reinforce {
+            background: #e3f3ea;
+            padding: 14px 18px;
+            border-radius: 28px;
+            margin-top: 18px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            flex-wrap: wrap;
+            border: 1px solid #c0ddce;
+        }
+
+        .tip {
+            background: #eef3fc;
+            border-radius: 24px;
+            padding: 14px 18px;
+            margin: 14px 0;
+            border-left: 4px solid #3b82f6;
+            font-size: 0.93rem;
+        }
+
+        .process-list {
+            list-style: none;
+            margin: 8px 0;
+        }
+
+        .process-list li {
+            margin-bottom: 12px;
+            padding-left: 32px;
+            position: relative;
+        }
+
+        .process-list li strong {
+            color: #0f6b41;
+        }
+
+        .process-list li::before {
+            content: "💧";
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 1.1rem;
+        }
+
+        hr {
+            margin: 18px 0;
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, #c0e0cd, transparent);
+        }
+
+        .subgrid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 12px;
+        }
+
+        .subcard {
+            background: #fafef9;
+            flex: 1;
+            min-width: 140px;
+            border-radius: 28px;
+            padding: 14px 16px;
+            border: 1px solid #cde9db;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .subcard h3 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: #1f543b;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .badge-conseq {
+            background: #fff0ea;
+            border-radius: 28px;
+            padding: 14px 18px;
+            margin-top: 12px;
+            font-size: 0.92rem;
+        }
+
+        /* MAPA MENTAL - DESTAQUE PRINCIPAL */
+        .mindmap-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f9fffbf0 100%);
+            border-radius: 44px;
+            overflow: hidden;
+            box-shadow: 0 20px 35px -12px rgba(20, 70, 40, 0.25);
+            margin-bottom: 8px;
+        }
+        .mindmap-header {
+            background: #1e6a43;
+            color: white;
+            padding: 18px 22px;
+        }
+        .mindmap-header h2 {
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 4px;
+        }
+        .mindmap-header p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        .mindmap-container {
+            padding: 28px 20px 32px;
+            display: flex;
+            justify-content: center;
+        }
+        .mindmap-svg {
+            max-width: 100%;
+            height: auto;
+            background: #FEFDF8;
+            border-radius: 36px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+        .mindmap-note {
+            background: #f0f9f2;
+            margin: 0 20px 24px 20px;
+            border-radius: 28px;
+            padding: 12px 18px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a5d3c;
+        }
+        @media (max-width: 550px) {
+            .card-content {
+                padding: 16px 18px;
+            }
+            .card-header h2 {
+                font-size: 1.3rem;
+            }
+            .mindmap-container {
+                padding: 16px 12px;
+            }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 38px;
+            font-size: 0.7rem;
+            color: #568b6e;
+            border-top: 1px solid #cbdfd0;
+            padding-top: 24px;
+        }
+        .water-emoji {
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+<div class="study-container">
+    <div class="header">
+        <h1>💧 Ciclo Biogeoquímico da Água</h1>
+        <div class="badge">
+            🌍 H₂O | Abiótico ↔ Biosfera | Estudo completo + Mapa Mental
+        </div>
+        <div class="sub">♻️ Reciclagem contínua | Nutrientes | Regulação climática</div>
+    </div>
+
+    <div class="notes-grid">
+        <!-- CARD ESPECIAL: MAPA MENTAL INTERATIVO (DICA DE OURO) -->
+        <div class="mindmap-card">
+            <div class="mindmap-header">
+                <h2>🧠 MAPA MENTAL <span style="font-size: 1.3rem;">✨ Dica de Ouro</span></h2>
+                <p>Centro = H₂O | Ramos: Processos Físicos • Biológicos • Antrópicos — use setas para conectar!</p>
+            </div>
+            <div class="mindmap-container">
+                <svg class="mindmap-svg" viewBox="0 0 680 380" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; background: #FEFDF8; border-radius: 32px;">
+                    <!-- fundo suave -->
+                    <rect width="680" height="380" fill="#FEFDF8" rx="28" ry="28" />
+                    
+                    <!-- centro H2O -->
+                    <circle cx="340" cy="190" r="52" fill="#1B6B43" stroke="#FFE8C7" stroke-width="3" />
+                    <text x="340" y="185" text-anchor="middle" fill="white" font-size="26" font-weight="bold" font-family="system-ui">H₂O</text>
+                    <text x="340" y="215" text-anchor="middle" fill="#E6F4EA" font-size="12" font-weight="500">água</text>
+                    
+                    <!-- RAMO FÍSICO (esquerda superior) -->
+                    <path d="M288 170 L220 110 L200 110" stroke="#2C9B6A" stroke-width="2.5" fill="none" stroke-dasharray="5 3" />
+                    <path d="M288 170 L215 150 L200 150" stroke="#2C9B6A" stroke-width="2.5" fill="none" stroke-dasharray="5 3" />
+                    <rect x="142" y="92" width="88" height="44" rx="18" fill="#E2F3E9" stroke="#2C9B6A" stroke-width="1.8" />
+                    <text x="186" y="121" text-anchor="middle" fill="#185C3A" font-size="12" font-weight="bold">🌊 FÍSICOS</text>
+                    <text x="186" y="142" text-anchor="middle" fill="#3A6B53" font-size="8">Evaporação, Condensação</text>
+                    <text x="186" y="155" text-anchor="middle" fill="#3A6B53" font-size="8">Precipitação, Infiltração</text>
+                    
+                    <!-- RAMO BIOLÓGICO (direita superior) -->
+                    <path d="M392 170 L460 110 L480 110" stroke="#3C8D5F" stroke-width="2.5" fill="none" stroke-dasharray="5 3" />
+                    <path d="M392 170 L470 140 L495 140" stroke="#3C8D5F" stroke-width="2.5" fill="none" stroke-dasharray="5 3" />
+                    <rect x="500" y="84" width="105" height="58" rx="20" fill="#E0F0E8" stroke="#3C8D5F" stroke-width="1.8" />
+                    <text x="552" y="109" text-anchor="middle" fill="#185C3A" font-size="12" font-weight="bold">🍃 BIOLÓGICOS</text>
+                    <text x="552" y="129" text-anchor="middle" fill="#386F54" font-size="9">Respiração / Ingestão</text>
+                    <text x="552" y="144" text-anchor="middle" fill="#386F54" font-size="9">Excreção / Decomposição</text>
+                    
+                    <!-- RAMO ANTRÓPICO (parte inferior) -->
+                    <path d="M340 242 L340 310 L280 340" stroke="#E68A2E" stroke-width="2.5" fill="none" stroke-dasharray="5 3" />
+                    <path d="M340 242 L340 315 L400 340" stroke="#E68A2E" stroke-width="2.5" fill="none" stroke-dasharray="5 3" />
+                    <rect x="220" y="320" width="100" height="48" rx="20" fill="#FFF0E0" stroke="#E68A2E" stroke-width="1.8" />
+                    <text x="270" y="343" text-anchor="middle" fill="#B45116" font-size="11" font-weight="bold">🏭 Desmatamento</text>
+                    <text x="270" y="360" text-anchor="middle" fill="#B45116" font-size="9">Urbanização</text>
+                    <rect x="360" y="320" width="100" height="48" rx="20" fill="#FFF0E0" stroke="#E68A2E" stroke-width="1.8" />
+                    <text x="410" y="343" text-anchor="middle" fill="#B45116" font-size="11" font-weight="bold">⚠️ Poluição</text>
+                    <text x="410" y="360" text-anchor="middle" fill="#B45116" font-size="9">Enchentes / Escassez</text>
+                    
+                    <!-- setas adicionais decorativas (interações) -->
+                    <path d="M186 135 L240 165" stroke="#93BFAB" stroke-width="1.5" fill="none" stroke-dasharray="4 2" />
+                    <path d="M552 110 L480 165" stroke="#93BFAB" stroke-width="1.5" fill="none" stroke-dasharray="4 2" />
+                    <path d="M270 320 L310 260" stroke="#DEA26C" stroke-width="1.8" fill="none" stroke-dasharray="5 3" />
+                    <text x="45" y="360" fill="#6E947B" font-size="8" font-style="italic">→ Use setas: conecte os ciclos!</text>
+                </svg>
+            </div>
+            <div class="mindmap-note">
+                💡 <strong>Como estudar:</strong> visualize o centro H₂O, depois expanda para os processos físicos (evaporação, condensação...), depois os biológicos (respiração, ingestão, decomposição) e antrópicos (desmatamento, urbanização, poluição). Trace conexões mentais!
+            </div>
+        </div>
+
+        <!-- CARD 1: DEFINIÇÃO COMPLETA -->
+        <div class="card">
+            <div class="card-header">
+                <h2>📘 Definição & Importância</h2>
+                <div class="shortcut">🔑 fundamento</div>
+            </div>
+            <div class="card-content">
+                <p><strong>🌀 Ciclo biogeoquímico:</strong> processo natural onde elementos químicos (água, carbono, oxigênio, nitrogênio) circulam entre o <strong>ambiente abiótico</strong> (atmosfera, litosfera, hidrosfera) e os <strong>seres vivos</strong> (biosfera). Garantem reciclagem e disponibilidade de nutrientes essenciais.</p>
+                <div class="highlight">
+                    💧 <strong>Importância do elemento químico (H₂O):</strong> A água (Hidrogênio + Oxigênio) circula no ciclo hidrológico. Essencial para: <strong>fotossíntese, transporte de nutrientes e regulação do clima.</strong>
+                </div>
+                <div class="memory-reinforce">
+                    <span>🧠</span>
+                    <span><strong>Decore:</strong> “H₂O conecta <u>ABIOS</u> (solo/ar) + <u>BIOS</u> (vida)”. É o solvente universal que move o planeta.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 2: PROCESSOS FÍSICOS DETALHADOS -->
+        <div class="card">
+            <div class="card-header">
+                <h2>⚙️ Processos Físicos</h2>
+                <div class="shortcut">🌊 fluxo hídrico</div>
+            </div>
+            <div class="card-content">
+                <ul class="process-list">
+                    <li><strong>💨 Evaporação:</strong> Rios, lagos, mares e solo aquecidos pelo sol → vapor d'água.</li>
+                    <li><strong>☁️ Condensação:</strong> Vapor esfria nas camadas altas → forma gotículas (nuvens).</li>
+                    <li><strong>🌧️ Precipitação:</strong> Gotículas pesadas caem: chuva, neve ou granizo.</li>
+                    <li><strong>🌱 Infiltração:</strong> Água penetra no solo; outra parte escoa para rios, lagos e oceanos.</li>
+                    <li><strong>🏞️ Acumulação:</strong> Armazenamento em aquíferos, oceanos, geleiras.</li>
+                    <li><strong>🌿 Evapotranspiração:</strong> Água do solo + liberação pelas plantas (folhas) → volta à atmosfera.</li>
+                </ul>
+                <div class="tip">
+                    💡 <strong>Observação forte:</strong> Evapotranspiração é a soma da evaporação direta + transpiração vegetal — fundamental para chuvas continentais.
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 3: INTERAÇÕES BIOLÓGICAS (INGESTÃO, EXCREÇÃO, RESPIRAÇÃO, DECOMPOSIÇÃO) -->
+        <div class="card">
+            <div class="card-header">
+                <h2>🐾 Seres vivos no ciclo</h2>
+                <div class="shortcut">🍃 biológicos</div>
+            </div>
+            <div class="card-content">
+                <div class="subgrid">
+                    <div class="subcard">
+                        <h3>🥤 Ingestão</h3>
+                        <p class="small-note">Água entra nos animais pela <strong>bebida</strong> e <strong>alimentos</strong> consumidos.</p>
+                    </div>
+                    <div class="subcard">
+                        <h3>🚽 Excreção</h3>
+                        <p class="small-note">Saída por <strong>urina, fezes, respiração e suor</strong> (transpiração).</p>
+                    </div>
+                </div>
+                <div class="highlight">
+                    🌬️ <strong>Respiração:</strong> Seres vivos devolvem água à natureza através do vapor expirado.
+                </div>
+                <div class="memory-reinforce">
+                    <span>🍂</span>
+                    <span><strong>Decomposição:</strong> Água ativa decompositores (fungos/bactérias). Libera água + minerais de organismos mortos → ciclo recomeça.</span>
+                </div>
+                <div class="tip">
+                    🔁 <strong>Ciclo completo biológico:</strong> Ingestão → utilização → excreção/ respiração → decomposição → retorno ao solo/atmosfera.
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 4: INTERFERÊNCIA HUMANA + CONSEQUÊNCIAS DIRETAS -->
+        <div class="card">
+            <div class="card-header">
+                <h2>⚠️ Interferência Humana</h2>
+                <div class="shortcut">🚨 antrópicos</div>
+            </div>
+            <div class="card-content">
+                <p>Ações como <strong>desmatamento, urbanização e poluição</strong> alteram o ciclo natural causando escassez, enchentes e danos ambientais.</p>
+                <div class="badge-conseq">
+                    <strong>🌲 Desmatamento:</strong> Perda de biodiversidade, redução da evapotranspiração, diminuição de chuvas.<br>
+                    <strong>🏙️ Urbanização:</strong> Solo impermeável → menor infiltração, risco de enchentes, alterações climáticas.<br>
+                    <strong>🏭 Poluição:</strong> Contamina rios/lagos, afeta evaporação, intoxica seres vivos e prejudica todo o ciclo.
+                </div>
+                <div class="memory-reinforce">
+                    <span>⚠️</span>
+                    <span><strong>Mnemônico:</strong> “<u>DUP</u>” – <strong>D</strong>esmatamento, <strong>U</strong>rbanização, <strong>P</strong>oluição = principais vilões do ciclo hídrico.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 5: RESUMO COMPLETO (EXCREÇÃO, DECOMPOSIÇÃO E RESPIRAÇÃO JUNTOS) -->
+        <div class="card">
+            <div class="card-header">
+                <h2>🔁 Resumo: Interações Biológicas</h2>
+                <div class="shortcut">♻️ revisão</div>
+            </div>
+            <div class="card-content">
+                <p><strong>✔️ Ingestão:</strong> água entra via bebida/alimentos.<br>
+                <strong>✔️ Excreção:</strong> urina, fezes, respiração e suor.<br>
+                <strong>✔️ Respiração:</strong> libera vapor de água no ar.<br>
+                <strong>✔️ Decomposição:</strong> microrganismos liberam água e nutrientes ao solo.</p>
+                <div class="highlight">
+                    🌱 <strong>Evapotranspiração + respiração + decomposição =</strong> devolução ativa da água ao ambiente após passar pelos seres vivos.
+                </div>
+                <div class="tip">
+                    🎯 <strong>Objetivo do ciclo:</strong> garantir disponibilidade contínua de água doce, regular o clima e sustentar a biodiversidade.
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 6: ATALHOS E REFORÇOS PARA DECORAR -->
+        <div class="card">
+            <div class="card-header">
+                <h2>📌 Atalhos & Reforços</h2>
+                <div class="shortcut">🧠 memorização</div>
+            </div>
+            <div class="card-content">
+                <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 18px;">
+                    <div style="background: #e1f3ea; border-radius: 40px; padding: 8px 16px; font-weight: 500;">💧 <strong>E-C-P-I-A-E</strong> (Evaporação, Condensação, Precipitação, Infiltração, Acumulação, Evapotranspiração)</div>
+                    <div style="background: #e1f3ea; border-radius: 40px; padding: 8px 16px;">🍃 Respiração + Transpiração + Excreção = devolução da água</div>
+                </div>
+                <div class="memory-reinforce">
+                    <span>💡</span>
+                    <span><strong>Dica de ouro (visual):</strong> No centro H₂O, trace setas para os ramos físicos (sol, nuvem, chuva), biológicos (animal, planta, decompositor) e antrópicos (trator, fábrica, asfalto).</span>
+                </div>
+                <div class="highlight">
+                    🧪 <strong>Fotosíntese:</strong> usa água + CO₂ → glicose + oxigênio. A água é matéria-prima da vida.
+                </div>
+                <div class="tip">
+                    🔁 <strong>“Nada se perde, tudo se transforma”</strong> — Ciclo biogeoquímico da água é exemplo perfeito: a mesma água circula há bilhões de anos.
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 7: CONSEQUÊNCIAS PRÁTICAS + EXEMPLOS REAIS -->
+        <div class="card">
+            <div class="card-header">
+                <h2>🌎 Consequências reais</h2>
+                <div class="shortcut">alertas</div>
+            </div>
+            <div class="card-content">
+                <div class="subgrid">
+                    <div class="subcard">
+                        <h3>🏞️ Enchentes urbanas</h3>
+                        <p>Solo impermeável + falta de infiltração = escoamento violento.</p>
+                    </div>
+                    <div class="subcard">
+                        <h3>🔥 Escassez hídrica</h3>
+                        <p>Desmatamento reduz “rios voadores”, afetando chuvas.</p>
+                    </div>
+                </div>
+                <div class="badge-conseq" style="background:#faf0e5;">
+                    🧪 <strong>Poluição química:</strong> metais pesados, plásticos e esgoto alteram temperatura e evaporação, interrompendo o equilíbrio biogeoquímico.
+                </div>
+                <div class="memory-reinforce" style="margin-top: 14px;">
+                    <span>📖</span>
+                    <span><strong>Revisão final:</strong> Ciclo biogeoquímico da água é movimento contínuo entre atmosfera, hidrosfera, litosfera e biosfera. Conhecer interferências humanas ajuda a combater enchentes, contaminação e escassez.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        📚 Material didático premium - Ciclo Biogeoquímico (H₂O) | Notas organizadas + Mapa mental interativo | Estudo eficiente para celular
+    </footer>
+</div>
+</body>
+</html>
