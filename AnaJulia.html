@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>♻️ Ciclo Biogeoquímico da Água | Guia de Estudos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #eef7f0;
+            font-family: system-ui, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            padding: 20px 16px 48px;
+            color: #1a3a2b;
+        }
+
+        /* container principal */
+        .study-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* cabeçalho */
+        .header {
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 1.9rem;
+            background: linear-gradient(135deg, #0b5e3c, #2c7a4b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+
+        .badge {
+            background: #d9f0e2;
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #0a5c38;
+            margin-top: 6px;
+            backdrop-filter: blur(2px);
+        }
+
+        .sub {
+            font-size: 0.9rem;
+            color: #2d6a4f;
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        /* grade de notas (cards) */
+        .notes-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* cada card é um bloco de estudo */
+        .card {
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 8px 20px rgba(0, 32, 16, 0.08);
+            overflow: hidden;
+            transition: all 0.1s ease;
+            border: 1px solid #cfe3d4;
+        }
+
+        .card-header {
+            background: #eaf9f0;
+            padding: 14px 20px;
+            border-bottom: 2px solid #b7dfc5;
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .card-header h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #165a37;
+            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .shortcut {
+            background: #2c7a4b20;
+            font-family: monospace;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 40px;
+            color: #116b3f;
+            border: 0.5px solid #9ac7ae;
+        }
+
+        .card-content {
+            padding: 18px 20px 22px;
+            font-size: 1rem;
+            line-height: 1.45;
+        }
+
+        /* destaques e observações */
+        .highlight {
+            background: #fef7e0;
+            border-left: 5px solid #f4b942;
+            padding: 12px 16px;
+            border-radius: 20px;
+            margin: 16px 0 12px;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .memory-reinforce {
+            background: #e0f3ec;
+            padding: 14px 18px;
+            border-radius: 24px;
+            margin-top: 18px;
+            font-size: 0.9rem;
+            border: 1px solid #bcddcd;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .memory-reinforce span:first-child {
+            font-size: 1.5rem;
+        }
+
+        .tip {
+            background: #eef1fc;
+            border-radius: 20px;
+            padding: 12px 16px;
+            margin: 12px 0;
+            font-size: 0.9rem;
+            color: #1a4972;
+        }
+
+        .process-list {
+            list-style: none;
+            margin: 8px 0;
+        }
+
+        .process-list li {
+            margin-bottom: 12px;
+            padding-left: 28px;
+            position: relative;
+        }
+
+        .process-list li strong {
+            color: #0f6b41;
+        }
+
+        .process-list li::before {
+            content: "💧";
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 1rem;
+        }
+
+        hr {
+            margin: 16px 0;
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, #cfe3d4, transparent);
+        }
+
+        .subgrid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 12px;
+        }
+
+        .subcard {
+            background: #f9fefb;
+            flex: 1;
+            min-width: 130px;
+            border-radius: 24px;
+            padding: 12px 14px;
+            border: 1px solid #cbe5d9;
+        }
+
+        .subcard h3 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: #1f543b;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .small-note {
+            font-size: 0.9rem;
+            color: #2c553f;
+        }
+
+        .badge-conseq {
+            background: #ffe6e3;
+            border-radius: 30px;
+            padding: 10px 12px;
+            margin-top: 12px;
+            font-size: 0.9rem;
+        }
+
+        .water-emoji {
+            font-size: 1.2rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 32px;
+            font-size: 0.75rem;
+            color: #6c8f7a;
+            border-top: 1px solid #cae1d2;
+            padding-top: 20px;
+        }
+
+        @media (max-width: 500px) {
+            body {
+                padding: 14px 12px 40px;
+            }
+            .card-content {
+                padding: 16px;
+            }
+            .card-header h2 {
+                font-size: 1.3rem;
+            }
+        }
+
+        button.copy-tip {
+            background: none;
+            border: none;
+            font-size: 0.75rem;
+            color: #2a7f55;
+            margin-left: 8px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="study-container">
+    <div class="header">
+        <h1>💧 Ciclo Biogeoquímico da Água</h1>
+        <div class="badge">🌍 Hidrologia + Ecologia | Estudo em grade</div>
+        <div class="sub">♻️ Elemento essencial: H₂O — circulação entre abiótico e seres vivos</div>
+    </div>
+
+    <div class="notes-grid">
+        <!-- CARD 1: DEFINIÇÃO + IMPORTÂNCIA -->
+        <div class="card">
+            <div class="card-header">
+                <h2>📘 Definição & Importância</h2>
+                <div class="shortcut">🔑 base</div>
+            </div>
+            <div class="card-content">
+                <p><strong>🌀 Ciclo biogeoquímico:</strong> processo natural onde elementos químicos (água, carbono, oxigênio, nitrogênio) circulam entre o <strong>ambiente abiótico</strong> (atmosfera, litosfera, hidrosfera) e os <strong>organismos vivos</strong> (biosfera). Garantem a reciclagem e disponibilidade contínua de nutrientes essenciais.</p>
+                <div class="highlight">
+                    💧 <strong>Importância do elemento químico (H₂O):</strong> A água (Hidrogênio + Oxigênio) circula no ciclo hidrológico. Essencial para: <strong>fotossíntese, transporte de nutrientes e regulação do clima.</strong> Sem ela não há equilíbrio da vida na Terra.
+                </div>
+                <div class="memory-reinforce">
+                    <span>🧠</span>
+                    <span><strong>Decore:</strong> “<u>ÁGUA</u> une <u>A</u>biótico + <u>G</u>eológico + <u>U</u>midade + <u>A</u>ção biológica” – reciclagem contínua entre solo, ar, seres vivos.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 2: PROCESSOS ENVOLVIDOS (EVAPORAÇÃO ATÉ DECOMPOSIÇÃO) - GRADE VISUAL -->
+        <div class="card">
+            <div class="card-header">
+                <h2>⚙️ Processos do Ciclo</h2>
+                <div class="shortcut">🌊 fluxo</div>
+            </div>
+            <div class="card-content">
+                <ul class="process-list">
+                    <li><strong>💨 Evaporação:</strong> Rios, lagos, mares e solo aquecem com o sol → água vira vapor.</li>
+                    <li><strong>☁️ Condensação:</strong> Vapor d’água esfria nas camadas altas → forma gotículas (nuvens).</li>
+                    <li><strong>🌧️ Precipitação:</strong> Gotículas pesadas caem: chuva, neve ou granizo.</li>
+                    <li><strong>🌱 Infiltração:</strong> Parte da água penetra no solo; outra escoa para rios, lagos e oceanos.</li>
+                    <li><strong>🏞️ Acumulação:</strong> Água armazenada em oceanos, rios, aquíferos. Depois pode evaporar ou ser usada pelos seres vivos.</li>
+                    <li><strong>🌿 Evapotranspiração:</strong> Água do solo + liberação de vapor pelas plantas (pelas folhas) → volta para atmosfera.</li>
+                </ul>
+                <div class="tip">
+                    💡 <strong>Observação:</strong> Evapotranspiração = evaporação do solo + transpiração das plantas. Juntos aumentam a umidade do ar.
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 3: INTERAÇÃO COM SERES VIVOS (INGESTÃO, EXCREÇÃO, RESPIRAÇÃO, DECOMPOSIÇÃO) -->
+        <div class="card">
+            <div class="card-header">
+                <h2>🐾 Seres vivos no ciclo</h2>
+                <div class="shortcut">🍃 entrada/saída</div>
+            </div>
+            <div class="card-content">
+                <div class="subgrid">
+                    <div class="subcard">
+                        <h3>🥤 Ingestão</h3>
+                        <p class="small-note">A água entra nos animais pela <strong>bebida</strong> e pelos <strong>alimentos</strong> consumidos.</p>
+                    </div>
+                    <div class="subcard">
+                        <h3>🚽 Excreção</h3>
+                        <p class="small-note">A água sai pela <strong>urina, fezes, respiração e suor/transpiração</strong>.</p>
+                    </div>
+                </div>
+                <div class="highlight" style="margin-top: 6px;">
+                    🌬️ <strong>Respiração:</strong> Os seres vivos devolvem água para a natureza através da respiração (vapor d'água expirado).
+                </div>
+                <div class="memory-reinforce">
+                    <span>🍂</span>
+                    <span><strong>Decomposição:</strong> A água ativa os decompositores (fungos/bactérias). A decomposição libera água e minerais “presos” nos organismos mortos → ciclo recomeça.</span>
+                </div>
+                <hr>
+                <div class="tip">
+                    🔁 <strong>Ciclo completo:</strong> Evaporação → condensação → precipitação → infiltração → absorção por plantas/animais → retorno via transpiração, respiração, excreção e decomposição.
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 4: INTERFERÊNCIA HUMANA + CONSEQUÊNCIAS (DETALHADO) -->
+        <div class="card">
+            <div class="card-header">
+                <h2>⚠️ Interferência Humana</h2>
+                <div class="shortcut">🚨 impactos</div>
+            </div>
+            <div class="card-content">
+                <p>A interferência humana altera o funcionamento natural do ciclo por meio de ações como <strong>desmatamento, urbanização e poluição</strong>, causando escassez de água, enchentes e danos ambientais.</p>
+                <div class="badge-conseq">
+                    <strong>🌲 Desmatamento:</strong> Perda de biodiversidade, redução da evapotranspiração, menos chuvas regionais.<br>
+                    <strong>🏙️ Urbanização:</strong> Solo impermeável → diminui infiltração, aumenta riscos de enchente e alteração climática local.<br>
+                    <strong>🏭 Poluição:</strong> Degrada a qualidade da água, contamina rios/lagos, afeta seres vivos e prejudica até a evaporação natural.
+                </div>
+                <div class="memory-reinforce">
+                    <span>⚠️</span>
+                    <span><strong>Lembrete:</strong> “<u>DUP</u>” – <strong>D</strong>esmatamento, <strong>U</strong>rbanização, <strong>P</strong>oluição = principais vilões do ciclo da água.</span>
+                </div>
+                <div class="tip" style="margin-top: 12px;">
+                    💧 <strong>Consequência em cadeia:</strong> Menos florestas → menos transpiração → menos chuvas → secas ou enchentes extremas. Poluição dificulta o tratamento e consumo.
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 5: NOTAS DE REFORÇO + ATALHOS DECORATIVOS (ORGANIZADO EM GRADE DE DICAS) -->
+        <div class="card">
+            <div class="card-header">
+                <h2>📌 Atalhos & Reforços</h2>
+                <div class="shortcut">🧠 decore rápido</div>
+            </div>
+            <div class="card-content">
+                <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 10px;">
+                    <div style="background: #e1f3ea; border-radius: 28px; padding: 6px 14px; font-weight: 500;">💧 E-C-P-I-A-E (Evaporação, Condensação, Precipitação, Infiltração, Acumulação, Evapotranspiração)</div>
+                    <div style="background: #e1f3ea; border-radius: 28px; padding: 6px 14px;">🍃 Respiração + Transpiração = devolução de água</div>
+                </div>
+                <div class="highlight">
+                    🧪 <strong>Fotosíntese:</strong> utiliza água + CO₂ → produz glicose e libera oxigênio. A água é essencial para produção de biomassa!
+                </div>
+                <div class="memory-reinforce">
+                    <span>💡</span>
+                    <span><strong>Dica de estudo:</strong> Associe cada etapa a uma cor mental: azul (evaporação), branco (nuvens), verde (plantas), marrom (solo). Visualize o ciclo infinito!</span>
+                </div>
+                <div class="tip">
+                    🔁 <strong>“Nada se perde, tudo se transforma”</strong> — Ciclo biogeoquímico da água é exemplo perfeito: a mesma água circula há bilhões de anos, passando por rochas, nuvens, animais e plantas.
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 6: RESUMO INTEGRADO (EXCREÇÃO, DECOMPOSIÇÃO, RESPIRAÇÃO) + DETALHES COMPLETOS -->
+        <div class="card">
+            <div class="card-header">
+                <h2>🔁 Tudo junto: da ingestão à decomposição</h2>
+                <div class="shortcut">♻️ revisão</div>
+            </div>
+            <div class="card-content">
+                <p><strong>✔️ Ingestão:</strong> Água entra nos animais pela bebida e alimentos.<br>
+                <strong>✔️ Excreção:</strong> Água sai por urina, fezes, respiração e suor (transpiração).<br>
+                <strong>✔️ Respiração:</strong> Libera vapor de água no ar (importante para devolução).<br>
+                <strong>✔️ Decomposição:</strong> Microrganismos atuam com água → liberam minerais e água de volta ao solo/ambiente.</p>
+                <div class="highlight" style="margin: 14px 0 0 0;">
+                    🌱 <strong>Evapotranspiração + respiração + decomposição =</strong> os três pilares que garantem que a água volte para a atmosfera e solo após passar pelos seres vivos.
+                </div>
+                <div class="memory-reinforce">
+                    <span>🎯</span>
+                    <span><strong>Objetivo do ciclo:</strong> Garantir disponibilidade contínua de água doce, regular o clima e manter a biodiversidade.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 7: INTERFERÊNCIA APROFUNDADA E EXEMPLOS REAIS -->
+        <div class="card">
+            <div class="card-header">
+                <h2>🌎 Consequências práticas</h2>
+                <div class="shortcut">alertas</div>
+            </div>
+            <div class="card-content">
+                <div class="subgrid">
+                    <div class="subcard">
+                        <h3>🏞️ Enchentes urbanas</h3>
+                        <p class="small-note">Impermeabilização do solo + falta de infiltração → escoamento violento.</p>
+                    </div>
+                    <div class="subcard">
+                        <h3>🔥 Escassez hídrica</h3>
+                        <p class="small-note">Desmatamento reduz formação de rios voadores, prejudica chuvas.</p>
+                    </div>
+                </div>
+                <div class="badge-conseq" style="background:#f5ebe0;">
+                    🧪 <strong>Poluição:</strong> metais pesados, esgoto e plástico alteram pH e temperatura da água, afetando a evaporação e prejudicando o ciclo natural. Organismos aquáticos morrem e interrompem o fluxo biogeoquímico.
+                </div>
+                <div class="tip" style="margin-top: 14px;">
+                    🌍 <strong>Dica de ouro:</strong> Para estudar, crie um mapa mental: centro = “H₂O”, ramos: processos físicos (evaporação...), biológicos (respiração, ingestão) e antrópicos (desmatamento, urbanização). Use setas!
+                </div>
+            </div>
+        </div>
+
+        <!-- BÔNUS: CARD PARA DECORAR COM MNEMÔNICOS -->
+        <div class="card">
+            <div class="card-header">
+                <h2>🧩 Mapa de memorização</h2>
+                <div class="shortcut">✨ atalhos</div>
+            </div>
+            <div class="card-content">
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <div><strong>🌊 Mnemônico para os processos principais:</strong> “<span style="background:#dcfce8; padding:2px 8px; border-radius:20px;">ECPIAE</span>” (Evaporação, Condensação, Precipitação, Infiltração, Acumulação, Evapotranspiração).</div>
+                    <div><strong>🍃 Devolução pelos seres vivos:</strong> “R-E-D” (Respiração, Excreção, Decomposição).</div>
+                    <div><strong>🚫 Impactos humanos:</strong> “DUP” + P (Desmatamento, Urbanização, Poluição = Prejuízos ao ciclo).</div>
+                </div>
+                <div class="memory-reinforce" style="margin-top: 18px;">
+                    <span>📖</span>
+                    <span><strong>Revisão final:</strong> ciclo biogeoquímico da água é um movimento contínuo entre atmosfera, hidrosfera, litosfera e biosfera. Essencial para fotossíntese, regulação climática e manutenção da vida. Conhecer as interferências humanas ajuda a entender problemas como enchentes e contaminação.</span>
+                </div>
+                <div class="highlight" style="margin-top: 12px;">
+                    ✅ <strong>Estude ativamente:</strong> tente desenhar o ciclo sem olhar e depois confira cada etapa, incluindo a participação dos decompositores e a excreção animal.
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        📚 Material didático - Ciclo Biogeoquímico (H₂O) | Notas organizadas em grade para estudo fácil e rápido.<br>
+        🌱 Revisão completa: definição, processos, interações biológicas, impactos humanos e atalhos.
+    </footer>
+</div>
+</body>
+  </html>
